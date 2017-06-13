@@ -1,0 +1,557 @@
+{
+    "name": "Risk Explorer",
+    "text": "To begin, select a region to view.",
+    "globalText": "Risk = Exposure x Vulnerability<br>Choose your variables to see your risk.",
+	"mainToggle": {"index": 0, "text": "Toggle Risk Score on or off"},
+    "betweenGroups": "*",
+    "averageGroups": true,
+	"infoGraphic": "RiskExplorer_c.jpg",
+	"pluginHeight": 510,
+    "regions": [
+        {
+            "items": [
+                {
+                    "text": "<b>Exposure</b> is scored using seven bio-geophysical variables",
+                    "type": "text"
+                },
+                {
+                    "default": 1,
+                    "index": "sea_level_rise_medium",
+                    "max": 1,
+                    "min": 0,
+                    "step": 1,
+                    "text": "With Sea Level Rise",
+                    "type": "layer",
+                    "group": "muex1",
+                },
+                {
+                    "default": 0,
+                    "index": "sea_level_rise_current",
+                    "max": 1,
+                    "min": 0,
+                    "step": 1,
+                    "text": "Without Sea Level Rise",
+                    "type": "layer",
+                    "group": "muex1"
+                },
+                {
+                    "text": "<b>Vulnerability</b> is scored using your choice of social vulnerability variables",
+                    "type": "text"
+                },
+                {
+                    "default": 1,
+                    "index": "population_score",
+                    "max": 1,
+                    "min": 0,
+                    "step": 1,
+                    "text": "Total Population",
+                    "type": "layer",
+                    "group": "2"
+                },
+                {
+                    "default": 1,
+                    "index": "older_population_score",
+                    "max": 1,
+                    "min": 0,
+                    "step": 1,
+                    "text": "Older Population",
+                    "type": "layer",
+                    "group": "2"
+                },
+                {
+                    "default": 1,
+                    "index": "poverty_score",
+                    "max": 1,
+                    "min": 0,
+                    "step": 1,
+                    "text": "Families in Poverty",
+                    "type": "layer",
+                    "group": "2"
+                },
+                {
+                    "type": "hr",
+                    "group": "1"
+                },
+                {
+                    "text": "<b>Show Me:</b>",
+                    "type": "text"
+                },
+                {
+                    "text": "Priority conservation areas where habitats likely reduce risk now",
+                    "type": "ancillary",
+                    "default": 0,
+                    "index": 0,
+                },
+                {
+                    "text": "Priority restoration areas where new oyster reefs could reduce risk",
+                    "type": "ancillary",
+                    "default": 0,
+                    "index": 1
+                },
+                {
+                    "text": "A map of median residential property values",
+                    "type": "ancillary",
+                    "default": 0,
+                    "index": 2
+                }
+            ],
+            "ancillaryUrl": "http://dev.services2.coastalresilience.org:6080/arcgis/rest/services/Gulf_of_Mexico_Risk_Explorer/Alabama_Risk_Explorer_Show_Me_Layers/MapServer",
+            "name": "Alabama",
+            "url": "http://dev.services2.coastalresilience.org:6080/arcgis/rest/services/PostGIS/DatabaseConnection/MapServer",
+			"workspaceId": "postgis",
+			"geometryType": "point",
+			"dataset": "gulfmex_Risk_Explorer_Data where state='AL'",
+			"reqFields": ["objectid", "shape"],
+			"defaultSymbol": { "type": "esriSMS",
+							 "style": "esriSMSCircle",
+							 "color": [150,150,150,255],
+							 "size": 8,
+							 "angle": 0,
+							 "xoffset": 0,
+							 "yoffset": 0,
+							 "outline": 
+							  {
+							  "color": [150,150,150,0],
+							   "width": 1
+							  }
+							},
+			"colorRamp": [[44, 123, 182, 255], [171, 217, 233, 255], [255, 255, 191, 255], [253, 174, 97, 255], [215, 25, 28, 255]]
+        },
+        {
+            "items": [
+                {
+                    "text": "<b>Exposure</b> is scored using seven bio-geophysical variables",
+                    "type": "text"
+                },
+                {
+                    "default": 1,
+                    "index": "sea_level_rise_medium",
+                    "max": 1,
+                    "min": 0,
+                    "step": 1,
+                    "text": "With Sea Level Rise",
+                    "type": "layer",
+                    "group": "muex1"
+                },
+                {
+                    "default": 0,
+                    "index": "sea_level_rise_current",
+                    "max": 1,
+                    "min": 0,
+                    "step": 1,
+                    "text": "Without Sea Level Rise",
+                    "type": "layer",
+                    "group": "muex1"
+                },
+                {
+                    "text": "<b>Vulnerability</b> is scored using your choice of social vulnerability variables",
+                    "type": "text"
+                },
+                {
+                    "default": 1,
+                    "index": "population_score",
+                    "max": 1,
+                    "min": 0,
+                    "step": 1,
+                    "text": "Total Population",
+                    "type": "layer",
+                    "group": "2"
+                },
+                {
+                    "default": 1,
+                    "index": "older_population_score",
+                    "max": 1,
+                    "min": 0,
+                    "step": 1,
+                    "text": "Older Population",
+                    "type": "layer",
+                    "group": "2"
+                },
+                {
+                    "default": 1,
+                    "index": "poverty_score",
+                    "max": 1,
+                    "min": 0,
+                    "step": 1,
+                    "text": "Families in Poverty",
+                    "type": "layer",
+                    "group": "2"
+                },
+                {
+                    "type": "hr",
+                    "group": "1"
+                },
+                {
+                    "text": "<b>Show Me:</b>",
+                    "type": "text"
+                },
+                {
+                    "text": "Where coastal habitat loss will likely increase risk",
+                    "type": "ancillary",
+                    "default": 0,
+                    "index": 0
+                },
+                {
+                    "text": "Where oyster restoration might have the most effect on reducing risk",
+                    "type": "ancillary",
+                    "default": 0,
+                    "index": 1
+                },
+                {
+                    "text": "A map of median residential property values",
+                    "type": "ancillary",
+                    "default": 0,
+                    "index": 2
+                }
+            ],
+            "ancillaryUrl": "http://dev.services2.coastalresilience.org:6080/arcgis/rest/services/Gulf_of_Mexico_Risk_Explorer/Mississippi_Risk_Explorer_Show_Me_Layers/MapServer",
+            "name": "Mississippi",
+            "url": "http://dev.services2.coastalresilience.org:6080/arcgis/rest/services/PostGIS/DatabaseConnection/MapServer",
+			"workspaceId": "postgis",
+			"geometryType": "point",
+			"dataset": "gulfmex_Risk_Explorer_Data where state='MS'",
+			"reqFields": ["objectid", "shape"],
+			"defaultSymbol": { "type": "esriSMS",
+							 "style": "esriSMSCircle",
+							 "color": [150,150,150,255],
+							 "size": 8,
+							 "angle": 0,
+							 "xoffset": 0,
+							 "yoffset": 0,
+							 "outline": 
+							  {
+							  "color": [150,150,150,0],
+							   "width": 1
+							  }
+							},
+			"colorRamp": [[44, 123, 182, 255], [171, 217, 233, 255], [255, 255, 191, 255], [253, 174, 97, 255], [215, 25, 28, 255]]
+        },
+        {
+            "items": [
+                {
+                    "text": "<b>Exposure</b> is scored using seven bio-geophysical variables",
+                    "type": "text"
+                },
+                {
+                    "default": 1,
+                    "index": "sea_level_rise_medium",
+                    "max": 1,
+                    "min": 0,
+                    "step": 1,
+                    "text": "With Sea Level Rise",
+                    "type": "layer",
+                    "group": "muex1"
+                },
+                {
+                    "default": 0,
+                    "index": "sea_level_rise_current",
+                    "max": 1,
+                    "min": 0,
+                    "step": 1,
+                    "text": "Without Sea Level Rise",
+                    "type": "layer",
+                    "group": "muex1"
+                },
+                {
+                    "text": "<b>Vulnerability</b> is scored using your choice of social vulnerability variables",
+                    "type": "text"
+                },
+                {
+                    "default": 1,
+                    "index": "population_score",
+                    "max": 1,
+                    "min": 0,
+                    "step": 1,
+                    "text": "Total Population",
+                    "type": "layer",
+                    "group": "2"
+                },
+                {
+                    "default": 1,
+                    "index": "older_population_score",
+                    "max": 1,
+                    "min": 0,
+                    "step": 1,
+                    "text": "Older Population",
+                    "type": "layer",
+                    "group": "2"
+                },
+                {
+                    "default": 1,
+                    "index": "poverty_score",
+                    "max": 1,
+                    "min": 0,
+                    "step": 1,
+                    "text": "Families in Poverty",
+                    "type": "layer",
+                    "group": "2"
+                },
+                {
+                    "type": "hr",
+                    "group": "1"
+                },
+                {
+                    "text": "<b>Show Me:</b>",
+                    "type": "text"
+                },
+                {
+                    "text": "Where coastal habitat loss will likely increase risk",
+                    "type": "ancillary",
+                    "default": 0,
+                    "index": 0
+                },
+                {
+                    "text": "Where oyster restoration might have the most effect on reducing risk",
+                    "type": "ancillary",
+                    "default": 0,
+                    "index": 1
+                },
+                {
+                    "text": "A map of median residential property values",
+                    "type": "ancillary",
+                    "default": 0,
+                    "index": 2
+                }
+            ],
+            "ancillaryUrl": "http://dev.services2.coastalresilience.org:6080/arcgis/rest/services/Gulf_of_Mexico_Risk_Explorer/Texas_Risk_Explorer_Show_Me_Layers/MapServer",
+            "name": "Texas",
+            "url": "http://dev.services2.coastalresilience.org:6080/arcgis/rest/services/PostGIS/DatabaseConnection/MapServer",
+			"workspaceId": "postgis",
+			"geometryType": "point",
+			"dataset": "gulfmex_Risk_Explorer_Data where state='TX'",
+			"reqFields": ["objectid", "shape"],
+			"defaultSymbol": { "type": "esriSMS",
+							 "style": "esriSMSCircle",
+							 "color": [150,150,150,255],
+							 "size": 8,
+							 "angle": 0,
+							 "xoffset": 0,
+							 "yoffset": 0,
+							 "outline": 
+							  {
+							  "color": [150,150,150,0],
+							   "width": 1
+							  }
+							},
+			"colorRamp": [[44, 123, 182, 255], [171, 217, 233, 255], [255, 255, 191, 255], [253, 174, 97, 255], [215, 25, 28, 255]]
+        },
+        {
+            "items": [
+                {
+                    "text": "<b>Exposure</b> is scored using seven bio-geophysical variables",
+                    "type": "text"
+                },
+                {
+                    "default": 1,
+                    "index": "sea_level_rise_medium",
+                    "max": 1,
+                    "min": 0,
+                    "step": 1,
+                    "text": "With Sea Level Rise",
+                    "type": "layer",
+                    "group": "muex1"
+                },
+                {
+                    "default": 0,
+                    "index": "sea_level_rise_current",
+                    "max": 1,
+                    "min": 0,
+                    "step": 1,
+                    "text": "Without Sea Level Rise",
+                    "type": "layer",
+                    "group": "muex1"
+                },
+                {
+                    "text": "<b>Vulnerability</b> is scored using your choice of social vulnerability variables",
+                    "type": "text"
+                },
+                {
+                    "default": 1,
+                    "index": "population_score",
+                    "max": 1,
+                    "min": 0,
+                    "step": 1,
+                    "text": "Total Population",
+                    "type": "layer",
+                    "group": "2"
+                },
+                {
+                    "default": 1,
+                    "index": "older_population_score",
+                    "max": 1,
+                    "min": 0,
+                    "step": 1,
+                    "text": "Older Population",
+                    "type": "layer",
+                    "group": "2"
+                },
+                {
+                    "default": 1,
+                    "index": "poverty_score",
+                    "max": 1,
+                    "min": 0,
+                    "step": 1,
+                    "text": "Families in Poverty",
+                    "type": "layer",
+                    "group": "2"
+                },
+                {
+                    "type": "hr",
+                    "group": "1"
+                },
+                {
+                    "text": "<b>Show Me:</b>",
+                    "type": "text"
+                },
+                {
+                    "text": "Where coastal habitat loss will likely increase risk",
+                    "type": "ancillary",
+                    "default": 0,
+                    "index": 0
+                },
+                {
+                    "text": "Where oyster restoration might have the most effect on reducing risk",
+                    "type": "ancillary",
+                    "default": 0,
+                    "index": 1
+                },
+                {
+                    "text": "A map of median residential property values",
+                    "type": "ancillary",
+                    "default": 0,
+                    "index": 2
+                }
+            ],
+            "ancillaryUrl": "http://dev.services2.coastalresilience.org:6080/arcgis/rest/services/Gulf_of_Mexico_Risk_Explorer/Florida_Risk_Explorer_Show_Me_Layers/MapServer",
+            "name": "Florida",
+            "url": "http://dev.services2.coastalresilience.org:6080/arcgis/rest/services/PostGIS/DatabaseConnection/MapServer",
+			"workspaceId": "postgis",
+			"geometryType": "point",
+			"dataset": "gulfmex_Risk_Explorer_Data where state='FL'",
+			"reqFields": ["objectid", "shape"],
+			"defaultSymbol": { "type": "esriSMS",
+							 "style": "esriSMSCircle",
+							 "color": [150,150,150,255],
+							 "size": 8,
+							 "angle": 0,
+							 "xoffset": 0,
+							 "yoffset": 0,
+							 "outline": 
+							  {
+							  "color": [150,150,150,0],
+							   "width": 1
+							  }
+							},
+			"colorRamp": [[44, 123, 182, 255], [171, 217, 233, 255], [255, 255, 191, 255], [253, 174, 97, 255], [215, 25, 28, 255]]
+        },
+        {
+            "items": [
+                {
+                    "text": "<b>Exposure</b> is scored using seven bio-geophysical variables",
+                    "type": "text"
+                },
+                {
+                    "default": 1,
+                    "index": "sea_level_rise_medium",
+                    "max": 1,
+                    "min": 0,
+                    "step": 1,
+                    "text": "With Sea Level Rise",
+                    "type": "layer",
+                    "group": "muex1"
+                },
+                {
+                    "default": 0,
+                    "index": "sea_level_rise_current",
+                    "max": 1,
+                    "min": 0,
+                    "step": 1,
+                    "text": "Without Sea Level Rise",
+                    "type": "layer",
+                    "group": "muex1"
+                },
+                {
+                    "text": "<b>Vulnerability</b> is scored using your choice of social vulnerability variables",
+                    "type": "text"
+                },
+                {
+                    "default": 1,
+                    "index": "population_score",
+                    "max": 1,
+                    "min": 0,
+                    "step": 1,
+                    "text": "Total Population",
+                    "type": "layer",
+                    "group": "2"
+                },
+                {
+                    "default": 1,
+                    "index": "older_population_score",
+                    "max": 1,
+                    "min": 0,
+                    "step": 1,
+                    "text": "Older Population",
+                    "type": "layer",
+                    "group": "2"
+                },
+                {
+                    "default": 1,
+                    "index": "poverty_score",
+                    "max": 1,
+                    "min": 0,
+                    "step": 1,
+                    "text": "Families in Poverty",
+                    "type": "layer",
+                    "group": "2"
+                },
+                {
+                    "type": "hr",
+                    "group": "1"
+                },
+                {
+                    "text": "<b>Show Me:</b>",
+                    "type": "text"
+                },
+                {
+                    "text": "Where coastal habitat loss will likely increase risk",
+                    "type": "ancillary",
+                    "default": 0,
+                    "index": 0
+                },
+                {
+                    "text": "Where oyster restoration might have the most effect on reducing risk",
+                    "type": "ancillary",
+                    "default": 0,
+                    "index": 1
+                },
+                {
+                    "text": "A map of median residential property values",
+                    "type": "ancillary",
+                    "default": 0,
+                    "index": 2
+                }
+            ],
+			"ancillaryUrl": "http://dev.services2.coastalresilience.org:6080/arcgis/rest/services/Gulf_of_Mexico_Risk_Explorer/Gulfwide_Risk_Explorer_Show_Me_Layers/MapServer",
+            "name": "Entire Gulf",
+            "url": "http://dev.services2.coastalresilience.org:6080/arcgis/rest/services/PostGIS/DatabaseConnection/MapServer",
+			"workspaceId": "postgis",
+			"geometryType": "point",
+			"dataset": "gulfmex_Risk_Explorer_Data where state='GW'",
+			"reqFields": ["objectid", "shape"],
+			"defaultSymbol": { "type": "esriSMS",
+							 "style": "esriSMSCircle",
+							 "color": [150,150,150,255],
+							 "size": 5,
+							 "angle": 0,
+							 "xoffset": 0,
+							 "yoffset": 0,
+							 "outline": 
+							  {
+							  "color": [150,150,150,0],
+							   "width": 1
+							  }
+							},
+			"colorRamp": [[44, 123, 182, 255], [171, 217, 233, 255], [255, 255, 191, 255], [253, 174, 97, 255], [215, 25, 28, 255]]
+        },
+    ]
+}

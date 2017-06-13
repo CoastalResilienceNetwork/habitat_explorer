@@ -1,0 +1,112 @@
+{
+    "name": "Risk Explorer",
+    "text": "To begin, select a region to view.",
+    "globalText": "Risk = Exposure x Vulnerability<br>Choose your variables to see your risk.",
+	"mainToggle": {"index": 0, "text": "Toggle Risk Score on or off"},
+    "betweenGroups": "*",
+    "averageGroups": true,
+	"infoGraphic": "RiskExplorer_c.jpg",
+	"pluginHeight": 550,
+    "regions": [
+        {
+            "items": [
+                {
+                    "text": "<b>Exposure</b> is scored using seven bio-geophysical variables",
+                    "type": "text"
+                },
+                {
+                    "default": 1,
+                    "index": "vi_m_h",
+                    "max": 1,
+                    "min": 0,
+                    "step": 1,
+                    "text": "With Sea Level Rise",
+                    "type": "layer",
+                    "group": "muex1"
+                },
+                {
+                    "default": 0,
+                    "index": "vi_c_h",
+                    "max": 1,
+                    "min": 0,
+                    "step": 1,
+                    "text": "Without Sea Level Rise",
+                    "type": "layer",
+                    "group": "muex1"
+                },
+                {
+                    "text": "<b>Vulnerability</b> is scored using your choice of social vulnerability variables",
+                    "type": "text"
+                },
+                {
+                    "default": 1,
+                    "index": "pop_score",
+                    "max": 1,
+                    "min": 0,
+                    "step": 1,
+                    "text": "Total Population",
+                    "type": "layer",
+                    "group": "2"
+                },
+                {
+                    "default": 1,
+                    "index": "older_score",
+                    "max": 1,
+                    "min": 0,
+                    "step": 1,
+                    "text": "Older Population",
+                    "type": "layer",
+                    "group": "2"
+                },
+                {
+                    "default": 1,
+                    "index": "pov_score",
+                    "max": 1,
+                    "min": 0,
+                    "step": 1,
+                    "text": "Families in Poverty",
+                    "type": "layer",
+                    "group": "2"
+                },
+                {
+                    "type": "hr",
+                    "group": "1"
+                },
+                {
+                    "text": "<b>Show Me:</b>",
+                    "type": "text"
+                },
+                {
+                    "text": "Priority conservation areas where habitats likely reduce risk now",
+                    "type": "ancillary",
+                    "default": 0,
+                    "index": 0
+                }
+            ],
+            "ancillaryUrl": "http://services.coastalresilience.org:6080/arcgis/rest/services/New_York/NY_Risk_Explorer_Show_Me_Layers/MapServer",
+            "name": "New York",
+            "url": "http://services.coastalresilience.org:6080/arcgis/rest/services/PostGIS/DatabaseConnection/MapServer",
+			"methods": "methods/NY_Risk_Explorer_Methods.pdf",
+			"workspaceId": "postgis",
+			"geometryType": "point",
+			"dataset": "ny_risk_explorer_data",
+			"reqFields": ["objectid", "shape"],
+			"defaultSymbol": { "type": "esriSMS",
+							 "style": "esriSMSCircle",
+							 "color": [150,150,150,255],
+							 "size": 8,
+							 "angle": 0,
+							 "xoffset": 0,
+							 "yoffset": 0,
+							 "outline": 
+							  {
+							  "color": [150,150,150,0],
+							   "width": 1
+							  }
+							},
+			"colorRamp": [[44, 123, 182, 255], [171, 217, 233, 255], [255, 255, 191, 255], [253, 174, 97, 255], [215, 25, 28, 255]]
+        }
+    ]
+}
+
+

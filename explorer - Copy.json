@@ -1,0 +1,525 @@
+{
+    "name": "Coral Reef Restoration Explorer",
+    "text": "To begin, select a region to view.",
+    "globalText": "Modify the sliders to change the values on the map (refresh takes a couple seconds).",
+    "mainToggle": {"text": "Main Layer Transparency"},
+    "betweenGroups": "*",
+    "averageGroups": true,
+	"enableCustomPrint": true,
+    "pluginHeight": 520,
+	"pluginWidth": 330,
+	"infoGraphic": "<div style='padding:5px;width:600px;text-align: justify'><div>The coral reef restoration explorer allows multi-sector stakeholders to examine both ecological and socioeconomic factors for prioritizing restoration efforts. This tool provides a regional (insular Caribbean) and local (Grand Cayman) platform to consider important coral reef larvae connectivity indicators and nodes as well as two ecosystem service models that reefs provide: coastal protection (exposure, wave height, and beach erosion) and recreation and tourism (visitation predictor based on Flickr photo database). Users can explore both the ecological and human benefits to evaluate and prioritize potential restoration areas. The darker blue areas indicate locations where the existing reefs are currently having a positive effect.</div><br><div><center><img width='250' src='plugins/restoration_explorer/coral.png'></center></div>",
+    "regions": [
+        {
+		  "methods": "methods/test.pdf",
+		  "tabtype": "radio",
+		  "tabs": [
+			{
+				"sliderLabels" : ["","Low","","","","Medium","","","","","High"],
+				"name": "Reduces Coastal Vulnerability– coral reef only",
+				"colorRamp": [[255, 255, 129, 255], [131, 238, 13, 255], [76, 190, 110, 255], [39, 115, 163, 255], [13, 31, 133, 255]],
+				"items": [	{
+								"text": "The sliders below adjust the weight of each input layer in the final output map.  Positioning a slider completly to the left removes that item from consideration.  All solutions with equal weights will be the same.", 
+								"type": "text"
+							},
+							{
+								"default": 5, 
+								"group": "all", 
+								"index": "con_larvae_n", 
+								"max": 10, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Modeled Larvae Contributed to Reef Unit Network", 
+								"help": "this is where the help text goes",
+								"type": "layer"
+							}, 
+							{
+								"default": 5, 
+								"group": "all", 
+								"index": "con_selfr_n", 
+								"max": 10, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Modeled Self Recruitment by Reef Unit", 
+								"help": "this is where the help text goes",
+								"type": "layer"
+							}, 
+							{
+								"default": 5, 
+								"group": "all", 
+								"index": "con_marxan_n", 
+								"max": 10, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Marxan Connectivity Results", 
+								"help": "this is where the help text goes",
+								"type": "layer"
+							},{
+								"default": 5, 
+								"group": "all", 
+								"index": "cv_corexp_n", 
+								"max": 10, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Coral Reef Role in Reducing Coastal Exposure", 
+								"help": "this is where the help text goes",
+								"type": "layer"
+							},{
+								"default": 5, 
+								"group": "all", 
+								"index": "cp_wavhred_n", 
+								"max": 10, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Habitat Role in Reducing Wave Height (%)", 
+								"help": "this is where the help text goes",
+								"type": "layer"
+							},{
+								"default": 5, 
+								"group": "all", 
+								"index": "cp_beaexpr_n", 
+								"max": 10, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Habitat Role in Reducing Beach Erosion (m)", 
+								"help": "this is where the help text goes",
+								"type": "layer"
+							},  
+							{
+								"default": 5, 
+								"group": "all", 
+								"index": "rec_pudcou_n", 
+								"max": 10, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Recreation and Tourism", 
+								"help": "this is where the help text goes",
+								"type": "layer"
+							}
+				]				
+			}, 		
+			{
+				"sliderLabels" : ["","Low","","","","Medium","","","","","High"],
+				"name": "Reduces Coastal Vulnerability – coral,Mangroves",
+				"colorRamp": [[255, 255, 129, 255], [131, 238, 13, 255], [76, 190, 110, 255], [39, 115, 163, 255], [13, 31, 133, 255]],
+				"items": [	{
+								"text": "The sliders below adjust the weight of each input layer in the final output map.  Positioning a slider completly to the left removes that item from consideration.  All solutions with equal weights will be the same.", 
+								"type": "text"
+							},
+							{
+								"default": 5, 
+								"group": "all", 
+								"index": "con_larvae_n", 
+								"max": 10, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Contribution of larvae to reef network", 
+								"help": "this is where the help text goes",
+								"type": "layer"
+							}, 
+							{
+								"default": 5, 
+								"group": "all", 
+								"index": "con_selfr_n", 
+								"max": 10, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Ability to self recruits", 
+								"help": "this is where the help text goes",
+								"type": "layer"
+							}, 
+							{
+								"default": 5, 
+								"group": "all", 
+								"index": "con_marxan_n", 
+								"max": 10, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Connectivity", 
+								"help": "this is where the help text goes",
+								"type": "layer"
+							},{
+								"default": 5, 
+								"group": "all", 
+								"index": "cv_habexp_n", 
+								"max": 10, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Habitat Role in Reducing Coastal Exposure", 
+								"help": "this is where the help text goes",
+								"type": "layer"
+							},{
+								"default": 5, 
+								"group": "all", 
+								"index": "cp_wavhred_n", 
+								"max": 10, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Habitat Role in Reducing Wave Height (%)", 
+								"help": "this is where the help text goes",
+								"type": "layer"
+							},{
+								"default": 5, 
+								"group": "all", 
+								"index": "cp_beaexpr_n", 
+								"max": 10, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Habitat Role in Reducing Beach Erosion (m)", 
+								"help": "this is where the help text goes",
+								"type": "layer"
+							},  
+							{
+								"default": 5, 
+								"group": "all", 
+								"index": "rec_pudcou_n", 
+								"max": 10, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Recreation and Tourism", 
+								"help": "this is where the help text goes",
+								"type": "layer"
+							}
+				]				
+			}
+		  ],
+	        "name": "Caribbean",
+			"sliderLabels" : ["None","Low","Med","High","V.High"],
+			"url": "http://services.coastalresilience.org:6080/arcgis/rest/services/PostGIS/DatabaseConnection/MapServer",
+			"workspaceId": "postgis",
+			"geometryType": "polygon",
+			"dataset": "sde.carib_resotoration_explorer_n",
+			"reqFields": ["objectid", "shape"],
+			"methods": "methods/Alabama_Dashboard.pdf",
+            "sliderLabels" : ["None","Low","Med","High","V.High"],
+			"defaultSymbol": {
+								"color": [
+									153,
+									153,
+									153,
+									255
+								],
+								"outline": {
+									"color": [
+										0,
+										0,
+										0,
+										255
+									],
+									"width": 0,
+									"type": "esriSLS",
+									"style": "esriSLSSolid"
+								},
+								"type": "esriSFS",
+								"style": "esriSFSSolid"
+							},
+			"colorRamp": [[255, 255, 129, 255], [131, 238, 13, 255], [76, 190, 110, 255], [39, 115, 163, 255], [13, 31, 133, 255]]
+			
+        },        
+		{
+		  "tabtype": "radio",
+		  "tabs": [
+			{
+				"sliderLabels" : ["0","","Low","","","","Medium","","","","High"],
+				"name": "Coral Reef Only",
+				"colorRamp": [[255, 255, 129, 255], [131, 238, 13, 255], [76, 190, 110, 255], [39, 115, 163, 255], [13, 31, 133, 255]],
+				"items": [	{
+								"text": "The sliders below adjust the weight of each input layer in the final output map.  Positioning a slider completly to the left removes that item from consideration.  All solutions with equal weights will be the same.", 
+								"type": "text"
+							}, 
+							{
+								"text": "<b>Effect of Habitat on Coastal Vulnerability and Protection</b>", 
+								"type": "text"
+							}, 
+							{
+								"default": 5, 
+								"group": "all1", 
+								"index": "habitat_ro_n", 
+								"max": 10, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Habitat Role in Reducing Coastal Exposure", 
+								"help": "This model was created using the InVEST Coastal Vulnerability model and provides a qualitative estimate of how coastal habitats reduce the vulnerability of coastal population to storm waves and surge. Higher values in the model indicate better protective services offered by natural habitats to coastal populations. <a href='http://ow-maps.s3.amazonaws.com/owExplorer/CoastalVulnerabilityDocumentation.pdf' target=_blank>Click this link to get more information (a new window will open)</a>",
+								"type": "layer"
+							}, 
+							{
+								"default": 5, 
+								"group": "all1", 
+								"index": "waveh_red__n", 
+								"max": 10, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Habitat Role in Reducing Wave Height", 
+								"help": "This model was created using the InVEST Coastal Protection model which calculates the amount of wave energy that is dissipated based on the spatial distribution of coastal habitats. It uses a series of bathymetric transects perpendicular to the shoreline to compute a wave height profile and the way in which the height changes as it moves to onshore. <a href='https://s3-us-west-2.amazonaws.com/ow-maps/owExplorer/CoastalProtectionDocumentation.pdf' target=_blank>Click this link to get more information (a new window will open)</a>",
+								"type": "layer"
+							}, 
+							{
+								"default": 5, 
+								"group": "all1", 
+								"index": "beacherosi_n", 
+								"max": 10, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Habitat Role in Reducing Beach Erosion", 
+								"help": "This model was created using the InVEST Coastal Protection model which calculates the amount of amount of shoreline erosion or scour that occurs based on the spatial distribution of coastal habitats. The model estimates the amount of beach erosion by scaling the amount of erosion obtained in the absence of natural habitats by the ratio of reduction in runup values and wave height. <a href='https://s3-us-west-2.amazonaws.com/ow-maps/owExplorer/CoastalProtectionDocumentation.pdf' target=_blank>Click this link to get more information (a new window will open)</a>",
+								"type": "layer"
+							}, 
+							{
+								"text": "<b>Recreation and Tourism</b>", 
+								"type": "text"
+							},
+							{
+								"default": 5, 
+								"group": "all1", 
+								"index": "rec_pud_n", 
+								"max": 10, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Utilization of Reefs by Tourists", 
+								"help": "This model was created using the InVEST Recreation and Tourism model which calculates the number of Photo User Days (PUDs) to estimate the amount of recreation and tourism. Using the georeferenced photos in the flickr database, the model assumes that current visitation can be approximated by the total number of annual person-days of photographs that have been uploaded. <a href='https://s3-us-west-2.amazonaws.com/ow-maps/owExplorer/RecreationandTourismDocumentation.pdf' target=_blank>Click this link to get more information (a new window will open)</a>",
+								"type": "layer"
+							},
+							{
+								"type": "hr",
+								"group": "1"
+							},
+							{
+								"text": "<b>Reference Maps:</b>",
+								"type": "text"
+							},
+							{
+								"text": "Roads",
+								"type": "ancillary",
+								"help": "These polylines represent the Primary and Secondary road networks for Grand Cayman as of October 2016. This layer was created by the Department of Lands and Survey, Cayman Islands Government.",
+								"default": 0,
+								"index": 0
+							},
+							{
+								"text": "Coastline",
+								"type": "ancillary",
+								"help": "These polylines represent the coastline of Grand Cayman as of October 2016. This layer was created by the Department of Lands and Survey, Cayman Islands Government.",
+								"default": 0,
+								"index": 1
+							},
+							{
+								"text": "Reefcrest",
+								"type": "ancillary",
+								"help": "These polylines represent the primarily emergent fringing reef crest for Grand Cayman. This layer was developed by the Department of Environment, Cayman Islands Government.",
+								"default": 0,
+								"index": 2
+							},
+							{
+								"text": "Marine Parks",
+								"type": "ancillary",
+								"help": "These polygons represent the Marine Protected Areas (MPA’s) for Grand Cayman as of October 2016. MPA’s have been in place in the Cayman Islands since 1986. Currently, 44% of the shelf area is under some kind of protection and 15% of the shelf is under the protection of no-take zones. This layer was developed by the Department of Environment, Cayman Islands Government. Please see <a href='https://s3-us-west-2.amazonaws.com/ow-maps/owExplorer/ConservationBrochureJune2016.pdf' target='_blank'>this link</a> for more information on the Cayman Islands’ MPA’s.",
+								"default": 0,
+								"index": 3
+							},
+							{
+								"text": "Population",
+								"type": "ancillary",
+								"default": 0,
+								"help": "<a href='https://s3-us-west-2.amazonaws.com/ow-maps/owExplorer/CaymanPopulationDocumentation.pdf' target=_blank>Click this link to get more information (a new window will open)</a>",
+								"index": 4
+							},
+							{
+								"text": "0.25m SLR Scenario",
+								"type": "ancillary",
+								"help": "<div>Global Sea Level is predicted to rise by 0.28m to 0.98 meters by the year 2100.*</div><br><div>Using a LIDAR derived Digital Elevation Model (DEM), a ‘bathtub’ model of all elevations below 0.25 meters was mapped to represent the low end of the expected range of Sea Level Rise by the year 2100.</div><br><div>*IPCC, 2014: Climate Change 2014: Synthesis Report. Contribution of Working Groups I, II and III to the Fifth Assessment Report of the Intergovernmental Panel on Climate Change [Core Writing Team, R.K. Pachauri and L.A. Meyer (eds.)]. IPCC, Geneva, Switzerland, 151 pp.</div>",
+								"default": 0,
+								"index": 5
+							},
+							{
+								"text": "1m SLR Scenario",
+								"type": "ancillary",
+								"help": "<div>Global Sea Level is predicted to rise by 0.28m to 0.98 meters by the year 2100.*</div><br><div>Using a LIDAR derived Digital Elevation Model (DEM), a ‘bathtub’ model of all elevations below 1.0 meter was mapped to represent the high end of the expected range of sea level rise by the year 2100.</div><br><div>*IPCC, 2014: Climate Change 2014: Synthesis Report. Contribution of Working Groups I, II and III to the Fifth Assessment Report of the Intergovernmental Panel on Climate Change [Core Writing Team, R.K. Pachauri and L.A. Meyer (eds.)]. IPCC, Geneva, Switzerland, 151 pp.</div>",
+								"default": 0,
+								"index": 6
+							},
+							{
+								"text": "Benthic Habitats and Mangroves",
+								"type": "ancillary",
+								"help": "The coral reef, seagrass, and mangrove habitats were mapped as part of the Cayman Islands National Biodiversity Action Plan (2009). For a detailed description of the habitat mapping see <a href='https://s3-us-west-2.amazonaws.com/ow-maps/owExplorer/HabitatMappingLong.pdf' target='_blank'>this link</a>",
+								"default": 0,
+								"index": 7
+							},
+							{
+								"text": "Island",
+								"type": "ancillary",
+								"help": "This polygon represents the land mass of Grand Cayman as of October 2016. This layer was created by the Department of Lands and Survey, Cayman Islands Government.",
+								"default": 0,
+								"index": 8
+							}
+				]				
+			}, 		
+			{
+				"sliderLabels" : ["0","","Low","","","","Medium","","","","High"],
+				"name": "Coral Reef, Seagrass, and Mangroves",
+				"colorRamp": [[255, 255, 129, 255], [131, 238, 13, 255], [76, 190, 110, 255], [39, 115, 163, 255], [13, 31, 133, 255]],
+				"items": [	{
+								"text": "The sliders below adjust the weight of each input layer in the final output map.  Positioning a slider completly to the left removes that item from consideration.  All solutions with equal weights will be the same.", 
+								"type": "text"
+							}, 
+							{
+								"text": "<b>Effect of Habitat on Coastal Vulnerability and Protection</b>", 
+								"type": "text"
+							},
+							{
+								"default": 5, 
+								"group": "all1", 
+								"index": "habitat_ro_all_n", 
+								"max": 10, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Habitat Role in Reducing Coastal Exposure", 
+								"help": "This model was created using the InVEST Coastal Vulnerability model and provides a qualitative estimate of how coastal habitats reduce the vulnerability of coastal population to storm waves and surge. Higher values in the model indicate better protective services offered by natural habitats to coastal populations. <a href='http://ow-maps.s3.amazonaws.com/owExplorer/CoastalVulnerabilityDocumentation.pdf' target=_blank>Click this link to get more information (a new window will open)</a>",
+								"type": "layer"
+							}, 
+							{
+								"default": 5, 
+								"group": "all1", 
+								"index": "waveh_red_all_n", 
+								"max": 10, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Habitat Role in Reducing Wave Height", 
+								"help": "This model was created using the InVEST Coastal Protection model which calculates the amount of wave energy that is dissipated based on the spatial distribution of coastal habitats. It uses a series of bathymetric transects perpendicular to the shoreline to compute a wave height profile and the way in which the height changes as it moves to onshore. <a href='https://s3-us-west-2.amazonaws.com/ow-maps/owExplorer/CoastalProtectionDocumentation.pdf' target=_blank>Click this link to get more information (a new window will open)</a>",
+								"type": "layer"
+							}, 
+							{
+								"default": 5, 
+								"group": "all1", 
+								"index": "beacherosi_all_n", 
+								"max": 10, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Habitat Role in Reducing Beach Erosion", 
+								"help": "This model was created using the InVEST Coastal Protection model which calculates the amount of amount of shoreline erosion or scour that occurs based on the spatial distribution of coastal habitats. The model estimates the amount of beach erosion by scaling the amount of erosion obtained in the absence of natural habitats by the ratio of reduction in runup values and wave height. <a href='https://s3-us-west-2.amazonaws.com/ow-maps/owExplorer/CoastalProtectionDocumentation.pdf' target=_blank>Click this link to get more information (a new window will open)</a>",
+								"type": "layer"
+							}, 
+							{
+								"text": "<b>Recreation and Tourism</b>", 
+								"type": "text"
+							},
+							{
+								"default": 5, 
+								"group": "all1", 
+								"index": "rec_pud_n", 
+								"max": 10, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Utilization of Reefs by Tourists", 
+								"help": "This model was created using the InVEST Recreation and Tourism model which calculates the number of Photo User Days (PUDs) to estimate the amount of recreation and tourism. Using the georeferenced photos in the flickr database, the model assumes that current visitation can be approximated by the total number of annual person-days of photographs that have been uploaded. <a href='https://s3-us-west-2.amazonaws.com/ow-maps/owExplorer/RecreationandTourismDocumentation.pdf' target=_blank>Click this link to get more information (a new window will open)</a>",
+								"type": "layer"
+							},
+							{
+								"type": "hr",
+								"group": "1"
+							},
+							{
+								"text": "<b>Reference Maps:</b>",
+								"type": "text"
+							},
+							{
+								"text": "Roads",
+								"type": "ancillary",
+								"help": "These polylines represent the Primary and Secondary road networks for Grand Cayman as of October 2016. This layer was created by the Department of Lands and Survey, Cayman Islands Government.",
+								"default": 0,
+								"index": 0
+							},
+							{
+								"text": "Coastline",
+								"type": "ancillary",
+								"help": "These polylines represent the coastline of Grand Cayman as of October 2016. This layer was created by the Department of Lands and Survey, Cayman Islands Government.",
+								"default": 0,
+								"index": 1
+							},
+							{
+								"text": "Reefcrest",
+								"type": "ancillary",
+								"help": "These polylines represent the primarily emergent fringing reef crest for Grand Cayman. This layer was developed by the Department of Environment, Cayman Islands Government.",
+								"default": 0,
+								"index": 2
+							},
+							{
+								"text": "Marine Parks",
+								"type": "ancillary",
+								"help": "These polygons represent the Marine Protected Areas (MPA’s) for Grand Cayman as of October 2016. MPA’s have been in place in the Cayman Islands since 1986. Currently, 44% of the shelf area is under some kind of protection and 15% of the shelf is under the protection of no-take zones. This layer was developed by the Department of Environment, Cayman Islands Government. Please see <a href='https://s3-us-west-2.amazonaws.com/ow-maps/owExplorer/ConservationBrochureJune2016.pdf' target='_blank'>this link</a> for more information on the Cayman Islands’ MPA’s.",
+								"default": 0,
+								"index": 3
+							},
+							{
+								"text": "Population",
+								"type": "ancillary",
+								"default": 0,
+								"help": "<a href='https://s3-us-west-2.amazonaws.com/ow-maps/owExplorer/CaymanPopulationDocumentation.pdf' target=_blank>Click this link to get more information (a new window will open)</a>",
+								"index": 4
+							},
+							{
+								"text": "0.25m SLR Scenario",
+								"type": "ancillary",
+								"help": "<div>Global Sea Level is predicted to rise by 0.28m to 0.98 meters by the year 2100.*</div><br><div>Using a LIDAR derived Digital Elevation Model (DEM), a ‘bathtub’ model of all elevations below 0.25 meters was mapped to represent the low end of the expected range of Sea Level Rise by the year 2100.</div><br><div>*IPCC, 2014: Climate Change 2014: Synthesis Report. Contribution of Working Groups I, II and III to the Fifth Assessment Report of the Intergovernmental Panel on Climate Change [Core Writing Team, R.K. Pachauri and L.A. Meyer (eds.)]. IPCC, Geneva, Switzerland, 151 pp.</div>",
+								"default": 0,
+								"index": 5
+							},
+							{
+								"text": "1m SLR Scenario",
+								"type": "ancillary",
+								"help": "<div>Global Sea Level is predicted to rise by 0.28m to 0.98 meters by the year 2100.*</div><br><div>Using a LIDAR derived Digital Elevation Model (DEM), a ‘bathtub’ model of all elevations below 1.0 meter was mapped to represent the high end of the expected range of sea level rise by the year 2100.</div><br><div>*IPCC, 2014: Climate Change 2014: Synthesis Report. Contribution of Working Groups I, II and III to the Fifth Assessment Report of the Intergovernmental Panel on Climate Change [Core Writing Team, R.K. Pachauri and L.A. Meyer (eds.)]. IPCC, Geneva, Switzerland, 151 pp.</div>",
+								"default": 0,
+								"index": 6
+							},
+							{
+								"text": "Benthic Habitats and Mangroves",
+								"type": "ancillary",
+								"help": "The coral reef, seagrass, and mangrove habitats were mapped as part of the Cayman Islands National Biodiversity Action Plan (2009). For a detailed description of the habitat mapping see <a href='https://s3-us-west-2.amazonaws.com/ow-maps/owExplorer/HabitatMappingLong.pdf' target='_blank'>this link</a>",
+								"default": 0,
+								"index": 7
+							},
+							{
+								"text": "Island",
+								"type": "ancillary",
+								"help": "This polygon represents the land mass of Grand Cayman as of October 2016. This layer was created by the Department of Lands and Survey, Cayman Islands Government.",
+								"default": 0,
+								"index": 8
+							}
+				]				
+			}
+		  ],
+	        "name": "Cayman",
+			"ancillaryUrl": "http://dev.services2.coastalresilience.org/arcgis/rest/services/OceanWealth/MOW_RestorationExplorer/MapServer",
+			"sliderLabels" : ["None","Low","Med","High","V.High"],
+			"url": "http://services.coastalresilience.org:6080/arcgis/rest/services/PostGIS/DatabaseConnection/MapServer",
+			"workspaceId": "postgis",
+			"geometryType": "polygon",
+			"dataset": "sde.cayman_wm_erase",
+			"reqFields": ["objectid", "shape"],
+			"methods": "plugins/restoration_explorer/CaymanMethods.pdf",
+            "sliderLabels" : ["None","Low","Med","High","V.High"],
+			"defaultSymbol": {
+								"color": [
+									153,
+									153,
+									153,
+									255
+								],
+								"outline": {
+									"color": [
+										0,
+										0,
+										0,
+										255
+									],
+									"width": 0,
+									"type": "esriSLS",
+									"style": "esriSLSSolid"
+								},
+								"type": "esriSFS",
+								"style": "esriSFSSolid"
+							},
+			"colorRamp": [[255, 255, 129, 255], [131, 238, 13, 255], [76, 190, 110, 255], [39, 115, 163, 255], [13, 31, 133, 255]]
+			
+        }
+    ]
+}
+	

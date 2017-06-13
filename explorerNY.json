@@ -1,0 +1,644 @@
+{
+    "name": "Habitat Explorer",
+    "text": "To begin, select a habitat to view.",
+    "globalText": "Modify the sliders to change the values on the map (refresh takes a couple seconds).",
+    "mainToggle": {"text": "Main Layer Transparency"},
+    "ddText": "Choose a Habitat",
+    "betweenGroups": "*",
+    "averageGroups": true,
+	"pluginWidth": 500,
+    "pluginHeight": 520,
+	"enableCustomPrint": true,
+	"infoGraphic": "RestorationExplorer_c.jpg",
+	"showInfoOnStart": false,
+	"hoverText" : "Generates summaries of stream and forest data for current condition, future threat, and climate change sensitivity and exposure. These are then used to map recommended conservation objectives. Can also be used in conjunction with our Guidebook to identify which Course Adjustment Worksheets to complete and provide information to help you do so.",
+	"noZoom": true,
+    "regions": [
+        {
+		  "methods": "methods/test.pdf",
+		  "printTitle": "NY Natural Resource Navigator Forest Habitat Adaptation Recommendations",
+		  "intro": {"name": "Instructions", "layer": {"url": "http://dev.services2.coastalresilience.org/arcgis/rest/services/New_York/NY_CLIMAD_toolkit/MapServer", "show": [111]}, "text": "<p>The Habitat Explorer may be used to answer several different types of questions. Click one of the options below to get detailed walk-throughs:</p><ul><li> <a target='_blank' href='http://www.naturalresourcenavigator.org/wp-content/uploads/2016/01/Guidebook.pdf#page=3'>Develop strategies for a project area </a></li><li> <a target='_blank' href='http://www.naturalresourcenavigator.org/wp-content/uploads/2016/01/Guidebook.pdf#page=4'>Evaluate an existing project to see if it is climate smart</a></li><li><a target='_blank' href='http://www.naturalresourcenavigator.org/wp-content/uploads/2016/01/Guidebook.pdf#page=5'>Decide where to implement a particular strategy' </a></li></ul><p>Click on the other four tabs to view summary scores for Condition, Threat, Climate Exposure and Climate Sensitivity. </p><p>To create a custom habitat analysis, adjust the sliders under each indicator to change the weighting or remove it entirely.</p>"},
+		  "combined": {
+			"name": "Recommendations",
+			"text" : "<p>This map shows the recommended objectives for your selected habitat type. There are four main types of objectives. The <a href='http://www.naturalresourcenavigator.org/wp-content/uploads/2016/01/Guidebook.pdf#page=10' target='_blank'>Course Adjustment Worksheets</a> in our Guidebook will help you develop strategies for each one: </p><div style='color:green'>Maintain: Good current condition & low future non-climate threats; these places are more likely to maintain their current conditions with minimal intervention.</div><br><br><div style='color:#00ffff'>Reduce Threats: Good current condition but some future non-climate threats; these places may require intervention to prevent declines.</div><br><br>  <div style='color:orange'>Restore: Poor current condition but relatively low future threat; these may be good places to invest in restoration or ecological management.</div><br><br><div style='color:red'>Reduce Threats & Restore: Poor current condition and further threatened in the future; these places are likely to require greater ongoing investment and have more uncertain outcomes. </div></p><p>Shading within each group indicates the degree of climate risk due to exposure and/or sensitivity. Darker shades indicate that the climate risk is low, and actions may have more reliable outcomes. Lighter shades indicate a greater degree of uncertainty due to climate change. The Preparing for Climate Change worksheet will help you identify actions to address this risk. </p>Click the Methods button for more information on these map",
+			"selected": true
+		  },
+		  "tabs": [
+			{
+				"name": "Condition",
+				"hoverText" : "Current health or status of the target.",
+				"sliderLabels" : ["None","Low","Med","High","V.High"],
+				"colorRamp": [[1, 255, 255, 155], [2, 157,243,58], [3, 114,204,138], [4, 81,145,182], [5, 58,77,159]],
+				"inputRanges" : [0,20,20,40,40,60,60,80,80,100],
+				"outputValues" : [1,2,3,4,5],
+				"items": [	{
+								"text": "<b>Current Condition Indicators:</b>",
+								"type": "text"
+							},
+							{
+								"default": 2,
+								"group": "all",
+								"index": "B1",
+								"max": 4,
+								"min": 0,
+								"step": 1,
+								"text": "Patch Size",
+								"help": 'Forest patches are defined as areas of contiguous natural cover bounded by non-natural edge or linear fragmenting features (roads, railroads, transmission lines). The following land cover types were selected from the 2006 National Land Cover Database (NLCD) to define "natural cover": deciduous forest, coniferous forest, mixed [deciduous-coniferous] forest, scrub-shrub, woody wetland, and emergent wetland. Forest patches were delineated based on non-forest edge and the following linear fragmenting features: electric transmission lines, natural gas pipelines, railroads, roads. Classes are based on patch size (acres); each pixel is scored based on the total size of the patch it is within.',
+								"type": "layer"
+							},
+							{
+								"default": 2,
+								"group": "all",
+								"index": "B2",
+								"max": 4,
+								"min": 0,
+								"step": 1,
+								"text": "Regeneration",
+								"help": "The dataset is a regeneration index with a four-part rating scale, representing the adequacy of regeneration based on seedling and sapling abundance data from the Forest Inventory and Analysis Database. The index includes seedlings and saplings for all native canopy species, excluding non-native and understory trees. These ratings in the regeneration index can be interpreted as the sufficiency of regeneration to tolerate varying levels of browse pressure and/or other stresses such as invasive plants. They also provide a guide to determine if management actions are warranted.",
+								"type": "layer"
+							},
+							{
+								"default": 2,
+								"group": "all",
+								"index": "B3",
+								"max": 4,
+								"min": 0,
+								"step": 1,
+								"text": "Large Snag Density",
+								"help": "Large snags provide important wildlife habitat and may be less abundant in stands that have been clearcut, highgraded, or harvested too frequently. It is possible that high snag density may also result from a large disturbance event and at high values may become detrimental to forest health, but maximum thresholds have not been established.",
+								"type": "layer"
+							},
+							{
+								"default": 2,
+								"group": "all",
+								"index": "B4",
+								"max": 4,
+								"min": 0,
+								"step": 1,
+								"text": "Relative Canopy Diversity",
+								"help": "Index of relative diversity of canopy tree species as compared to the average canopy diversity of the corresponding forest type, evaluated for USFS FIA plots and averaged across 50 km hexagons.",
+								"type": "layer"
+							},
+							{
+								"default": 2,
+								"group": "all",
+								"index": "B5",
+								"max": 4,
+								"min": 0,
+								"step": 1,
+								"text": "Invasives Prevalence",
+								"help": "Data on invasive plant abundance and frequency were extracted from FIA phase 2+ data for the 2009-2014 inventory. Invasive plant cover was calculated for each plot. Counties were scored based on a combination of average cover and the percent of plots with invasives. In some cases, counties with less than 5 plots were combined for scoring. Since these data are generalized across a large area, they indicate the probability of a particular forest stand having a problematic abundance of invasive plants, but actual conditions on the ground will vary widely and may be better or worse than scored in any given location.",
+								"type": "layer"
+							}
+						]			
+			
+			},
+			{
+				"name": "Threat",
+				"hoverText": ": The expected trend in condition due to human activities through the 2050s.  May be ongoing (having contributed to a past decline in condition that may persist or get worse) or new (not previously encountered or significant but expected to cause future declines in condition).  Can include indirect impacts of climate change, such as increased severity of nutrient pollution impacts due to warmer water temperatures, but direct climate change exposure, such as drought stress on forests, is considered separately under Exposure",
+				"sliderLabels" : ["None","Low","Med","High","V.High"],
+				"colorRamp": [[1, 255, 255, 155], [2, 157,243,58], [3, 114,204,138], [4, 81,145,182], [5, 58,77,159]],
+				"inputRanges" : [0,20,20,40,40,60,60,80,80,100],
+				"outputValues" : [1,2,3,4,5],
+				"items": [	{
+								"text": "<b>Future Threat Indicators:</b>",
+								"type": "text"
+							},
+							{
+								"default": 2,
+								"group": "all",
+								"index": "B6",
+								"max": 4,
+								"min": 0,
+								"step": 1,
+								"text": "Pest and Pathogens",
+								"help": "Risk from Forest Pests and Pathogens.Percent loss of basal area from all pest and pathogen species, from 2013-2027, modeled by USDA National Insect and Disease Risk Map (http://www.fs.fed.us/foresthealth/technology/nidrm.shtml).The 2012 National Insect and Disease Risk Map (NIDRM) Project integrates 186 individual risk models constructed within a common, consistent framework that accounts for regional variations in forest health conditions. These 186 models are built to portray the expected loss of host basal area for each pair of damage agents and hosts over each unique landscape where they coexist.",
+								"type": "layer"
+							},
+							{
+								"default": 2,
+								"group": "all",
+								"index": "B7",
+								"max": 4,
+								"min": 0,
+								"step": 1,
+								"text": "Invasive Plants",
+								"help": "The total number of high-threat invasive plant species for terrestrial habitats detected in the county is used as an indicator of potential invasion risk. Forest stands in areas with larger numbers of invasive plant species have a higher probability of one or more invasives becoming established in the forest interior. Data on presence of invasive species are combined from iMap (2013) and USFS FIA (2014).",
+								"type": "layer"
+							},
+							{
+								"default": 2,
+								"group": "all",
+								"index": "B8",
+								"max": 4,
+								"min": 0,
+								"step": 1,
+								"help": "The local connectedness metric measures how impaired the structural connections are between natural ecosystems within a local landscape. Roads, development, noise, exposed areas, dams, and other structures all directly alter processes and create resistance to species movement by increasing the risk (or perceived risk) of harm. This metric is an important component of resilience because it indicates whether a process is likely to be disrupted or how much access a species has to the microclimates within its given neighborhood. Local connectedness change is based on 2011 and 2050 land use, using a resistent kernal model by Compton et al. (2007).",
+								"text": "Loss of Connectedness",
+								"type": "layer"
+							},
+							{
+								"default": 2,
+								"group": "all",
+								"index": "B9",
+								"max": 4,
+								"min": 0,
+								"step": 1,
+								"text": "Fragmentation",
+								"help": 'Forest patches are defined as areas of contiguous natural cover bounded by non-natural edge or linear fragmenting features (roads, railroads, transmission lines). The following land cover types were selected from the 2006 National Land Cover Database (NLCD) to define "natural cover": deciduous forest, coniferous forest, mixed [deciduous-coniferous] forest, scrub-shrub, woody wetland, and emergent wetland. Forest patches were delineated based on non-forest edge and the following linear fragmenting features: electric transmission lines, natural gas pipelines, railroads, roads. Forest patch delineation was run for 2011 and 2050 land use and change calculated as the percent change in patch size (acres).',
+								"type": "layer"
+							}
+						]			
+			
+			},
+			{
+				"name": "Sensitivity",
+				"hoverText": "The degree to which the habitat is likely to change in response to climate change, based on both inherent attributes and additional risk factors related to the landscape or management context.  Sensitivity is not a direct prediction of specific climate impacts, but indicates the relative risk of experiencing impacts if exposed to climate change. Sensitivity may be considered the inverse of what is often referred to as “resilience” to climate change.",
+				"sliderLabels" : ["None","Low","Med","High","V.High"],
+				"colorRamp": [[1, 255, 255, 155], [2, 157,243,58], [3, 114,204,138], [4, 81,145,182], [5, 58,77,159]],
+				"inputRanges" : [0,20,20,40,40,60,60,80,80,100],
+				"outputValues" : [1,2,3,4,5],
+				"items": [	{
+								"text": "<b>Climate Change Sensitivity Indicators:</b>",
+								"type": "text"
+							},
+							{
+								"default": 2,
+								"group": "all",
+								"index": "B11",
+								"max": 4,
+								"min": 0,
+								"step": 1,
+								"text": "Landform Variety",
+								"help": "Topography describes the natural surface features of an area, which can be grouped into local units known as landforms (e.g. cliffs, summits, coves, basins, valleys). Landforms are a primary edaphic controller of species distributions, even without climatic considerations. A variety of landforms results in a variety of meso and micro climates. When climate is considered, landform variation increases the persistence of species and buffers against direct climate effects by providing many combinations of temperature and moisture within a local neighborhood (Anderson et al., 2012). Relative rankings of forest patch landform variety compared to the ecoregion average, from ERO Terrestrial Resilience study.",
+								"type": "layer"
+							},
+							{
+								"default": 2,
+								"group": "all",
+								"index": "B12",
+								"max": 4,
+								"min": 0,
+								"step": 1,
+								"text": "Elevation Range",
+								"help": "Species distributions may increase or decrease in elevation in concert with climate changes, particularly in hilly and mountainous landscape where the effects of elevation are magnified by slope. In flat landscapes, small elevation changes may have a dramatic effect on hydrologic processes such as flooding (Anderson et al., 2012). Relative rankings of forest patch elevation range compared to the ecoregion average, from ERO Terrestrial Resilience study.",
+								"type": "layer"
+							},
+							{
+								"default": 2,
+								"group": "all",
+								"index": "B13",
+								"max": 4,
+								"min": 0,
+								"step": 1,
+								"text": "Connectedness",
+								"help": "The local connectedness metric measures how impaired the structural connections are between natural ecosystems within a local landscape. Roads, development, noise, exposed areas, dams, and other structures all directly alter processes and create resistance to species movement by increasing the risk (or perceived risk) of harm. This metric is an important component of resilience because it indicates whether a process is likely to be disrupted or how much access a species has to the microclimates within its given neighborhood. Local connectedness was modeled for natural and agricultural lands based on 2011 land use using a resistent kernal model by Compton et al. (2007).",
+								"type": "layer"
+							},
+							{
+								"default": 2,
+								"group": "all",
+								"index": "B14",
+								"max": 4,
+								"min": 0,
+								"step": 1,
+								"help": "The diversity of tree species within a stand can be reduced by selective harvesting of high value species (highgrading), as well as by pest outbreaks. Diversity also varies by forest type and setting. Higher diversity is expected to improve resilience by helping to maintain forest cover in response to disturbance. Average current (2011) canopy species richness is based on USFS FIA plot data averaged across 50 km hexagons.",
+								"text": "Tree Species Richness",
+								"type": "layer"
+							},
+							{
+								"default": 2,
+								"group": "all",
+								"index": "B15",
+								"max": 4,
+								"min": 0,
+								"step": 1,
+								"help": "Vulnerability assessments performed at state and regional scales were applied to habitat types and bioclimatic zones in order to create a spatial visualization of habitat vulnerability ratings. Since no one assessment comprehensively covers all of the habitat types and zones within NY, assessments were combined from three reports on habitat vulnerability for various areas: the Northeast (Manomet 2013), New York (Hilke and Galbraith 2013), and Maine (Whitman et al. 2013). Vulnerability to climate change was assigned a 4-part rating from Least to Highly Vunerable (rating systems differed among the original reports) for those habitats where data were available.",
+								"text": "Habitat Vulnerability Rating",
+								"type": "layer"
+							}
+						]			
+			
+			},
+			{
+				"name": "Exposure",
+				"hoverText": "The degree of direct changes in climate, such as temperature or moisture regime, that the location is predicted to experience. Exposure is evaluated as amount of change, independent of direction.",
+				"sliderLabels" : ["None","Low","Med","High","V.High"],
+				"colorRamp": [[1, 255, 255, 155], [2, 157,243,58], [3, 114,204,138], [4, 81,145,182], [5, 58,77,159]],
+				"inputRanges" : [0,20,20,40,40,60,60,80,80,100],
+				"outputValues" : [1,2,3,4,5],
+				"items": [	{
+								"text": "<b>Climate Change Exposure Indicators:</b>",
+								"type": "text"
+							},
+							{
+								"default": 2,
+								"group": "all",
+								"index": "B16",
+								"max": 4,
+								"min": 0,
+								"step": 1,
+								"text": "Change in Annual Aridity",
+								"help": "The Aridity Index is a metric of moisture stress in a system (lower aridity index represents higher moisture stress) and is calculated from precipitation and Potential Evapotranspiration (PET). PET represents the water that an ecosystem could potentially use though evaporation and transpiration. PET is higher with warmer temperatures and more daylight hours. The ratio of precipitation (AET) to PET was summed over all months for a given year, with the modification that precipitation is capped at PET for each month (no surplus is considered when calculating this version of the Aridity Index). Change in aridity was calculated by subtracting the historical average from the future projection, and was smoothed to a 30m resolution. A positive change indicates that water stress is predicted to be lower in the future, while negative values indicate greater water stress under climate change. Aridity Index data were obtained from climatewizardcustom.org for 1962-1991 and a future projection for 2040-2069, using the ensemble average circulation model and the A2 scenario.",
+								"type": "layer"
+							},
+							{
+								"default": 2,
+								"group": "all",
+								"index": "B17",
+								"max": 4,
+								"min": 0,
+								"step": 1,
+								"text": "Change in Summer Maximum Temperature",
+								"help": "Change in maximum temperature for summer months (June, July, and August) was generated from global climate model projections from the North American Regional Climate Change Assessment Program (NARCCAP). Future and historical simulations are based four Regional Climate Models nested within at least one of three atmosphere-ocean general circulation models, to yield a set of seven RCM-AOGCM combinations. All future projections are based on the relatively high SRES A2 emissions scenario. The change in the mean of these seven simulations between historical (1970-2000) and future (2041-2070) was averaged by HUC8 basins and attributed to a 30 m grid of forested habitats. Data provided by the New York Climate Change Science Clearinghouse (http://climate-dev.library.cornell.edu/).",
+								"type": "layer"
+							},
+							{
+								"default": 2,
+								"group": "all",
+								"index": "B18",
+								"max": 4,
+								"min": 0,
+								"step": 1,
+								"text": "Change in Number of Days below Freezing",
+								"help": "Change in Days Below Freezing was generated from global climate model projections from the North American Regional Climate Change Assessment Program (NARCCAP). Future and historical simulations are based four Regional Climate Models nested within at least one of three atmosphere-ocean general circulation models, to yield a set of seven RCM-AOGCM combinations. All future projections are based on the relatively high SRES A2 emissions scenario. The change in the mean of these seven simulations between historical (1970-2000) and future (2041-2070) was averaged by HUC8 basins and attributed to a 30 m grid of forested habitats. Data provided by the New York Climate Change Science Clearinghouse (http://climate-dev.library.cornell.edu/).",
+								"type": "layer"
+							},
+							{
+								"default": 2,
+								"group": "all",
+								"index": "B19",
+								"max": 4,
+								"min": 0,
+								"step": 1,
+								"text": "Change in Growing Degree Days",
+								"help": "Change in Growing Degree Days was generated from global climate model projections from the North American Regional Climate Change Assessment Program (NARCCAP). Future and historical simulations are based four Regional Climate Models nested within at least one of three atmosphere-ocean general circulation models, to yield a set of seven RCM-AOGCM combinations. All future projections are based on the relatively high SRES A2 emissions scenario. The change in the mean of these seven simulations between historical (1970-2000) and future (2041-2070) was averaged by HUC8 basins and attributed to a 30 m grid of forested habitats. Data provided by the New York Climate Change Science Clearinghouse (http://climate-dev.library.cornell.edu/).",
+								"type": "layer"
+							},
+							{
+								"default": 2,
+								"group": "all",
+								"index": "B20",
+								"max": 4,
+								"min": 0,
+								"step": 1,
+								"text": "Change in Total Annual Precipitation",
+								"help": "Change in Total Annual Precipitation was generated from global climate model projections from the North American Regional Climate Change Assessment Program (NARCCAP). Future and historical simulations are based four Regional Climate Models nested within at least one of three atmosphere-ocean general circulation models, to yield a set of seven RCM-AOGCM combinations. All future projections are based on the relatively high SRES A2 emissions scenario. The change in the mean of these seven simulations between historical (1970-2000) and future (2041-2070) was averaged by HUC8 basins and attributed to a 30 m grid of forested habitats. Data provided by the New York Climate Change Science Clearinghouse (http://climate-dev.library.cornell.edu/).",
+								"type": "layer"
+							},
+							{
+								"default": 2,
+								"group": "all",
+								"index": "B21",
+								"max": 4,
+								"min": 0,
+								"step": 1,
+								"text": "Change in Total Summer Precipitation",
+								"help": "Change in Total Summer Precipitation was generated from global climate model projections from the North American Regional Climate Change Assessment Program (NARCCAP). Future and historical simulations are based four Regional Climate Models nested within at least one of three atmosphere-ocean general circulation models, to yield a set of seven RCM-AOGCM combinations. All future projections are based on the relatively high SRES A2 emissions scenario. The change in the mean of these seven simulations between historical (1970-2000) and future (2041-2070) was averaged by HUC8 basins and attributed to a 30 m grid of forested habitats. Data provided by the New York Climate Change Science Clearinghouse (http://climate-dev.library.cornell.edu/).",
+								"type": "layer"
+							},
+							{
+								"default": 2,
+								"group": "all",
+								"index": "B22",
+								"max": 4,
+								"min": 0,
+								"step": 1,
+								"text": "Canopy Decline",
+								"help": "Using data provided by the USFS TreeAtlas, we created a list of declining species for each ecoregion within NY. Basal area models also provided by the USFS were then used to calculate the percent of current basal area contributed by species predicted to decline. This percent of basal area was then averaged by ecoregional subsections, which are symbolized and scored in even 20% breaks. This metric represents the expected risk of change in canopy composition due to climate change.",
+								"type": "layer"
+							}
+						]			
+			
+			}					  
+		  ],
+	        "name": "New York Forests",
+            "url": "http://dev.services2.coastalresilience.org/arcgis/rest/services/rasterExplorer/NY_CLIMAD_Forest_Multi/ImageServer",
+			"methods": "methods/Alabama_Dashboard.pdf"
+
+        },
+        {
+		  "methods": "methods/test.pdf",
+		  "intro": {"name": "Instructions", "layer": {"url": "http://dev.services2.coastalresilience.org/arcgis/rest/services/New_York/NY_CLIMAD_toolkit/MapServer", "show": [48]}, "text": "<p>The Habitat Explorer may be used to answer several different types of questions. Click one of the options below to get detailed walk-throughs:</p><ul><li> <a target='_blank' href='http://www.naturalresourcenavigator.org/wp-content/uploads/2016/01/Guidebook.pdf#page=3'>Develop strategies for a project area </a></li><li> <a target='_blank' href=http://www.naturalresourcenavigator.org/wp-content/uploads/2016/01/Guidebook.pdf#page=4'>Evaluate an existing project to see if it is climate smart</a></li><li><a target='_blank' href='http://www.naturalresourcenavigator.org/wp-content/uploads/2016/01/Guidebook.pdf#page=5'>Decide where to implement a particular strategy' </a></li></ul><p>Click on the other four tabs to view summary scores for Condition, Threat, Climate Exposure and Climate Sensitivity. </p><p>To create a custom habitat analysis, adjust the sliders under each indicator to change the weighting or remove it entirely.</p>"},
+		  "combined": {
+			"name": "Recommendations",
+			"text" : "<p>This map shows the recommended objectives for your selected habitat type. There are four main types of objectives. The <a href='http://www.naturalresourcenavigator.org/wp-content/uploads/2016/01/Guidebook.pdf#page=10' target='_blank'>Course Adjustment Worksheets</a> in our Guidebook will help you develop strategies for each one: </p><div style='color:green'>Maintain: Good current condition & low future non-climate threats; these places are more likely to maintain their current conditions with minimal intervention.</div><br><br><div style='color:#00ffff'>Reduce Threats: Good current condition but some future non-climate threats; these places may require intervention to prevent declines.</div><br><br>  <div style='color:orange'>Restore: Poor current condition but relatively low future threat; these may be good places to invest in restoration or ecological management.</div><br><br><div style='color:red'>Reduce Threats & Restore: Poor current condition and further threatened in the future; these places are likely to require greater ongoing investment and have more uncertain outcomes. </div></p><p>Shading within each group indicates the degree of climate risk due to exposure and/or sensitivity. Darker shades indicate that the climate risk is low, and actions may have more reliable outcomes. Lighter shades indicate a greater degree of uncertainty due to climate change. The Preparing for Climate Change worksheet will help you identify actions to address this risk. </p>Click the Methods button for more information on these map",
+			"selected": true
+		  },
+		  "tabs": [
+			{
+				"name": "Condition",
+				"hoverText": "Current health or status of the target.",
+				"sliderLabels" : ["None","Low","Med","High","V.High"],
+				"colorRamp": [[255, 255, 129, 255], [131, 238, 13, 255], [76, 190, 110, 255], [39, 115, 163, 255], [13, 31, 133, 255]],
+				"inputRanges" : [0,50,51,75,76,100],
+				"outputValues" : [1,2,3],
+				"items": [	
+							{
+								"default": 2, 
+								"group": "all", 
+								"index": "cstr_damstor_score", 
+								"max": 4, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Flow Alteration", 
+								"help": "Flow alteration from dam water storage is expressed here as the ratio of the volume of water capable of being stored behind dams upstream to the mean annual flow volume expected in a reach, expressed as a percent (analysis originally done by Anderson et al. 2013, Condition of the Northeast Terrestrial and Aquatic Habitats: a geospatial analysis and tool set). We then crosswalked their analysis to the NHD Plus Version 2 in order to have all indicators on the same network---see Methods in metadata. Thresholds used for symbolization and condition scoring are based on Zimmerman (2006).",
+								"type": "layer"
+							}, 
+							{
+								"default": 2, 
+								"group": "all", 
+								"index": "cstr_curr_imp_score", 
+								"max": 4, 
+								"min": 0, 
+								"step": 1, 
+								"text": "% Impervious Cover", 
+								"help": "Current percent impervious cover for the reach (for size 2 streams and greater average = a downstream accumulated value for all reaches upstream of the reach averaged with the value for the HUC12, for size 1 streams = accumulated value only). Impervious Cover represents those areas covered by impenetrable materials such as roads, parking lots, and buildings preventing water from leaching directly into the soil. They are based on the 2011 National Land Cover Dataset. Impervious surface has been negatively correlated with water quality.",
+								"type": "layer"
+							}, 
+							{
+								"default": 2, 
+								"group": "all", 
+								"index": "cstr_lat_con_score", 
+								"max": 4, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Floodplain Connectivity", 
+								"help": "By catchment, percentage of the Active River Area with contiguous natural land cover that is adjacent to the stream channel. In size 2 and larger rivers, these areas could provide for connectivity between overbank flows and floodplains therefore providing flood attenuation benefits. For headwater streams and larger, these could also represent forested, shrub or otherwise vegetated riparian buffers which could offer water purification benefits.",
+								"type": "layer"
+							}, 
+							{
+								"default": 2, 
+								"group": "all", 
+								"index": "cstr_ara_fpc_score", 
+								"max": 4, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Functioning Floodplains", 
+								"help": "The percent of the Active River Area (ARA) that lies within a Floodplain Complex for each HUC12 watershed. Floodplain Complexes represent undeveloped areas that are large enough to allow for natural floodplain processes like movement of water and sediment, storage of flood waters, recharge of groundwater, treatment of pollutants, and habitat diversity. They are identified as areas within the Active River Area that consist of a core which is at least 150 acres of natural land cover, and corridors which are lands adjacent to cores that have undeveloped land cover. Delineating Floodplain Complexes was limited to rivers of NEAHCS size class 2 or greater. For this scoring exercise, headwater catchments with streams of size class 1, the percent of the size 1 catchments in natural habitat cover for each HUC12 watershed was used.",
+								"type": "layer"
+							}, 
+							{
+								"default": 2, 
+								"group": "all", 
+								"index": "cstr_rdxstm_den_score", 
+								"max": 4, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Fragmentation by Roads", 
+								"help": "Road-stream crossings, when improperly designed or maintained, can significantly impede organism passage, undermine the ecological integrity of stream systems, and disrupt ecosystem processes such as hydrology, sediment transport and large woody debris transport. Only headwaters and creeks were assessed, as road-stream crossings of larger streams are usually bridges or other infrastructure that infrequently disrupt connectivity or hydrology. Also keep in mind that some segments in urban areas may show as having a low road-stream crossing density because they are underground or poorly mapped. Original data are from Anderson et al. 2013, Condition of the Northeast Terrestrial and Aquatic Habitats: a geospatial analysis and tool set. Note that more detailed assessment and prioritization of some culverts within NY are available at http://nyanc-alt.org/gis/Champlain/, and the North Atlantic Connectivity Collaborative (https://www.streamcontinuity.org) has a database of on-the-ground culvert assessments (https://63.134.242.172/cdb2) as well as other resources.",
+								"type": "layer"
+							}, 
+							{
+								"default": 2, 
+								"group": "all", 
+								"index": "cstr_impair_score", 
+								"max": 4, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Water Quality Impairments", 
+								"help": "Predicted water quality impacts were developed by NY Natural Heritage for their Freshwater Blueprint report (2011) based on observed data from New York Department of Environmental Conservation's Stream Biomonitoring Unit's kicknet sampling of macroinvertebrates from 2000-2010. Biological Assessment Profiles, which are a means of plotting various biological index on a common scale of water quality impact, were calculated for each data point, and then regression modeling in random forests was used to model the relationship between a host of environmental variables and those data and predict values for stream segments in the state. Note that while there are instances of \"severe impact\" in the observed data, no stream segments are modeled as severe impact; this is likely due to local factors like point source pollution not captured in the environmental variables they were able to include.",
+								"type": "layer"
+							}
+						]			
+			
+			},
+			{
+				"name": "Threat",
+				"hoverText": "The expected trend in condition due to human activities through the 2050s.  May be ongoing (having contributed to a past decline in condition that may persist or get worse) or new (not previously encountered or significant but expected to cause future declines in condition).  Can include indirect impacts of climate change, such as increased severity of nutrient pollution impacts due to warmer water temperatures, but direct climate change exposure, such as drought stress on forests, is considered separately under Exposure.",
+				"sliderLabels" : ["None","Low","Med","High","V.High"],
+				"colorRamp": [[255, 255, 129, 255], [131, 238, 13, 255], [76, 190, 110, 255], [39, 115, 163, 255], [13, 31, 133, 255]],
+				"inputRanges" : [0,50,51,75,76,100],
+				"outputValues" : [1,2,3],
+				"items": [	
+							{
+								"default": 2, 
+								"group": "all", 
+								"index": "tstr_chg_imp_score", 
+								"max": 4, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Change in Percent Impervious", 
+								"help": "Degree of change in percent impervious cover from 2011 (current) to projected 2050 (future). These datasets characterize the proportion of area covered by impenetrable materials such as roads, parking lots, and buildings preventing water from leaching directly into the soil across several different units relevant to stream condition: the entire watershed (HUC12), upstream of stream segments, and the weighted average of impervious surface upstream of all stream segments within a watershed. Impervious surface has been negatively correlated with water quality.",
+								"type": "layer"
+							}, 
+							{
+								"default": 2, 
+								"group": "all", 
+								"index": "tstr_latcon_chg_score", 
+								"max": 4, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Change in Floodplain Connectivity", 
+								"help": "Change in natural adjacent lands based on the jump in quantile class from 2011 to 2050 (or if no quantile class change, the amount of change) of percentage of the Active River Area with contiguous natural land cover that is adjacent to the stream channel. In size 2 and larger rivers, these areas could provide for connectivity between overbank flows and floodplains therefore providing flood attenuation benefits. For headwater streams and larger, these could also represent forested, shrub or otherwise vegetated riparian buffers which could offer water purification benefits. Reaches that are less connected may not be able to attenuate flood flows as well or provide water purification benefits.",
+								"type": "layer"
+							}, 
+							{
+								"default": 2, 
+								"group": "all", 
+								"index": "tstr_rdxfragrsk_score", 
+								"max": 4, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Connectivity Threat from Additional Roads", 
+								"help": "This dataset identifies streams within HUC12s that currently have a low road-stream crossing density (<1 crossing/mile) and are predicted by our statewide land use change model to have new development by 2050. New development in a watershed may lead to an increase in road-stream crossings. Keep in mind that: 1. Not all road-stream crossings present problems. 2. CURRENT connectivity condition issues will become even more of a problem with climate change, as species need to move to new suitable habitat, and flooding frequency and intensity increase. Streams symbolized in black may already have a connectivity problem. See Stream Condition: Fragmentation Road-Stream Crossing Density in map layers. 3. Individual stream segments within the HUC 12 may have a road stream crossing density >1/mile, even though the sum of crossings/sum of stream miles is <1.",
+								"type": "layer"
+							}, 
+							{
+								"default": 2, 
+								"group": "all", 
+								"index": "tstr_fldpollrsk_score", 
+								"max": 4, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Flood Pollution Risk", 
+								"help": "Infrastructure within the Active River Area (ARA) may be vulnerable to future flooding under climate change, and damage to that infrastructure could present a risk of pollutants entering streams and rivers. Risk of stream pollution from infrastucture within the Active River Area is based on both the number of sources within the Active River Area for that stream segment and the potential severity of the pollution event if that source was compromised by a flood event. Note that risk depends on the location within the ARA, elevation, local flood mitigation measures, and site-specific conditions of holding tanks or storage areas, but we identify this infrastructure to raise awareness of a possible increased risk with climate change if materials are not well secured against possible flood impacts. Note also that point locations used to create this dataset may sometimes be the point location of the facility and not the location of the potential contaminants. Sources included nuclear sites, EPA Superfund sites, NY Remedial Action sites, combined sewer-stormwater overflow points and wastewater treatment plants, and NY Bulk Storage Facilities. Some datasets are limited to the geographic extent of NY, so comparisons and interpretation across state and country boundaries should be done with caution.",
+								"type": "layer"
+							}, 
+							{
+								"default": 2, 
+								"group": "all", 
+								"index": "tstr_aciddepossens_score", 
+								"max": 4, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Acid Deposition Sensitivity", 
+								"help": "This map shows the sensitivity of streams and lakes in NY to acid deposition, based on the sensitivity of their underlying geology. Although impacts from acid deposition have already affected stream condition, we include sensitivity to deposition as a future and ongoing threat because even if deposition is severely curtailed, the effects will linger in aquatic systems and potentially be worsened by warming water temperatures. Note that this is just sensitivity, and actual future impacts will depend on past deposition and future deposition, as well as other factors on the ground that will affect aquatic system sensitivity. Impacts on aquatic systems may be exacerbated by warming stream temperatures and increased precipitation. Sensitivity to acid deposition was created by overlaying EPA alkalinity data and the reclassified Acidic Deposition effects on terrestrial ecosystems dataset developed by the Southern Appalachian Mountains Initiative. A sensitivity index was calculated based on the highest sensitive value from both data sets. Note that some areas on Long Island and at the periphery of the state were not evaluated. Since these areas largely fell near or between Not Sensitive or Marginally Sensitive areas, and the underlying geology suggested that was appropriate, we scored them between those values.",
+								"type": "layer"
+							}
+						]			
+			
+			},
+			{
+				"name": "Sensitivity",
+				"hoverText": "The degree to which the habitat is likely to change in response to climate change, based on both inherent attributes and additional risk factors related to the landscape or management context.  Sensitivity is not a direct prediction of specific climate impacts, but indicates the relative risk of experiencing impacts if exposed to climate change. Sensitivity may be considered the inverse of what is often referred to as “resilience” to climate change.",
+				"sliderLabels" : ["None","Low","Med","High","V.High"],
+				"colorRamp": [[255, 255, 129, 255], [131, 238, 13, 255], [76, 190, 110, 255], [39, 115, 163, 255], [13, 31, 133, 255]],
+				"inputRanges" : [0,50,51,75,76,100],
+				"outputValues" : [1,2,3],
+				"items": [	
+							{
+								"default": 2, 
+								"group": "all", 
+								"index": "sstr_networklength_score", 
+								"max": 4, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Connected Network Length", 
+								"help": "Length (miles) of the functionally connected stream network. These networks are bounded by fragmenting features (dams) and/or the topmost extent of the mapped headwaters.",
+								"type": "layer"
+							}, 
+							{
+								"default": 2, 
+								"group": "all", 
+								"index": "sstr_szclct_score", 
+								"max": 4, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Size Variety", 
+								"help": "The number of size classes present within a functionally connected stream network. Size classes were based on the Northeast aquatic habitat classification system (Anderson and Olivero 2008). There were seven size classes for streams based on their catchment drainage area (headwater, creek, small river, medium tributary, medium mainstem, large river, and great river) and two major lake size classes (small-medium lakes 4.1-404.7 hectares (10-1,000 acres) and large lakes >404.7 hectares (>1,000 acres)-this includes the Great Lakes). To count as present, the combined length of that size class, across the network, needed to exceed thresholds based on those size classes. Functionally connected stream networks are bounded by fragmented features (dams) and the topmost extent of mapped headwaterstreams.",
+								"type": "layer"
+							}, 
+							{
+								"default": 2, 
+								"group": "all", 
+								"index": "sstr_slpclct_score", 
+								"max": 4, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Slope Variety", 
+								"help": "The number of slope classes present within a functionally connected stream network. To count as present, the combined length of that slope class within a stream size class, across the network, needed to exceed thresholds based on those size classes. Functionally connected stream networks are bounded by fragmented features (dams) and the topmost extent of mapped headwaterstreams.",
+								"type": "layer"
+							}, 
+							{
+								"default": 2, 
+								"group": "all", 
+								"index": "sstr_tempclct_score", 
+								"max": 4, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Temperature Variety", 
+								"help": "The number of temperature classes present within a functionally connected stream network. To count as present, the combined length of that temperature class within a stream size class, across the network, needed to exceed thresholds based on those size classes. Functionally connected stream networks are bounded by fragmented features (dams) and the topmost extent of mapped headwaterstreams.",
+								"type": "layer"
+							}
+
+						]			
+			
+			},
+			{
+				"name": "Exposure",
+				"hoverText": "The degree of direct changes in climate, such as temperature or moisture regime, that the location is predicted to experience. Exposure is evaluated as amount of change, independent of direction.",
+				"sliderLabels" : ["None","Low","Med","High","V.High"],
+				"colorRamp": [[255, 255, 129, 255], [131, 238, 13, 255], [76, 190, 110, 255], [39, 115, 163, 255], [13, 31, 133, 255]],
+				"inputRanges" : [0,50,51,75,76,100],
+				"outputValues" : [1,2,3],
+				"items": [	
+							{
+								"default": 2, 
+								"group": "all", 
+								"index": "estr_temp_chg_score", 
+								"max": 4, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Change in Stream Temperature Class", 
+								"help": "Stream temperature classes were developed for New York by USGS and partners as an important component of stimulating fish species distributions for both current and future scenarios (Stewart et al, in prep). Climate change is expected to alter hydrological systems through change in instream flow, stream temperature, and habitat, which can have profound effects on aquatic systems resulting in changes in fish distribution and community composition. The aquatic ecosystems that inhabit the freshwater streams in the Great Lakes region and New York are particularly vulnerable to climate changes.",
+								"type": "layer"
+							}, 
+							{
+								"default": 2, 
+								"group": "all", 
+								"index": "estr_xppt_fut_recur_score", 
+								"max": 4, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Change in Extreme Precipitation", 
+								"help": "This represents the average increase in the frequency of extreme precipitation events from 2011 to 2050. The two event types/sizes used to create the average are large precipitation accumulations over a single day (24 hours) with current recurrence intervals of 1) 10 years and 2) 100 years. In other words, in 2050, how much more often can we expect to see the amount of precipitation that currently is a 100 year recurrence event (1% chance of happening in any year)? Underlying data are from Cornell University.",
+								"type": "layer"
+							}, 
+							{
+								"default": 2, 
+								"group": "all", 
+								"index": "estr_aridity_change_score", 
+								"max": 4, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Change in Annual Aridity", 
+								"help": "The Aridity Index is a metric of moisture stress in a system (lower aridity index represents higher moisture stress) and is calculated from precipitation and Potential Evapotranspiration (PET). PET represents the water that an ecosystem could potentially use though evaporation and transpiration. PET is higher with warmer temperatures and more daylight hours. The ratio of precipitation (AET) to PET was summed over all months for a given year, with the modification that precipitation is capped at PET for each month (no surplus is considered when calculating this version of the Aridity Index). Change in aridity was calculated by subtracting the historical average from the future projection, and was smoothed to a 30m resolution. A positive change indicates that water stress is predicted to be lower in the future, while negative values indicate greater water stress under climate change. Aridity Index data were obtained from climatewizardcustom.org for 1962-1991 and a future projection for 2040-2069, using the ensemble average circulation model and the A2 scenario.",
+								"type": "layer"
+							}, 
+							{
+								"default": 2, 
+								"group": "all", 
+								"index": "estr_maxt_jja_score", 
+								"max": 4, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Change in Summer Maximum Temperature", 
+								"help": "Change in maximum temperature for summer months (June, July, and August) was generated from global climate model projections from the North American Regional Climate Change Assessment Program (NARCCAP). Future and historical simulations are based four Regional Climate Models nested within at least one of three atmosphere-ocean general circulation models, to yield a set of seven RCM-AOGCM combinations. All future projections are based on the relatively high SRES A2 emissions scenario. The change in the mean of these seven simulations between historical (1970-2000) and future (2041-2070) was averaged by HUC8 basins and attributed to NHD+v2 stream reaches. Data provided by the New York Climate Change Science Clearinghouse (http://climate-dev.library.cornell.edu/).",
+								"type": "layer"
+							}, 
+							{
+								"default": 2, 
+								"group": "all", 
+								"index": "estr_tn32_ann_score", 
+								"max": 4, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Change in Number of Days below Freezing", 
+								"help": "Change in the number of days below freezing (32 deg F) was generated from global climate model projections from the North American Regional Climate Change Assessment Program (NARCCAP). Future and historical simulations are based four Regional Climate Models nested within at least one of three atmosphere-ocean general circulation models, to yield a set of seven RCM-AOGCM combinations. All future projections are based on the relatively high SRES A2 emissions scenario. The change in the mean of these seven simulations between historical (1970-2000) and future (2041-2070) was averaged by HUC8 basins and attributed to NHD+v2 stream reaches. Data provided by the New York Climate Change Science Clearinghouse (http://climate-dev.library.cornell.edu/).",
+								"type": "layer"
+							}, 
+							{
+								"default": 2, 
+								"group": "all", 
+								"index": "estr_gdd50_ann_score", 
+								"max": 4, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Change in Growing Degree Days", 
+								"help": "Change in the annual number of growing degree days was generated from global climate model projections from the North American Regional Climate Change Assessment Program (NARCCAP). Future and historical simulations are based four Regional Climate Models nested within at least one of three atmosphere-ocean general circulation models, to yield a set of seven RCM-AOGCM combinations. All future projections are based on the relatively high SRES A2 emissions scenario. The change in the mean of these seven simulations between historical (1970-2000) and future (2041-2070) was averaged by HUC8 basins and attributed to NHD+v2 stream reaches. Data provided by the New York Climate Change Science Clearinghouse (http://climate-dev.library.cornell.edu/).",
+								"type": "layer"
+							}, 
+							{
+								"default": 2, 
+								"group": "all", 
+								"index": "estr_pcpn_ann_score", 
+								"max": 4, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Change in Total Annual Precipitation", 
+								"help": "Change in total annual precipitation was generated from global climate model projections from the North American Regional Climate Change Assessment Program (NARCCAP). Future and historical simulations are based four Regional Climate Models nested within at least one of three atmosphere-ocean general circulation models, to yield a set of seven RCM-AOGCM combinations. All future projections are based on the relatively high SRES A2 emissions scenario. The change in the mean of these seven simulations between historical (1970-2000) and future (2041-2070) was averaged by HUC8 basins and attributed to NHD+v2 stream reaches. Data provided by the New York Climate Change Science Clearinghouse (http://climate-dev.library.cornell.edu/).",
+								"type": "layer"
+							}, 
+							{
+								"default": 2, 
+								"group": "all", 
+								"index": "estr_pcpn_jja_score", 
+								"max": 4, 
+								"min": 0, 
+								"step": 1, 
+								"text": "Change in Total Summer Precipitation", 
+								"help": "Change in total precipitation for the summer months (June, July, and Aug) was generated from global climate model projections from the North American Regional Climate Change Assessment Program (NARCCAP). Future and historical simulations are based four Regional Climate Models nested within at least one of three atmosphere-ocean general circulation models, to yield a set of seven RCM-AOGCM combinations. All future projections are based on the relatively high SRES A2 emissions scenario. The change in the mean of these seven simulations between historical (1970-2000) and future (2041-2070) was averaged by HUC8 basins and attributed to NHD+v2 stream reaches. Data provided by the New York Climate Change Science Clearinghouse (http://climate-dev.library.cornell.edu/).",
+								"type": "layer"
+							}
+						]			
+			
+			}					  
+		  ],
+            "name": "New York Streams",
+			"printTitle": "NY Natural Resource Navigator Stream Habitat Adaptation Recommendations",
+            "sliderLabels" : ["None","Low","Med","High","V.High"],
+            "url": "http://dev.services2.coastalresilience.org/arcgis/rest/services/PostGIS/DatabaseConnection/MapServer",
+			"workspaceId": "postgis",
+			"geometryType": "polyline",
+			"dataset": "sde.ny_climad_v2v1fcn_streams_allscores_nonull",
+			"reqFields": ["objectid", "shape"],
+			"defaultSymbol": {   	"type": "esriSLS",
+					 	"style": "esriSLSSolid",
+						"color": [150,150,150,0],
+						"width": 2
+							},
+			"colorRamp": [[255, 255, 129, 255], [131, 238, 13, 255], [76, 190, 110, 255], [39, 115, 163, 255], [13, 31, 133, 255]]
+        }
+    ]
+}

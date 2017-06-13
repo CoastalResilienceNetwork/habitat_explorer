@@ -1,0 +1,78 @@
+﻿@media print {
+	
+	@page { 
+        size: landscape;
+		margin-left: 40px;
+    }
+	
+	tr.tablesorter-filter-row, .chosen-container{
+		display:none;	
+	}
+	
+    #plugin-print-preview-map {
+		-webkit-transform: scale(2);
+		transform-style: scale(2);
+        visibility: visible;
+		width:750px;
+		height:500px;
+		position:absolute;
+		-webkit-transform-origin: left top;
+		top:100px;
+		left:350px;		
+    }	
+	
+	.pt{
+		visibility: visible;
+	}
+	
+	table tbody tr td:before,
+    table tbody tr td:after {
+        content : "" ;
+        height : 4px ;
+        display : block ;
+    }
+	
+	h1 {page-break-after: always;}
+	
+	#printtitle{
+	   visibility: visible;
+	   font-size: 60px;
+	   position:absolute;
+	   top:0px;
+	   left:0px;
+	   width:2000px;
+	}
+	
+	#table{
+	   visibility: visible;
+	}
+	
+	#legendprint{
+	   visibility: visible;
+		top:100px;
+		left:0px;
+		position:absolute;
+		-webkit-transform-origin: left top;
+		-webkit-transform: scale(1.2);
+		transform-style: scale(1.2);
+	}
+	
+	#formulaprint{
+	   visibility: visible;
+		top:1200px;
+		left:0px;	
+		width:1300px;
+		position:absolute;
+		font-size: 20px;
+		page-break-before: always;
+	}
+	
+	#tableWrapper{
+	   visibility: visible;
+	}
+	
+	#tableTitle{
+	   visibility: visible;
+	}
+	
+}
