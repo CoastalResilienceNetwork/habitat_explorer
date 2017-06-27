@@ -671,7 +671,7 @@ define([
 				
 				tabs = this.tabpan.getChildren();
 				
-				this.tabpan.selectChild(tabs[selectedIndex]);
+				this.tabpan.selectChild(tabs[selectedIndex + 1]);
 			
 			
 		},
@@ -707,7 +707,7 @@ define([
 				
 				tabs = this.tabpan.getChildren();
 				
-				this.tabpan.selectChild(tabs[selectedIndex]);
+				this.tabpan.selectChild(tabs[selectedIndex + 1]);
 			
 		},		
 
