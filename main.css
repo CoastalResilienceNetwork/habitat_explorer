@@ -295,3 +295,11 @@ label.checkBoxLabels input[type=checkbox]{
 .fParSelWrapper{
 	display:none; 
 }
+
+.habexli{
+    padding-left: 10px;
+    list-style-type: disc;
+    list-style-position: inside;   
+    text-indent: -25px;
+    margin-left: 20px;
+}
