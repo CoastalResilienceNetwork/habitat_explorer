@@ -48,7 +48,7 @@
 								"min": 0,
 								"step": 1,
 								"text": "Patch Size",
-								"help": 'Forest patches are defined as areas of contiguous natural cover bounded by non-natural edge or linear fragmenting features (roads, railroads, transmission lines). The following land cover types were selected from the 2006 National Land Cover Database (NLCD) to define "natural cover": deciduous forest, coniferous forest, mixed [deciduous-coniferous] forest, scrub-shrub, woody wetland, and emergent wetland. Forest patches were delineated based on non-forest edge and the following linear fragmenting features: electric transmission lines, natural gas pipelines, railroads, roads. Classes are based on patch size (acres); each pixel is scored based on the total size of the patch it is within.',
+								"help": "Forest patches are defined as areas of contiguous natural cover bounded by non-natural edge or linear fragmenting features (roads, railroads, transmission lines). The following land cover types were selected from the 2006 National Land Cover Database (NLCD) to define 'natural cover': deciduous forest, coniferous forest, mixed [deciduous-coniferous] forest, scrub-shrub, woody wetland, and emergent wetland. Forest patches were delineated based on non-forest edge and the following linear fragmenting features: electric transmission lines, natural gas pipelines, railroads, roads. Classes are based on patch size (acres); each pixel is scored based on the total size of the patch it is within.",
 								"type": "layer"
 							},
 							{
@@ -132,7 +132,7 @@
 								"min": 0,
 								"step": 1,
 								"text": "Fragmentation",
-								"help": 'Forest patches are defined as areas of contiguous natural cover bounded by non-natural edge or linear fragmenting features (roads, railroads, transmission lines). The following land cover types were selected from the 2006 National Land Cover Database (NLCD) to define "natural cover": deciduous forest, coniferous forest, mixed [deciduous-coniferous] forest, scrub-shrub, woody wetland, and emergent wetland. Forest patches were delineated based on non-forest edge and the following linear fragmenting features: electric transmission lines, natural gas pipelines, railroads, roads. Forest patch delineation was run for 2011 and 2050 land use and change calculated as the percent change in patch size (acres).',
+								"help": "Forest patches are defined as areas of contiguous natural cover bounded by non-natural edge or linear fragmenting features (roads, railroads, transmission lines). The following land cover types were selected from the 2006 National Land Cover Database (NLCD) to define 'natural cover': deciduous forest, coniferous forest, mixed [deciduous-coniferous] forest, scrub-shrub, woody wetland, and emergent wetland. Forest patches were delineated based on non-forest edge and the following linear fragmenting features: electric transmission lines, natural gas pipelines, railroads, roads. Forest patch delineation was run for 2011 and 2050 land use and change calculated as the percent change in patch size (acres).",
 								"type": "layer"
 							},
 							{
@@ -328,8 +328,7 @@
 			}					  
 		  ],
 	        "name": "New York Forests",
-            "url": "http://dev.services.coastalresilience.org/arcgis/rest/services/Natural_Resource_Navigator/Habitat_Explorer_Forest/ImageServer",
-			"methods": "http://www.naturalresourcenavigator.org/wp-content/uploads/2016/09/2016-9-Habitat-Explorer-and-Recommendations-Background.pdf"
+            "url": "http://dev.services.coastalresilience.org/arcgis/rest/services/Natural_Resource_Navigator/Habitat_Explorer_Forest/ImageServer"
 
         },
         {
