@@ -17,7 +17,7 @@
 		  "methods": "http://www.naturalresourcenavigator.org/wp-content/uploads/2016/09/2016-9-Habitat-Explorer-and-Recommendations-Background.pdf",
 		  "printTitle": "NY Natural Resource Navigator Forest Habitat Explorer Report",
 		  "printText": "<p>This map was produced using the Habitat Explorer feature of the Natural Resource Navigator, and reflects any adjustments users have made to the weighting of current condition, future threat, climate exposure and/or climate sensitivity data using the sliders in that feature. Settings for the variable weights used for this map appear in the table to the right.  The default settings of 'Medium' on the sliders correspond to a weight of 1 and each step on the slider alters the weight by 0.5.</p><p>If printing the Recommendations map, this shows the place-specific recommended objective (main color) and the likelihood of success in light of climate change (shading) for forests or streams, based on their current condition, future threat, and climate change sensitivity and exposure.</p><p>Detailed methods for this Explorer and the recommendation maps, as well as documentation for the underlying data, can be viewed at http://www.naturalresourcenavigator.org/resources-page/data/.</p>",
-		  "intro": {"name": "Instructions", "layer": {"url": "http://dev.services2.coastalresilience.org/arcgis/rest/services/Natural_Resource_Navigator/Natural_Resource_Navigator/MapServer", "show": [118]}, "text": "<p>  The Habitat Explorer allows you to explore the data behind place-specific recommended conservation objectives and their likelihood of success in light of climate change risk.   Use it to identify which <a href='http://www.naturalresourcenavigator.org/wp-content/uploads/2016/01/Guidebook.pdf#page=10' target='_blank'>Course Adjustment Worksheet</a> from our Guidebook to start with as well as to help you dig more into the data when you are filling out those Worksheets. </p>   <ol>  <li>  Start with the Recommendations Map displayed here to:  <ul>  <li class ='habexli'>  <a target='_blank' href='http://www.naturalresourcenavigator.org/wp-content/uploads/2016/01/Guidebook.pdf#page=3'>Develop climate-smart conservation strategies for a project area</a>, based on an analysis of current condition, future threat, and climate sensitivity and exposure.   </li>  <li class='habexli'>  <a target='_blank' href='http://www.naturalresourcenavigator.org/wp-content/uploads/2016/01/Guidebook.pdf#page=4'>Evaluate an existing project to see if it is climate smart.</a>  </li>  <li class='habexli'>  <a target='_blank' href='http://www.naturalresourcenavigator.org/wp-content/uploads/2016/01/Guidebook.pdf#page=5'>Find places to pursue a particular strategy</a>. <i> Start with the Recommendations tab or find the indicator you are trying to address (like fragmentation or water quality) on the other tabs to identify places you could work.</i>   </li>  </ul>  </li>  <p>  Click on each of the four tabs to explore the data behind the Recommendations.</p> <p>Customize the analysis if desired by using the sliders to adjust the weight of an indicator or remove it entirely, and click the Recommendations tab to see the results.  </p> <p>   Use the <a target='_blank' href='http://www.naturalresourcenavigator.org/wp-content/uploads/2016/01/Guidebook.pdf#page=10'>Course Adjustment Worksheets</a> to use the supporting data in the other tabs to turn the recommended conservation objective into a climate-smart strategy for your organization.   </p>  <p><i>Note: When this Instructions Tab is selected, the default Recommendations map is always displayed.</i></p> "},
+		  "intro": {"name": "Instructions", "layer": {"url": "http://dev.services.coastalresilience.org/arcgis/rest/services/Natural_Resource_Navigator/Natural_Resource_Navigator/MapServer", "show": [118]}, "text": "<p>  The Habitat Explorer allows you to explore the data behind place-specific recommended conservation objectives and their likelihood of success in light of climate change risk.   Use it to identify which <a href='http://www.naturalresourcenavigator.org/wp-content/uploads/2016/01/Guidebook.pdf#page=10' target='_blank'>Course Adjustment Worksheet</a> from our Guidebook to start with as well as to help you dig more into the data when you are filling out those Worksheets. </p>   <ol>  <li>  Start with the Recommendations Map displayed here to:  <ul>  <li class ='habexli'>  <a target='_blank' href='http://www.naturalresourcenavigator.org/wp-content/uploads/2016/01/Guidebook.pdf#page=3'>Develop climate-smart conservation strategies for a project area</a>, based on an analysis of current condition, future threat, and climate sensitivity and exposure.   </li>  <li class='habexli'>  <a target='_blank' href='http://www.naturalresourcenavigator.org/wp-content/uploads/2016/01/Guidebook.pdf#page=4'>Evaluate an existing project to see if it is climate smart.</a>  </li>  <li class='habexli'>  <a target='_blank' href='http://www.naturalresourcenavigator.org/wp-content/uploads/2016/01/Guidebook.pdf#page=5'>Find places to pursue a particular strategy</a>. <i> Start with the Recommendations tab or find the indicator you are trying to address (like fragmentation or water quality) on the other tabs to identify places you could work.</i>   </li>  </ul>  </li>  <p>  Click on each of the four tabs to explore the data behind the Recommendations.</p> <p>Customize the analysis if desired by using the sliders to adjust the weight of an indicator or remove it entirely, and click the Recommendations tab to see the results.  </p> <p>   Use the <a target='_blank' href='http://www.naturalresourcenavigator.org/wp-content/uploads/2016/01/Guidebook.pdf#page=10'>Course Adjustment Worksheets</a> to use the supporting data in the other tabs to turn the recommended conservation objective into a climate-smart strategy for your organization.   </p>  <p><i>Note: When this Instructions Tab is selected, the default Recommendations map is always displayed.</i></p> "},
 		  "combined": {
 			"name": "Recommendations",
 			"hoverText": "Recommended conservation mgmt objectives & relative climate risk, based on condition, threat, sensitivity and exposure scores from the other tabs",
@@ -58,8 +58,8 @@
 								"max": 4,
 								"min": 0,
 								"step": 1,
-								"text": "Regeneration",
-								"help": "The dataset is a regeneration index with a four-part rating scale, representing the adequacy of regeneration based on seedling and sapling abundance data from the Forest Inventory and Analysis Database. The index includes seedlings and saplings for all native canopy species, excluding non-native and understory trees. These ratings in the regeneration index can be interpreted as the sufficiency of regeneration to tolerate varying levels of browse pressure and/or other stresses such as invasive plants. They also provide a guide to determine if management actions are warranted.",
+								"text": "Invasives Prevalence",
+								"help": "Data on invasive plant abundance and frequency were extracted from FIA phase 2+ data for the 2009-2014 inventory. Invasive plant cover was calculated for each plot. Counties were scored based on a combination of average cover and the percent of plots with invasives. In some cases, counties with less than 5 plots were combined for scoring. Since these data are generalized across a large area, they indicate the probability of a particular forest stand having a problematic abundance of invasive plants, but actual conditions on the ground will vary widely and may be better or worse than scored in any given location.",
 								"type": "layer"
 							},
 							{
@@ -80,8 +80,8 @@
 								"max": 4,
 								"min": 0,
 								"step": 1,
-								"text": "Relative Canopy Diversity",
-								"help": "Index of relative diversity of canopy tree species as compared to the average canopy diversity of the corresponding forest type, evaluated for USFS FIA plots and averaged across 50 km hexagons.",
+								"text": "Regeneration",
+								"help": "The dataset is a regeneration index with a four-part rating scale, representing the adequacy of regeneration based on seedling and sapling abundance data from the Forest Inventory and Analysis Database. The index includes seedlings and saplings for all native canopy species, excluding non-native and understory trees. These ratings in the regeneration index can be interpreted as the sufficiency of regeneration to tolerate varying levels of browse pressure and/or other stresses such as invasive plants. They also provide a guide to determine if management actions are warranted.",
 								"type": "layer"
 							},
 							{
@@ -91,8 +91,8 @@
 								"max": 4,
 								"min": 0,
 								"step": 1,
-								"text": "Invasives Prevalence",
-								"help": "Data on invasive plant abundance and frequency were extracted from FIA phase 2+ data for the 2009-2014 inventory. Invasive plant cover was calculated for each plot. Counties were scored based on a combination of average cover and the percent of plots with invasives. In some cases, counties with less than 5 plots were combined for scoring. Since these data are generalized across a large area, they indicate the probability of a particular forest stand having a problematic abundance of invasive plants, but actual conditions on the ground will vary widely and may be better or worse than scored in any given location.",
+								"text": "Relative Canopy Diversity",
+								"help": "Index of relative diversity of canopy tree species as compared to the average canopy diversity of the corresponding forest type, evaluated for USFS FIA plots and averaged across 50 km hexagons.",
 								"type": "layer"
 							}
 						]			
@@ -120,14 +120,25 @@
 								"max": 4,
 								"min": 0,
 								"step": 1,
-								"text": "Pest and Pathogens",
-								"help": "Risk from Forest Pests and Pathogens.Percent loss of basal area from all pest and pathogen species, from 2013-2027, modeled by USDA National Insect and Disease Risk Map (http://www.fs.fed.us/foresthealth/technology/nidrm.shtml).The 2012 National Insect and Disease Risk Map (NIDRM) Project integrates 186 individual risk models constructed within a common, consistent framework that accounts for regional variations in forest health conditions. These 186 models are built to portray the expected loss of host basal area for each pair of damage agents and hosts over each unique landscape where they coexist.",
+								"help": "The local connectedness metric measures how impaired the structural connections are between natural ecosystems within a local landscape. Roads, development, noise, exposed areas, dams, and other structures all directly alter processes and create resistance to species movement by increasing the risk (or perceived risk) of harm. This metric is an important component of resilience because it indicates whether a process is likely to be disrupted or how much access a species has to the microclimates within its given neighborhood. Local connectedness change is based on 2011 and 2050 land use, using a resistent kernal model by Compton et al. (2007).",
+								"text": "Loss of Connectedness",
 								"type": "layer"
 							},
 							{
 								"default": 2,
 								"group": "all",
 								"index": "B7",
+								"max": 4,
+								"min": 0,
+								"step": 1,
+								"text": "Fragmentation",
+								"help": 'Forest patches are defined as areas of contiguous natural cover bounded by non-natural edge or linear fragmenting features (roads, railroads, transmission lines). The following land cover types were selected from the 2006 National Land Cover Database (NLCD) to define "natural cover": deciduous forest, coniferous forest, mixed [deciduous-coniferous] forest, scrub-shrub, woody wetland, and emergent wetland. Forest patches were delineated based on non-forest edge and the following linear fragmenting features: electric transmission lines, natural gas pipelines, railroads, roads. Forest patch delineation was run for 2011 and 2050 land use and change calculated as the percent change in patch size (acres).',
+								"type": "layer"
+							},
+							{
+								"default": 2,
+								"group": "all",
+								"index": "B8",
 								"max": 4,
 								"min": 0,
 								"step": 1,
@@ -138,27 +149,15 @@
 							{
 								"default": 2,
 								"group": "all",
-								"index": "B8",
-								"max": 4,
-								"min": 0,
-								"step": 1,
-								"help": "The local connectedness metric measures how impaired the structural connections are between natural ecosystems within a local landscape. Roads, development, noise, exposed areas, dams, and other structures all directly alter processes and create resistance to species movement by increasing the risk (or perceived risk) of harm. This metric is an important component of resilience because it indicates whether a process is likely to be disrupted or how much access a species has to the microclimates within its given neighborhood. Local connectedness change is based on 2011 and 2050 land use, using a resistent kernal model by Compton et al. (2007).",
-								"text": "Loss of Connectedness",
-								"type": "layer"
-							},
-							{
-								"default": 2,
-								"group": "all",
 								"index": "B9",
 								"max": 4,
 								"min": 0,
 								"step": 1,
-								"text": "Fragmentation",
-								"help": 'Forest patches are defined as areas of contiguous natural cover bounded by non-natural edge or linear fragmenting features (roads, railroads, transmission lines). The following land cover types were selected from the 2006 National Land Cover Database (NLCD) to define "natural cover": deciduous forest, coniferous forest, mixed [deciduous-coniferous] forest, scrub-shrub, woody wetland, and emergent wetland. Forest patches were delineated based on non-forest edge and the following linear fragmenting features: electric transmission lines, natural gas pipelines, railroads, roads. Forest patch delineation was run for 2011 and 2050 land use and change calculated as the percent change in patch size (acres).',
+								"text": "Pest and Pathogens",
+								"help": "Risk from Forest Pests and Pathogens.Percent loss of basal area from all pest and pathogen species, from 2013-2027, modeled by USDA National Insect and Disease Risk Map (http://www.fs.fed.us/foresthealth/technology/nidrm.shtml).The 2012 National Insect and Disease Risk Map (NIDRM) Project integrates 186 individual risk models constructed within a common, consistent framework that accounts for regional variations in forest health conditions. These 186 models are built to portray the expected loss of host basal area for each pair of damage agents and hosts over each unique landscape where they coexist.",
 								"type": "layer"
 							}
-						]			
-			
+						]
 			},
 			{
 				"name": "Sensitivity",
@@ -178,18 +177,7 @@
 							{
 								"default": 2,
 								"group": "all",
-								"index": "B11",
-								"max": 4,
-								"min": 0,
-								"step": 1,
-								"text": "Landform Variety",
-								"help": "Topography describes the natural surface features of an area, which can be grouped into local units known as landforms (e.g. cliffs, summits, coves, basins, valleys). Landforms are a primary edaphic controller of species distributions, even without climatic considerations. A variety of landforms results in a variety of meso and micro climates. When climate is considered, landform variation increases the persistence of species and buffers against direct climate effects by providing many combinations of temperature and moisture within a local neighborhood (Anderson et al., 2012). Relative rankings of forest patch landform variety compared to the ecoregion average, from ERO Terrestrial Resilience study.",
-								"type": "layer"
-							},
-							{
-								"default": 2,
-								"group": "all",
-								"index": "B12",
+								"index": "B10",
 								"max": 4,
 								"min": 0,
 								"step": 1,
@@ -200,12 +188,35 @@
 							{
 								"default": 2,
 								"group": "all",
-								"index": "B13",
+								"index": "B11",
+								"max": 4,
+								"min": 0,
+								"step": 1,
+								"text": "Landform Variety",
+								"help": "Topography describes the natural surface features of an area, which can be grouped into local units known as landforms (e.g. cliffs, summits, coves, basins, valleys). Landforms are a primary edaphic controller of species distributions, even without climatic considerations. A variety of landforms results in a variety of meso and micro climates. When climate is considered, landform variation increases the persistence of species and buffers against direct climate effects by providing many combinations of temperature and moisture within a local neighborhood (Anderson et al., 2012). Relative rankings of forest patch landform variety compared to the ecoregion average, from ERO Terrestrial Resilience study.",
+								"type": "layer"
+							},
+							
+							{
+								"default": 2,
+								"group": "all",
+								"index": "B12",
 								"max": 4,
 								"min": 0,
 								"step": 1,
 								"text": "Connectedness",
 								"help": "The local connectedness metric measures how impaired the structural connections are between natural ecosystems within a local landscape. Roads, development, noise, exposed areas, dams, and other structures all directly alter processes and create resistance to species movement by increasing the risk (or perceived risk) of harm. This metric is an important component of resilience because it indicates whether a process is likely to be disrupted or how much access a species has to the microclimates within its given neighborhood. Local connectedness was modeled for natural and agricultural lands based on 2011 land use using a resistent kernal model by Compton et al. (2007).",
+								"type": "layer"
+							},
+							{
+								"default": 2,
+								"group": "all",
+								"index": "B13",
+								"max": 4,
+								"min": 0,
+								"step": 1,
+								"help": "Vulnerability assessments performed at state and regional scales were applied to habitat types and bioclimatic zones in order to create a spatial visualization of habitat vulnerability ratings. Since no one assessment comprehensively covers all of the habitat types and zones within NY, assessments were combined from three reports on habitat vulnerability for various areas: the Northeast (Manomet 2013), New York (Hilke and Galbraith 2013), and Maine (Whitman et al. 2013). Vulnerability to climate change was assigned a 4-part rating from Least to Highly Vunerable (rating systems differed among the original reports) for those habitats where data were available.",
+								"text": "Habitat Vulnerability Rating",
 								"type": "layer"
 							},
 							{
@@ -218,20 +229,8 @@
 								"help": "The diversity of tree species within a stand can be reduced by selective harvesting of high value species (highgrading), as well as by pest outbreaks. Diversity also varies by forest type and setting. Higher diversity is expected to improve resilience by helping to maintain forest cover in response to disturbance. Average current (2011) canopy species richness is based on USFS FIA plot data averaged across 50 km hexagons.",
 								"text": "Tree Species Richness",
 								"type": "layer"
-							},
-							{
-								"default": 2,
-								"group": "all",
-								"index": "B15",
-								"max": 4,
-								"min": 0,
-								"step": 1,
-								"help": "Vulnerability assessments performed at state and regional scales were applied to habitat types and bioclimatic zones in order to create a spatial visualization of habitat vulnerability ratings. Since no one assessment comprehensively covers all of the habitat types and zones within NY, assessments were combined from three reports on habitat vulnerability for various areas: the Northeast (Manomet 2013), New York (Hilke and Galbraith 2013), and Maine (Whitman et al. 2013). Vulnerability to climate change was assigned a 4-part rating from Least to Highly Vunerable (rating systems differed among the original reports) for those habitats where data were available.",
-								"text": "Habitat Vulnerability Rating",
-								"type": "layer"
 							}
-						]			
-			
+						]
 			},
 			{
 				"name": "Exposure",
@@ -251,18 +250,7 @@
 							{
 								"default": 2,
 								"group": "all",
-								"index": "B16",
-								"max": 4,
-								"min": 0,
-								"step": 1,
-								"text": "Change in Annual Aridity",
-								"help": "The Aridity Index is a metric of moisture stress in a system (lower aridity index represents higher moisture stress) and is calculated from precipitation and Potential Evapotranspiration (PET). PET represents the water that an ecosystem could potentially use though evaporation and transpiration. PET is higher with warmer temperatures and more daylight hours. The ratio of precipitation (AET) to PET was summed over all months for a given year, with the modification that precipitation is capped at PET for each month (no surplus is considered when calculating this version of the Aridity Index). Change in aridity was calculated by subtracting the historical average from the future projection, and was smoothed to a 30m resolution. A positive change indicates that water stress is predicted to be lower in the future, while negative values indicate greater water stress under climate change. Aridity Index data were obtained from climatewizardcustom.org for 1962-1991 and a future projection for 2040-2069, using the ensemble average circulation model and the A2 scenario.",
-								"type": "layer"
-							},
-							{
-								"default": 2,
-								"group": "all",
-								"index": "B17",
+								"index": "B15",
 								"max": 4,
 								"min": 0,
 								"step": 1,
@@ -273,7 +261,7 @@
 							{
 								"default": 2,
 								"group": "all",
-								"index": "B18",
+								"index": "B16",
 								"max": 4,
 								"min": 0,
 								"step": 1,
@@ -284,7 +272,7 @@
 							{
 								"default": 2,
 								"group": "all",
-								"index": "B19",
+								"index": "B17",
 								"max": 4,
 								"min": 0,
 								"step": 1,
@@ -295,7 +283,18 @@
 							{
 								"default": 2,
 								"group": "all",
-								"index": "B20",
+								"index": "B18",
+								"max": 4,
+								"min": 0,
+								"step": 1,
+								"text": "Change in Annual Aridity",
+								"help": "The Aridity Index is a metric of moisture stress in a system (lower aridity index represents higher moisture stress) and is calculated from precipitation and Potential Evapotranspiration (PET). PET represents the water that an ecosystem could potentially use though evaporation and transpiration. PET is higher with warmer temperatures and more daylight hours. The ratio of precipitation (AET) to PET was summed over all months for a given year, with the modification that precipitation is capped at PET for each month (no surplus is considered when calculating this version of the Aridity Index). Change in aridity was calculated by subtracting the historical average from the future projection, and was smoothed to a 30m resolution. A positive change indicates that water stress is predicted to be lower in the future, while negative values indicate greater water stress under climate change. Aridity Index data were obtained from climatewizardcustom.org for 1962-1991 and a future projection for 2040-2069, using the ensemble average circulation model and the A2 scenario.",
+								"type": "layer"
+							},
+							{
+								"default": 2,
+								"group": "all",
+								"index": "B19",
 								"max": 4,
 								"min": 0,
 								"step": 1,
@@ -306,7 +305,7 @@
 							{
 								"default": 2,
 								"group": "all",
-								"index": "B21",
+								"index": "B20",
 								"max": 4,
 								"min": 0,
 								"step": 1,
@@ -317,7 +316,7 @@
 							{
 								"default": 2,
 								"group": "all",
-								"index": "B22",
+								"index": "B21",
 								"max": 4,
 								"min": 0,
 								"step": 1,
@@ -325,12 +324,11 @@
 								"help": "Using data provided by the USFS TreeAtlas, we created a list of declining species for each ecoregion within NY. Basal area models also provided by the USFS were then used to calculate the percent of current basal area contributed by species predicted to decline. This percent of basal area was then averaged by ecoregional subsections, which are symbolized and scored in even 20% breaks. This metric represents the expected risk of change in canopy composition due to climate change.",
 								"type": "layer"
 							}
-						]			
-			
+						]
 			}					  
 		  ],
 	        "name": "New York Forests",
-            "url": "http://dev.services2.coastalresilience.org/arcgis/rest/services/rasterExplorer/NY_CLIMAD_Forest_Multi/ImageServer",
+            "url": "http://dev.services.coastalresilience.org/arcgis/rest/services/Natural_Resource_Navigator/Habitat_Explorer_Forest/ImageServer",
 			"methods": "http://www.naturalresourcenavigator.org/wp-content/uploads/2016/09/2016-9-Habitat-Explorer-and-Recommendations-Background.pdf"
 
         },
@@ -672,3 +670,4 @@
         }
     ]
 }
+ 
