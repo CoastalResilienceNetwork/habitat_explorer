@@ -161,7 +161,7 @@ define([
 			//See Wiki for info on initial settings: https://github.com/CoastalResilienceNetwork/GeositeFramework/wiki/Plugin-Settings
 			return declare(PluginBase, {
 				//Plugin Settings
-				toolbarName: _config.name,
+				toolbarName: _config.name, //toolbarName is used as the title in the Identify Window
 				toolbarType: "sidebar",
 				fullName: _hoverText,
 				showServiceLayersInLegend: true,
@@ -177,6 +177,7 @@ define([
 				previewMapSize: [750, 500],
 				subs: false,
 				updated: false,
+				_mapZoomEnd: null,
 				/** 
 				 * Method: initialize
 				 * 		The framework calls this during initial framework load from the file app\js\Plugin.js (approx line 70).
@@ -188,16 +189,16 @@ define([
 					//domConstruct.create("div", { innerHTML: "hi" }, win.body(), "first");
 					//showValueKey = this.toolbarName + " showinfographic";
 				    //localStorage.setItem(showValueKey, _showOnStart);
-					
 					self = this;
 					tool = this;
 					declare.safeMixin(this, frameworkParameters);
 					domClass.add(this.container, "claro");
 					domClass.add(this.container, "cr-dojo-dijits");
 					domClass.add(this.container, "plugin-multiExplorer");
+					//explorerObject is a representation of the explorer.json file
 					this.explorerObject = dojo.eval("[" + explorer + "]")[0];
 					this.spinnerURL = localrequire.toUrl("./images/spinner.gif");
-					
+					//resetObject is a copy of the explorerObject at the time of initialize. lang.clone creates the copy and breaks the reference to explorerObject.
 					this.ResetObject = lang.clone(this.explorerObject);
 					if (this.explorerObject.betweenGroups == undefined) {
 						this.explorerObject.betweenGroups = "+";
@@ -208,10 +209,7 @@ define([
 					dom.byId(this.container).appendChild(pslidernode);
 					nslidernode = domConstruct.create("span");
 					dom.byId(this.container).appendChild(nslidernode);
-					
-						
 					 //.removeClass( "sidebar-content" )
-					
 					//domStyle.set(, 'height', '300px');
 					this.ddNode = domConstruct.create("span");
 					dom.byId(this.container).appendChild(this.ddNode);
@@ -261,10 +259,12 @@ define([
 						}
 						if ((this._hasactivated == false) && (this.usableRegions.length == 1)) {
 							//1st call to activate does not fall into here (because there is more than one usableRegion)
+							//useableRegions[0] is the first in the array of 'regions' found in explorer.json
 							this.changeGeography(this.usableRegions[0], !(_noZoom)); 
 						};
 					} else {
 						if (this._hasactivated == false) {
+							//TODO in what case does the code fall in here?
 							//console.log("GEO")
 							//console.log(this.geography)
 							this.rebuildOptions();
@@ -274,8 +274,16 @@ define([
 					}
 					if (this.subs == true) {
 						//1st call to activate does not fall into here
+						//useableRegions[0] is the first in the array of 'regions' found in explorer.json
 						this.changeGeography(this.usableRegions[0], !(_noZoom));
 					}
+
+					//TODO convert function handler to method.
+					this._mapZoomEnd = this.map.on("zoom-end", lang.hitch(this,function(evt){
+						//console.debug('map.zoom-end handler: ', this.map.getZoom());
+						//console.debug('this.tabpan.selectedChildWidget.titleText = ', this.tabpan.selectedChildWidget.titleText);
+					}));
+
 					//after first call to active, this._hasactivated = true;
 					this._hasactivated = true;
 				},
@@ -287,7 +295,9 @@ define([
 				*/
 				deactivate: function () {
 					console.debug('habitat_explorer; main.js; deactivate()');
-					this.ddlFirstSelectionHasOccurred = false;
+					this._ddlFirstSelectionHasOccurred = false;
+					//destroy the plugin's zoom-end handling.
+					this._mapZoomEnd.remove();
 				},
 				/** 
 				 * Method: getState
@@ -366,8 +376,8 @@ define([
 				 * Method: resize
 				 * 		
 				 * Args:
-				 * 		w {} -
-				 * 		h {} - 
+				 * 		w {type} - description
+				 * 		h {type} - description 
 				*/
 				resize: function(w, h) {
 					console.debug('habitat_explorer; main.js; resize()');
@@ -439,24 +449,30 @@ define([
 					//$("#eeGeoSelect_" + this.map.id).css("width", "220px");
 					$("#expGeoSelect__chosen").css("width", "220px");	
 					//eeGeoSelect_map_0_chosen
-					this.ddlFirstSelectionHasOccurred = false;
+					this._ddlFirstSelectionHasOccurred = false;
 					ch.on('chosen:hiding_dropdown', lang.hitch(this, function(e,ob) 
 					{
 						console.debug("in handler for chosenDD.on('chosen:hiding_dropdown',...");
 						regy = ob.chosen.selected_item[0].innerText;
+						//resetObject is a copy of the explorerObject (explorer.json) at the time of plugin initialize.
 						reseter = lang.clone(this.ResetObject);
+						//find a match between selected DDL option and a region in the config.
 						array.forEach(reseter.regions, lang.hitch(this,function(reg, t){
 							if ($.trim(reg.name) == $.trim(regy)) {
+								//set outreg to the matching region
 								outreg = reg;
 							}
 						}));					
 						//this.changeGeography(outreg, true);
-						if (!this.ddlFirstSelectionHasOccurred) {
+						//
+						if (!this._ddlFirstSelectionHasOccurred) {
+							//call changeGeography with the selected region obj and a boolean for zoom to extents of the region/layer or not
 							this.changeGeography(outreg, true);
 						}else{
+							//call changeGeography with the selected region obj and a boolean for zoom to extents of the region/layer or not
 							this.changeGeography(outreg, false);
 						}
-						this.ddlFirstSelectionHasOccurred = true;
+						this._ddlFirstSelectionHasOccurred = true;
 					}));
 				},
 				/** 
@@ -468,7 +484,7 @@ define([
 				zoomToAppExtent: function(){
 					//!! new internal method for setting extent to framework extent
 					//get the app's initial extent and use for the extent
-					console.debug('this.app.regionConfig', this.app.regionConfig.initialExtent);
+					//console.debug('this.app.regionConfig', this.app.regionConfig.initialExtent);
 					var xmin,ymin,xmax,ymax;
 					xmin = this.app.regionConfig.initialExtent[0];
 					ymin = this.app.regionConfig.initialExtent[1];
@@ -590,14 +606,16 @@ define([
 				 * Method: changeGeography
 				 * 		
 				 * Args:
-				 * 		geography {object} - 
+				 * 		geography {object} - an object from the array of 'regions' as found in explorer.json
 				 * 		zoomto {boolean} - ZoomTo the layer Extents? (passes through to updateService())
 				*/
 				changeGeography: function(geography, zoomto) {
 					console.debug('habitat_explorer; main.js; changeGeography()');
-					console.debug('habitat_explorer; main.js; changeGeography(); geography arg = ', geography);
-					console.debug('habitat_explorer; main.js; changeGeography(); zoomto arg = ', zoomto);
+					//console.debug('habitat_explorer; main.js; changeGeography(); geography arg = ', geography);
+					//console.debug('habitat_explorer; main.js; changeGeography(); zoomto arg = ', zoomto);
+					//ga = google analytics, set in index.cshtml view, globally available
 					ga('send', 'event', this.toolbarName, 'Change Dropdown: ' + geography.name);
+					//geography.dataset only applies to streams. Not a very good check for vector vs raster. Could just have a property isVector in config and set that to true/false.
 					if (geography.dataset == undefined) {
 						this.isVector = false;
 					} else {
@@ -609,10 +627,12 @@ define([
 					this.geography = geography;
 					this.sliders = new Array();
 					//this.legendContainer.innerHTML = this.toolbarName;
+					//resetPanel - remove layers from the map and destroy UI elements.
 					this.resetPanel();
 					//this.sliderpane = new ContentPane({
 					//  style:"height:287px;border-top-style:groove !important"
 					//});
+					//TODO is below 'if' statement needed? Does code ever drop in there?
 					if (geography.tabs == undefined) {
 						geography.tabs = new Array();
 						geography.tabs.push({"name":""});
@@ -627,6 +647,7 @@ define([
 						this.tabpan.layout = function() {console.log('layout')};
 						$(this.printButton).show();
 					} else {
+						//explorer.json has no tabtype property for a region. why is this here?
 						if (geography.tabtype == "radio") {
 							this.tabpan = new ContentPane({
 								style:"padding: 8px"
@@ -657,6 +678,7 @@ define([
 						}
 						//this.tabpan.layout = function() {console.log('layout')};
 					}
+					//reset some UI css
 					this.resize();
 					//this.sliderpane = new ContentPane({
 					  //style:"height:" + this.sph + "px;border-top-style:groove !important"
@@ -704,6 +726,7 @@ define([
 						});
 					this.buttonpane.domNode.appendChild(exportButton.domNode); 
 					*/
+					//!not on the UI...
 					SyncButton = new ToggleButton({
 						label: "Sync Maps",
 						checked: false,
@@ -711,6 +734,7 @@ define([
 						onClick: lang.hitch(this, this.syncMaps)
 					});	
 					ulnode.appendChild(SyncButton.domNode);
+					//methods property is a URL in config
 					if (geography.methods != undefined) {
 						methodsButton = new Button({
 							label: "Methods",
@@ -721,12 +745,12 @@ define([
 					}
 					if (geography.tabs.length > 1) {
 						if (geography.tabtype != "radio") {
-							CombineButton = new ToggleButton({
-								label: "View Combined Score",
-								checked: false,
-								style:  "float:right !important;"//,
-								//onClick: function(){window.open(geography.methods)}
-								});
+							// CombineButton = new ToggleButton({
+							// 	label: "View Combined Score",
+							// 	checked: false,
+							// 	style:  "float:right !important;"//,
+							// 	//onClick: function(){window.open(geography.methods)}
+							// });
 							//this.buttonpane.domNode.appendChild(CombineButton.domNode);
 							//CombineButton.startup();
 							resetButton = new Button({
@@ -738,7 +762,8 @@ define([
 							ulnode.appendChild(resetButton.domNode);
 						}
 					}
-					this.resize();
+					//resize again!?
+					//this.resize();
 					resetAllButton = new Button({
 						label: "Reset All",
 						style:  "float:left !important;",
@@ -766,6 +791,7 @@ define([
 						mainchecknodetext = domConstruct.create("span", {style:"float:left !important;", innerHTML: this.explorerObject.mainToggle.text , for: this.MainCheck.id});
 						llnode.appendChild(mainchecknodetext);
 						*/
+						//Transparency Slider
 						var trslider = new HorizontalSlider({
 							name: "slider",
 							value: 0,
@@ -782,18 +808,19 @@ define([
 						
 					}
 					domStyle.set(this.textnode, "display", "none");
-					if (this.explorerObject.globalText != undefined) {
-						explainText = domConstruct.create("div", {style:"margin-top:0px;margin-bottom:10px", innerHTML: this.explorerObject.globalText});
-						//MUST ADD THIS BACK 
-						//this.sliderpane.domNode.appendChild(explainText);
-					}
-					//this.button.set("label",geography.name);
-					ancillaryon = new Array();
+					// if (this.explorerObject.globalText != undefined) {
+					// 	explainText = domConstruct.create("div", {style:"margin-top:0px;margin-bottom:10px", innerHTML: this.explorerObject.globalText});
+					// 	//MUST ADD THIS BACK 
+					// 	//this.sliderpane.domNode.appendChild(explainText);
+					// }
+					////this.button.set("label",geography.name);
+					
 					//if (geography.tabs != undefined) {
 					//		localitems = geography.tabs[0].items;
 					//} else {
 					//		localitems = geography.items;
 					//}
+					//Introduction Tab
 					if (geography.intro != undefined) {
 						this.sliderpane = new ContentPane({
 							//	style:"padding: 8px",
@@ -804,6 +831,7 @@ define([
 							"data-index": -1,
 							content: geography.intro.text
 						});	
+						this.sliderpane.titleText = geography.intro.name;//LM hanging on a new sliderpane property for easy access to the tab title name
 						this.tabpan.addChild(this.sliderpane);	
 					}
 					//alert(geography.intro.layer.url)
@@ -814,6 +842,8 @@ define([
 						this.introLayer.setVisibleLayers(geography.intro.layer.show)
 						this.map.addLayer(this.introLayer);
 					}
+					ancillaryon = new Array();
+					//iterate over tabs array from config
 					array.forEach(geography.tabs, lang.hitch(this,function(tab, t){
 						if (tab.hoverText == undefined) { tab.hoverText = "" }
 						this.sliderpane = new ContentPane({
@@ -822,12 +852,15 @@ define([
 							"data-pane": "ActualTabs",
 							//style: "display: none",
 							title: '<span title="' + tab.hoverText + '">' + tab.name + '</span>',
+							
 							"data-index": t,
 							index: t
 						});	
+						this.sliderpane.titleText = tab.name;//LM hanging on a new sliderpane property for easy access to the tab title name
 						this.tabpan.addChild(this.sliderpane);
 						//this.tabs.push(this.sliderpane);						
 						itemIndex = 0;
+						//iterate over tab items
 						array.forEach(tab.items, lang.hitch(this,function(entry, i){
 							/*
 							if (this.explorerObject.mainToggle != undefined) {
@@ -853,10 +886,12 @@ define([
 							if (entry.group == undefined) {
 								entry.group = "ungrouped";
 							}
+							//config does not have any of the 'hr' type currently
 							if (entry.type == "hr") {
 								hrn = domConstruct.create("hr", {style:""});
 								this.sliderpane.domNode.appendChild(hrn);
 							}
+							//config does not have any of the 'ancillary' type currently
 							if (entry.type == "ancillary") {
 								nslidernode = domConstruct.create("div");
 								this.sliderpane.domNode.appendChild(nslidernode);
@@ -899,6 +934,7 @@ define([
 								});
 								this.sliderpane.domNode.appendChild(nslidernodeheader);
 							}
+							//config does not have any of the 'header' type currently
 							if (entry.type == "header") {
 								nslidernodeheader = domConstruct.create("div", {
 									style:"margin-top:0px;margin-bottom:10px", 
@@ -906,6 +942,7 @@ define([
 								});
 								this.sliderpane.domNode.appendChild(nslidernodeheader);
 							}
+							//
 							if (entry.type == "text") {
 								nslidernodeheader = domConstruct.create("div", {
 									style:"margin-top:10px;margin-bottom:10px", 
@@ -913,6 +950,7 @@ define([
 								});
 								this.sliderpane.domNode.appendChild(nslidernodeheader);
 							}
+							//
 							if (entry.type == "layer") {
 								steps = ((entry.max - entry.min) / entry.step) + 1;
 								outslid = "";
@@ -938,124 +976,128 @@ define([
 									outslid = "<li>" + lSliderLabels.join("</li><li>") + "</li>"
 								}
 								if (steps == 2) {
-								nslidernode = domConstruct.create("div");
-								this.sliderpane.domNode.appendChild(nslidernode);
-								if (entry.group.slice(0,4) == "muex") {
-									rorc = RadioButton;
-								} else {
-									rorc = CheckBox;
-								}
-								slider = new rorc({
-									name: this.sliderpane.id + "_" + entry.group,
-									value: entry.default,
-									index: entry.index,
-									order: i,
-									minimum: entry.min,
-									maximum: entry.max,
-									title: entry.text,
-									checked: entry.default,
-									onChange: lang.hitch(this,function(){
-										this.updateService();
+									//slider steps == 2
+									nslidernode = domConstruct.create("div");
+									this.sliderpane.domNode.appendChild(nslidernode);
+									if (entry.group.slice(0,4) == "muex") {
+										rorc = RadioButton;
+									} else {
+										rorc = CheckBox;
+									}
+									slider = new rorc({
+										name: this.sliderpane.id + "_" + entry.group,
+										value: entry.default,
+										index: entry.index,
+										order: i,
+										minimum: entry.min,
+										maximum: entry.max,
+										title: entry.text,
+										checked: entry.default,
+										onChange: lang.hitch(this,function(){
+											this.updateService();
+											}),
+										}, nslidernode);
+										parser.parse()
+									if (entry.visible == false)
+									{ vtext = "display:none"
+									domStyle.set(slider.domNode, 'display', 'none');
+									}
+									else {vtext = "display:inline"}
+									if (entry.help != undefined) {
+										nslidernodeheader = domConstruct.create("span", {style: vtext, innerHTML: "<span style='color:#000'> <a style='color:black' href='#' title='" + 'Click for more information.' + "'><img src='data:image/png;base64,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'></a>  " + entry.text + " </span>"});
+									} else {
+										nslidernodeheader = domConstruct.create("span", {style: vtext, innerHTML: " " + entry.text + "<br>"});
+									}
+									on(nslidernodeheader, "click", lang.hitch(this,function(e){
+										domStyle.set(this.infoarea.domNode, 'display', '');
+										this.infoareacontent.innerHTML = entry.help;
+									}));
+									this.sliderpane.domNode.appendChild(nslidernodeheader);
+									nslidernodeheader = domConstruct.create("div", {
+										style:"margin:3px", 
+										innerHTML: ""
+									});
+									this.sliderpane.domNode.appendChild(nslidernodeheader);
+								} else { 
+									//slider steps != 2
+									if (entry.help != undefined) {
+										nslidernodetitle = domConstruct.create("span", {
+											innerHTML: "<span style='color:#000'> <a style='color:black' href='#' title='" + 'Click for more information.' + "'><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAKT2lDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjanVNnVFPpFj333vRCS4iAlEtvUhUIIFJCi4AUkSYqIQkQSoghodkVUcERRUUEG8igiAOOjoCMFVEsDIoK2AfkIaKOg6OIisr74Xuja9a89+bN/rXXPues852zzwfACAyWSDNRNYAMqUIeEeCDx8TG4eQuQIEKJHAAEAizZCFz/SMBAPh+PDwrIsAHvgABeNMLCADATZvAMByH/w/qQplcAYCEAcB0kThLCIAUAEB6jkKmAEBGAYCdmCZTAKAEAGDLY2LjAFAtAGAnf+bTAICd+Jl7AQBblCEVAaCRACATZYhEAGg7AKzPVopFAFgwABRmS8Q5ANgtADBJV2ZIALC3AMDOEAuyAAgMADBRiIUpAAR7AGDIIyN4AISZABRG8lc88SuuEOcqAAB4mbI8uSQ5RYFbCC1xB1dXLh4ozkkXKxQ2YQJhmkAuwnmZGTKBNA/g88wAAKCRFRHgg/P9eM4Ors7ONo62Dl8t6r8G/yJiYuP+5c+rcEAAAOF0ftH+LC+zGoA7BoBt/qIl7gRoXgugdfeLZrIPQLUAoOnaV/Nw+H48PEWhkLnZ2eXk5NhKxEJbYcpXff5nwl/AV/1s+X48/Pf14L7iJIEyXYFHBPjgwsz0TKUcz5IJhGLc5o9H/LcL//wd0yLESWK5WCoU41EScY5EmozzMqUiiUKSKcUl0v9k4t8s+wM+3zUAsGo+AXuRLahdYwP2SycQWHTA4vcAAPK7b8HUKAgDgGiD4c93/+8//UegJQCAZkmScQAAXkQkLlTKsz/HCAAARKCBKrBBG/TBGCzABhzBBdzBC/xgNoRCJMTCQhBCCmSAHHJgKayCQiiGzbAdKmAv1EAdNMBRaIaTcA4uwlW4Dj1wD/phCJ7BKLyBCQRByAgTYSHaiAFiilgjjggXmYX4IcFIBBKLJCDJiBRRIkuRNUgxUopUIFVIHfI9cgI5h1xGupE7yAAygvyGvEcxlIGyUT3UDLVDuag3GoRGogvQZHQxmo8WoJvQcrQaPYw2oefQq2gP2o8+Q8cwwOgYBzPEbDAuxsNCsTgsCZNjy7EirAyrxhqwVqwDu4n1Y8+xdwQSgUXACTYEd0IgYR5BSFhMWE7YSKggHCQ0EdoJNwkDhFHCJyKTqEu0JroR+cQYYjIxh1hILCPWEo8TLxB7iEPENyQSiUMyJ7mQAkmxpFTSEtJG0m5SI+ksqZs0SBojk8naZGuyBzmULCAryIXkneTD5DPkG+Qh8lsKnWJAcaT4U+IoUspqShnlEOU05QZlmDJBVaOaUt2ooVQRNY9aQq2htlKvUYeoEzR1mjnNgxZJS6WtopXTGmgXaPdpr+h0uhHdlR5Ol9BX0svpR+iX6AP0dwwNhhWDx4hnKBmbGAcYZxl3GK+YTKYZ04sZx1QwNzHrmOeZD5lvVVgqtip8FZHKCpVKlSaVGyovVKmqpqreqgtV81XLVI+pXlN9rkZVM1PjqQnUlqtVqp1Q61MbU2epO6iHqmeob1Q/pH5Z/YkGWcNMw09DpFGgsV/jvMYgC2MZs3gsIWsNq4Z1gTXEJrHN2Xx2KruY/R27iz2qqaE5QzNKM1ezUvOUZj8H45hx+Jx0TgnnKKeX836K3hTvKeIpG6Y0TLkxZVxrqpaXllirSKtRq0frvTau7aedpr1Fu1n7gQ5Bx0onXCdHZ4/OBZ3nU9lT3acKpxZNPTr1ri6qa6UbobtEd79up+6Ynr5egJ5Mb6feeb3n+hx9L/1U/W36p/VHDFgGswwkBtsMzhg8xTVxbzwdL8fb8VFDXcNAQ6VhlWGX4YSRudE8o9VGjUYPjGnGXOMk423GbcajJgYmISZLTepN7ppSTbmmKaY7TDtMx83MzaLN1pk1mz0x1zLnm+eb15vft2BaeFostqi2uGVJsuRaplnutrxuhVo5WaVYVVpds0atna0l1rutu6cRp7lOk06rntZnw7Dxtsm2qbcZsOXYBtuutm22fWFnYhdnt8Wuw+6TvZN9un2N/T0HDYfZDqsdWh1+c7RyFDpWOt6azpzuP33F9JbpL2dYzxDP2DPjthPLKcRpnVOb00dnF2e5c4PziIuJS4LLLpc+Lpsbxt3IveRKdPVxXeF60vWdm7Obwu2o26/uNu5p7ofcn8w0nymeWTNz0MPIQ+BR5dE/C5+VMGvfrH5PQ0+BZ7XnIy9jL5FXrdewt6V3qvdh7xc+9j5yn+M+4zw33jLeWV/MN8C3yLfLT8Nvnl+F30N/I/9k/3r/0QCngCUBZwOJgUGBWwL7+Hp8Ib+OPzrbZfay2e1BjKC5QRVBj4KtguXBrSFoyOyQrSH355jOkc5pDoVQfujW0Adh5mGLw34MJ4WHhVeGP45wiFga0TGXNXfR3ENz30T6RJZE3ptnMU85ry1KNSo+qi5qPNo3ujS6P8YuZlnM1VidWElsSxw5LiquNm5svt/87fOH4p3iC+N7F5gvyF1weaHOwvSFpxapLhIsOpZATIhOOJTwQRAqqBaMJfITdyWOCnnCHcJnIi/RNtGI2ENcKh5O8kgqTXqS7JG8NXkkxTOlLOW5hCepkLxMDUzdmzqeFpp2IG0yPTq9MYOSkZBxQqohTZO2Z+pn5mZ2y6xlhbL+xW6Lty8elQfJa7OQrAVZLQq2QqboVFoo1yoHsmdlV2a/zYnKOZarnivN7cyzytuQN5zvn//tEsIS4ZK2pYZLVy0dWOa9rGo5sjxxedsK4xUFK4ZWBqw8uIq2Km3VT6vtV5eufr0mek1rgV7ByoLBtQFr6wtVCuWFfevc1+1dT1gvWd+1YfqGnRs+FYmKrhTbF5cVf9go3HjlG4dvyr+Z3JS0qavEuWTPZtJm6ebeLZ5bDpaql+aXDm4N2dq0Dd9WtO319kXbL5fNKNu7g7ZDuaO/PLi8ZafJzs07P1SkVPRU+lQ27tLdtWHX+G7R7ht7vPY07NXbW7z3/T7JvttVAVVN1WbVZftJ+7P3P66Jqun4lvttXa1ObXHtxwPSA/0HIw6217nU1R3SPVRSj9Yr60cOxx++/p3vdy0NNg1VjZzG4iNwRHnk6fcJ3/ceDTradox7rOEH0x92HWcdL2pCmvKaRptTmvtbYlu6T8w+0dbq3nr8R9sfD5w0PFl5SvNUyWna6YLTk2fyz4ydlZ19fi753GDborZ752PO32oPb++6EHTh0kX/i+c7vDvOXPK4dPKy2+UTV7hXmq86X23qdOo8/pPTT8e7nLuarrlca7nuer21e2b36RueN87d9L158Rb/1tWeOT3dvfN6b/fF9/XfFt1+cif9zsu72Xcn7q28T7xf9EDtQdlD3YfVP1v+3Njv3H9qwHeg89HcR/cGhYPP/pH1jw9DBY+Zj8uGDYbrnjg+OTniP3L96fynQ89kzyaeF/6i/suuFxYvfvjV69fO0ZjRoZfyl5O/bXyl/erA6xmv28bCxh6+yXgzMV70VvvtwXfcdx3vo98PT+R8IH8o/2j5sfVT0Kf7kxmTk/8EA5jz/GMzLdsAAAAEZ0FNQQAAsY58+1GTAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAI2SURBVHjarJPfSxRRFMc/rrasPxpWZU2ywTaWSkRYoaeBmoVKBnwoJfIlWB8LekiaP2N76S9o3wPBKAbFEB/mIQJNHEuTdBmjUtq1mz/Xmbk95A6u+lYHzsvnnvO995xzTw3HLJfLDQNZIHPsaArIm6b54iisOZJ4ERhVFCWtaRqqqqIoCgBCCFzXxbZthBCzwIBpmquhwGHyTHd3d9wwDAqlA6a/bFMolQHobI5y41Ijnc1nsCwLx3E2gV7TNFfrDh8wWknOvy9hffoNwNNMgkKxzMu5X7z5KDCuniVrGABxx3FGgd7aXC43rCjKw6GhIV68K/J6QRBISSAl6fP1bO0HzH/bJZCSpY19dsoB9/QeHMdp13W9EAGymqaxUiwzNr+J7wehP59e5+2SqGJj85usFMtomgaQjQAZVVWZXKwO7O9SeHang8fXE1Xc9wMmFwWqqgJkIgCKorC8sYfnB6F/Xt+lIRpBSqq45wcsb+yFE6o0Ed8P8LwgnO+Mu80PcQBQxSuxFYtU5pxsjZ64SUqJlPIET7ZGEUKEAlOu69LXFT9FgFNL6OuK47ouwFQEyNu2TSoRYzDdguf9LUVLNpFqi5Fqi6Elm0I+mG4hlYhh2zZAvnZ8fHxW1/W7Qoj2B7d7Ebsec+4WzY11TCyUmFgosXcQ8LW0z/1rCZ7c7MCyLNbW1mZN03xUaeKA4zgzQHzEMOjvaeHVh58sft8B4Ep7AyO3LnD5XP3Rrzzw/5bpX9b5zwBaRXthcSp6rQAAAABJRU5ErkJggg=='></a>  " + entry.text + " </span>"
+										});
+									} else {
+										nslidernodetitle = domConstruct.create("span", {
+											innerHTML: entry.text
+										});
+									}
+									
+									on(nslidernodetitle, "click", lang.hitch(this,function(e){
+										domStyle.set(this.infoarea.domNode, 'display', '');
+										this.infoareacontent.innerHTML = entry.help;
+									}));
+									//nslidernodetitle = domConstruct.create("div", {innerHTML: entry.text});
+									this.sliderpane.domNode.appendChild(nslidernodetitle);
+									
+									if (entry.ancillary != undefined) {
+										//ancillaryNode = domConstruct.create("div", {style: "display:inline", innerHTML: "Hello "});
+										//this.sliderpane.domNode.appendChild(ancillaryNode);
+										ancillaryNode = domConstruct.create("span");
+										this.sliderpane.domNode.appendChild(ancillaryNode);
+										var checkBox = new CheckBox({
+											name: "ExplorerAncillaryCheck",
+											value: entry.text,
+											checked: false,
+											onChange: lang.hitch(this,function(b){
+												if (!b) {
+													if (this.ancillaryLayer2 != undefined) {
+														this.map.removeLayer(this.ancillaryLayer2)
+														dojo.destroy(this.ancillaryLayer2);
+														//console.log('removean');
+													}
+												} else {
+													this.addAncillary(b,entry.ancillary, entry.text)	
+												}
+											}),		
+										}, ancillaryNode);
+										parser.parse();
+										//ancillary
+									}	
+									nslidernode = domConstruct.create("div");
+									this.sliderpane.domNode.appendChild(nslidernode);
+									labelsnode = domConstruct.create("ol", {"data-dojo-type":"dijit/form/HorizontalRuleLabels", container:"bottomDecoration", style:"height:1.5em;font-size:75%;color:gray;", innerHTML: outslid})
+									nslidernode.appendChild(labelsnode);
+									slider = new HorizontalSlider({
+										name: entry.group,
+										"data-mexslider": "mexSlider",
+										value: entry.default,
+										minimum: entry.min,
+										maximum: entry.max,
+										showButtons:false,
+										title: entry.text,
+										//intermediateChanges: true,
+										tabindex: t,
+										order: itemIndex,
+										discreteValues: steps,
+										index: entry.index,
+										onClick: lang.hitch(this,function(b){ 
+											allChecks = dojoquery("[name=ExplorerAncillaryCheck]");
+											array.forEach(allChecks, lang.hitch(this,function(checkerBox, j){
+												cb = registry.byId(checkerBox.id);
+												cb.set("checked", false);
+											}));
 										}),
+										onChange: lang.hitch(this,function(){
+											this.updateService()
+										}),
+										style: "width:500px;margin-top:10px;margin-bottom:20px"
 									}, nslidernode);
 									parser.parse()
-								if (entry.visible == false)
-								{ vtext = "display:none"
-								domStyle.set(slider.domNode, 'display', 'none');
-								}
-								else {vtext = "display:inline"}
-								if (entry.help != undefined) {
-									nslidernodeheader = domConstruct.create("span", {style: vtext, innerHTML: "<span style='color:#000'> <a style='color:black' href='#' title='" + 'Click for more information.' + "'><img src='data:image/png;base64,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'></a>  " + entry.text + " </span>"});
-								} else {
-									nslidernodeheader = domConstruct.create("span", {style: vtext, innerHTML: " " + entry.text + "<br>"});
-								}
-								on(nslidernodeheader, "click", lang.hitch(this,function(e){
-									domStyle.set(this.infoarea.domNode, 'display', '');
-									this.infoareacontent.innerHTML = entry.help;
-								}));
-								this.sliderpane.domNode.appendChild(nslidernodeheader);
-								nslidernodeheader = domConstruct.create("div", {
-									style:"margin:3px", 
-									innerHTML: ""
-								});
-								this.sliderpane.domNode.appendChild(nslidernodeheader);
-								} else {
-						
-								if (entry.help != undefined) {
-									nslidernodetitle = domConstruct.create("span", {
-										innerHTML: "<span style='color:#000'> <a style='color:black' href='#' title='" + 'Click for more information.' + "'><img src='data:image/png;base64,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'></a>  " + entry.text + " </span>"
-									});
-								} else {
-									nslidernodetitle = domConstruct.create("span", {
-										innerHTML: entry.text
-									});
-								}
-								
-								on(nslidernodetitle, "click", lang.hitch(this,function(e){
-									domStyle.set(this.infoarea.domNode, 'display', '');
-									this.infoareacontent.innerHTML = entry.help;
-								}));
-								//nslidernodetitle = domConstruct.create("div", {innerHTML: entry.text});
-								this.sliderpane.domNode.appendChild(nslidernodetitle);
-								
-								if (entry.ancillary != undefined) {
-									//ancillaryNode = domConstruct.create("div", {style: "display:inline", innerHTML: "Hello "});
-									//this.sliderpane.domNode.appendChild(ancillaryNode);
-									ancillaryNode = domConstruct.create("span");
-									this.sliderpane.domNode.appendChild(ancillaryNode);
-									var checkBox = new CheckBox({
-										name: "ExplorerAncillaryCheck",
-										value: entry.text,
-										checked: false,
-										onChange: lang.hitch(this,function(b){
-											if (!b) {
-												if (this.ancillaryLayer2 != undefined) {
-													this.map.removeLayer(this.ancillaryLayer2)
-													dojo.destroy(this.ancillaryLayer2);
-													//console.log('removean');
-												}
-											} else {
-												this.addAncillary(b,entry.ancillary, entry.text)	
-											}
-										}),		
-									}, ancillaryNode);
-									parser.parse();
-									//ancillary
-								}	
-								nslidernode = domConstruct.create("div");
-								this.sliderpane.domNode.appendChild(nslidernode);
-								labelsnode = domConstruct.create("ol", {"data-dojo-type":"dijit/form/HorizontalRuleLabels", container:"bottomDecoration", style:"height:1.5em;font-size:75%;color:gray;", innerHTML: outslid})
-								nslidernode.appendChild(labelsnode);
-								slider = new HorizontalSlider({
-									name: entry.group,
-									"data-mexslider": "mexSlider",
-									value: entry.default,
-									minimum: entry.min,
-									maximum: entry.max,
-									showButtons:false,
-									title: entry.text,
-									//intermediateChanges: true,
-									tabindex: t,
-									order: itemIndex,
-									discreteValues: steps,
-									index: entry.index,
-									onClick: lang.hitch(this,function(b){ 
-										allChecks = dojoquery("[name=ExplorerAncillaryCheck]");
-										array.forEach(allChecks, lang.hitch(this,function(checkerBox, j){
-											cb = registry.byId(checkerBox.id);
-											cb.set("checked", false);
-										}));
-									}),
-									onChange: lang.hitch(this,function(){this.updateService()}),
-									style: "width:500px;margin-top:10px;margin-bottom:20px"
-								}, nslidernode);
-								parser.parse()
 								}
 								this.sliders.push(slider);
 							} // end- if (entry.type == "layer")
 							itemIndex = itemIndex + 1
 						}));// end- array.forEach(tab.items...
 					}));// end- array.forEach(geography.tabs...
+					//set up the Recommendations tab
 					if (geography.combined != undefined) {
 						if (geography.combined.hoverText == undefined) {
 							geography.combined.hoverText == "";
@@ -1068,12 +1110,17 @@ define([
 							index: geography.tabs.length,
 							content: geography.combined.text
 						});	
+						this.sliderpane.titleText = geography.combined.name;//LM hanging on a new sliderpane property for easy access to the tab title name
 						this.tabpan.addChild(this.sliderpane);						
 					}
 					//	if (geography.combined.selected == true) {
 					//			this.tabpan.selectChild(this.sliderpane);
 					//	}
+					//below is the only use of dojo/aspect in this file. Should this be dojo/on?
 					aspect.after(this.tabpan, "selectChild", lang.hitch(this,function (e, o) {
+						//called after selecting a new tab in the tab control
+						console.debug('habitat_explorer; main.js; !! in handler for aspect.after(this.tabpan, "selectChild" ... ');
+						//again with the resize()... still needed?
 						this.resize();
 						selindex = o[0].index;
 						if (selindex != -1) {
@@ -1090,12 +1137,15 @@ define([
 							this.map.addLayer(this.introLayer);
 						}
 						if (selindex == geography.tabs.length) {
+							//'Recommendations' tab
 							a = lang.hitch(this,function(){this.doCombined()})
 							a();
 						} else {
+							//all other tabs
 							a = lang.hitch(this,function(){this.updateService()})
 							a();
 						}
+						//again with the resize()... still needed?
 						this.resize();
 					}));
 					this.tabpan.startup();
@@ -1148,6 +1198,7 @@ define([
 					if (geography.tabtype == "radio") {
 					 	this.changeRadio();
 					}
+					//
 					this.resize();
 			   	},
 				/** 
@@ -1169,9 +1220,9 @@ define([
 				 * Method: addAncillary
 				 * 		
 				 * Args:
-				 * 		b {} - 
-				 * 		ancillary {} -
-				 * 		compText {} -
+				 * 		b {type} - description 
+				 * 		ancillary {type} - description
+				 * 		compText {type} - description
 				 * 		
 				*/
 				addAncillary: function(b,ancillary, compText) {
@@ -1199,8 +1250,8 @@ define([
 				 * Method: processAncillary
 				 * 		
 				 * Args:
-				 * 		e {} - 
-				 * 		entry {} -
+				 * 		e {type} - description 
+				 * 		entry {type} - description
 				 * 		
 				*/
 				processAncillary: function(e,entry) {
@@ -1237,7 +1288,7 @@ define([
 				 * Method: getFormula
 				 * 		
 				 * Args:
-				 * 		selectedIndex {} - 
+				 * 		selectedIndex {type} - description 
 				 * 		
 				*/
 			   	getFormula: function(selectedIndex) {
@@ -1373,7 +1424,8 @@ define([
 				},
 				/** 
 				 * Method: doCombined
-				 * 		
+				 * 		Called only once in this file from the tab selectionChanged event (defined within the changeGeography() method) when the 'Recommendations' tab is selected.
+				 * 		Looks like it plays a similar role to the updateService() method
 				 * Args:
 				 * 		
 				*/
@@ -1424,6 +1476,7 @@ define([
 						//allFields.push("score");
 						//alert("Vector Combined Score Not Completely Implemented Yet");	
 					} else {
+						//Not Vector...
 						//alert('');
 						rfout = this.combiner.combineFunction(formulas, this.geography, Tformulas, rfuncs);
 						//rfout = poopy.combine;
@@ -1696,7 +1749,7 @@ define([
 				 * Method: zoomQextent
 				 * 		
 				 * Args:
-				 * 		results {} - 
+				 * 		results {type} - description 
 				 * 		
 				*/				   
 			   	zoomQextent: function(results) {
@@ -1716,7 +1769,7 @@ define([
 				 * Method: updateRenderer
 				 * 		
 				 * Args:
-				 * 		results {} - 
+				 * 		results {type} - description 
 				 * 		
 				*/
 			   	updateRenderer: function(results) {
@@ -1771,7 +1824,7 @@ define([
 				 * Method: showResults
 				 * 		
 				 * Args:
-				 * 		results {} -
+				 * 		results {type} - description
 				*/
 			   	showResults: function(results) {
 					console.debug('habitat_explorer; main.js; showResults()');
@@ -1830,30 +1883,39 @@ define([
 				},
 				/** 
 				 * Method: identify
-				 * 		
+				 * 		A passthrough method called by the the framework (see Identify.js line 54; Plugin.js line 280)
 				 * Args:
-				 * 		point {} -
-				 * 		screenPoint {} -
-				 * 		processResults {} -
+				 * 		point {object} - esri map point object {spatialReference:obejct, type:string, x:number, y:number}. See esri documentation.
+				 * 		screenPoint {object} - {x:number, y:number}}
+				 * 		processResults {function} - A framework method used to compile identify results from all active plugins. This method should be called with this plugin's HTML formatted identify resutls.
+				 * 			If processResults() is called without arguments, or results is an empty string, then the popup window will display "No information is available for this location."
+				 * 			processResults Args: 
+				 * 				results {string} - html string for the pop up window
+				 * 				width {number, optional} - Identify window width
+				 * 				height {number, optional} - Identify window height
 				*/
 			   	identify: function(point, screenPoint, processResults) {
 					console.debug('habitat_explorer; main.js; identify()');
+					console.debug('habitat_explorer; main.js; identify(); arg point = ', point);
+					console.debug('habitat_explorer; main.js; identify(); arg screenPoint = ', screenPoint);
+					console.debug('habitat_explorer; main.js; identify(); arg processResults = ', processResults);
 					//require([
 					//  "esri/tasks/ImageServiceIdentifyTask", ... 
 					//], function(ImageServiceIdentifyTask, ... ) {
 					//  var imageTask = new ImageServiceIdentifyTask("http://sampleserver6.arcgisonline.com/arcgis/rest/services/CharlotteLAS/ImageServer");
 					//  ...
 					//});
-					if (this.currentLayer.url.includes("ImageServer") == true) {
-						
+					if (this.currentLayer && this.currentLayer.url.includes("ImageServer") == true) {
+						console.debug('identify(); currentLayer is from imageServer');
 						idTask = new esri.tasks.ImageServiceIdentifyTask(this.geography.url);
 						identifyParams = new ImageServiceIdentifyParameters();
 						identifyParams.returnGeometry = false;
 						identifyParams.geometry = point;
 						//identifyParams.renderingRule = this.renderingRule;					
 						idTask.execute(identifyParams, lang.hitch(this,function(identifyResults) {
+							console.debug("identifyResults.value = ",identifyResults.value);
 							if (identifyResults.value != "NoData") {
-								idtable = '<br><table border="1"><tr><th width="50%"><center>Variable</center></th><th width="25%"><center>Value</center></th><th width="25%"><center>Weight</center></th></tr>'
+								idtable = '<br><table border="1"><tr><th width="50%"><center>Variable</center></th><th width="25%"><center>Value</center></th><th width="25%"><center>Weight</center></th></tr>';
 								//console.log(identifyResults.value);
 								identifyValues = dojo.eval("[" + identifyResults.value + "]")
 								replacedFormula = this.formula;
@@ -1879,7 +1941,7 @@ define([
 											if (this.formula.includes("B"+(j+1))) {
 												//alert(slid.title);
 											
-												idtable = idtable + ('</tr><tr><td>' + slid.title + '</td><td>' + idval.toFixed(2).replace(".00","") + '</td><td>' + outvaluetext + '</td></tr>')
+												idtable = idtable + ('<tr><td>' + slid.title + '</td><td>' + idval.toFixed(2).replace(".00","") + '</td><td>' + outvaluetext + '</td></tr>')
 												varFormula = varFormula.replace("B"+(j+1), slid.title);
 											}
 										}
@@ -1888,28 +1950,87 @@ define([
 								//alert(dojo.eval(replacedFormula))
 								//console.log(identifyResults);
 								idtable = idtable + '</table>'
-								processResults("<br> Value at Mouse Click: <b>" + dojo.eval(replacedFormula).toFixed(3).replace(".000", '') + "</b><br>" + idtable + "Formula: <br>" + this.geography.BandFormulaText);
+								if(this.tabpan.selectedChildWidget.titleText == "Introduction"){
+									processResults("<br> Value at Mouse Click: <b>" + dojo.eval(replacedFormula).toFixed(3).replace(".000", '') + "</b><br>" + idtable + "Formula: <br>" + this.geography.BandFormulaText);
+								}else if (this.tabpan.selectedChildWidget.titleText == "Recommendations"){
+									processResults("<br> Value at Mouse Click: <b>" + dojo.eval(replacedFormula).toFixed(3).replace(".000", '') + "</b><br>" + idtable);
+								}else{
+									processResults("<br> Value at Mouse Click: <b>" + dojo.eval(replacedFormula).toFixed(3).replace(".000", '') + "</b><br>" + idtable + "Formula: <br>" + this.geography.BandFormulaText);	
+								}
+								//processResults("<br> Value at Mouse Click: <b>" + dojo.eval(replacedFormula).toFixed(3).replace(".000", '') + "</b><br>" + idtable + "Formula: <br>" + this.geography.BandFormulaText);
+								//processResults();
+								console.debug("tab title = ", this.tabpan.selectedChildWidget.titleText);
 							} else {
-								processResults("");
+								//NoData returned
+								processResults("<br> Value at Mouse Click: No Data. <br> Tip: Zoom in for best results.");
+								console.debug("tab title = ", this.tabpan.selectedChildWidget.titleText);
 							}
 							})); 
-					} else {
-						identifyer = new esri.tasks.IdentifyTask(this.currentLayer.url, { source: this.layerSource });
-						identifyParams = new IdentifyParameters();
-						identifyParams.dynamicLayerInfos = this.dli;
-						identifyParams.tolerance = 3;
-						identifyParams.returnGeometry = false;
-						identifyParams.layerIds = [0,1];
-						identifyParams.layerOption = esri.tasks.IdentifyParameters.LAYER_OPTION_ALL;
-						identifyParams.width  = this.map.width;
-						identifyParams.height = this.map.height;
-						identifyParams.mapExtent = this.map.extent;
-						identifyParams.geometry = point;
-						//console.log(this.currentLayer.url);
-						identifyer.execute(identifyParams, lang.hitch(this,function(identifyResults) {
-							//console.log(identifyResults);
-							processResults("<br> Computed Score at Mouse Click: <b>" + identifyResults[0].feature.attributes.score);
-						}));
+					} else if (this.currentLayer){
+						console.debug('identify(); currentLayer is NOT from imageServer');
+						//console.debug(this.currentLayer.url);
+						if(this.tabpan.selectedChildWidget.titleText != "Instructions"){
+							identifyer = new esri.tasks.IdentifyTask(this.currentLayer.url, { source: this.layerSource });
+							identifyParams = new IdentifyParameters();
+							identifyParams.dynamicLayerInfos = this.dli;
+							identifyParams.tolerance = 6;
+							identifyParams.returnGeometry = false;
+							//identifyParams.layerIds = [0,1];
+							identifyParams.layerOption = esri.tasks.IdentifyParameters.LAYER_OPTION_ALL;
+							identifyParams.width  = this.map.width;
+							identifyParams.height = this.map.height;
+							identifyParams.mapExtent = this.map.extent;
+							identifyParams.geometry = point;
+							identifyer.execute(identifyParams, lang.hitch(this,function(identifyResults) {
+								console.debug("identify results:", identifyResults);
+								//console.debug(typeof(identifyResults));
+								if(identifyResults && identifyResults.length > 0){
+
+									//loop over tabs to find the current tab
+										//loop over all tab items
+											//loop over all dijit (sliders) found, comparing item text to slider title
+												//once match is found...
+
+									//console.debug(this.tabpan.selectedChildWidget);
+									//console.debug(dojoquery(".dijitSliderH"));
+									//var sliderWidgets = registry.findWidgets(registry.byId(this.tabpan.selectedChildWidget.id));
+									//console.debug("sliderWidgets: ", sliderWidgets);
+									// console.log(this.formula);
+
+									// idtable = '<br><table border="1"><tr><th width="50%"><center>Variable</center></th><th width="25%"><center>Value</center></th><th width="25%"><center>Weight</center></th></tr>';
+									// array.forEach(this.sliders, lang.hitch(this,function(slid, i){
+									// 	if (slid.value == 0) {
+									// 		outvaluetext = "Not Included";
+									// 	} else if (slid.value == 1) {
+									// 		if (slid.checked == true) {
+									// 			outvaluetext = "Included";
+									// 		} else {
+									// 			outvaluetext = slid.value;
+									// 		}
+									// 	} else {
+									// 		outvaluetext = slid.value;
+									// 	}
+									// 	idtable = idtable + ('<tr><td>' + slid.title + '</td><td></td><td>' + outvaluetext + '</td></tr>');
+									// 	//idtable = idtable + ('<tr><td>' + slid.title + '</td><td>' + idval.toFixed(2).replace(".00","") + '</td><td>' + outvaluetext + '</td></tr>');
+									// }));
+									// idtable = idtable + '</table>';
+
+									if (this.tabpan.selectedChildWidget.titleText == "Recommendations"){
+										//identifyResults[0] - there may be more features found, but this is using first one in the array wins.
+										processResults("<br> Computed Score at Mouse Click: " + identifyResults[0].feature.attributes.score);
+										//processResults("<br> Computed Score at Mouse Click: " + identifyResults[0].feature.attributes.score + "<br>" + idtable);
+									} else {
+										processResults("<br> Computed Score at Mouse Click: " + identifyResults[0].feature.attributes.score);
+										//processResults("<br> Computed Score at Mouse Click: " + identifyResults[0].feature.attributes.score + "<br>" + idtable);
+									}
+								}else{
+									processResults("<br> Computed Score at Mouse Click: No Data. <br>Tip: Try clicking closer to a feature.");
+								}
+							}));
+						} else {
+							//Instructions tab is selected
+							processResults("Streams Note: Identify will not work while in the Instructions tab. Please move to another tab to use the Identify feature.");
+						}
 					}
 					//console.log(point)
 					//console.log(screenPoint)
@@ -1918,7 +2039,7 @@ define([
 				 * Method: subregionActivated
 				 * 		
 				 * Args:
-				 * 		subregion {} -
+				 * 		subregion {type} - description
 				 * 		
 				*/
 				subregionActivated: function(subregion) {
@@ -1943,7 +2064,7 @@ define([
 				 * Method: subregionDeactivated
 				 * 		
 				 * Args:
-				 * 		subregion {} -
+				 * 		subregion {type} - description
 				*/
 				subregionDeactivated: function(subregion) {
 					console.debug('habitat_explorer; main.js; subregionDeactivated()');
@@ -1957,9 +2078,9 @@ define([
 				 * Method: beforePrint
 				 * 		
 				 * Args:
-				 * 		printDeferred {} -
-				 * 		$printArea {} -
-				 * 		mapObject {} - 
+				 * 		printDeferred {type} - description
+				 * 		$printArea {type} - description
+				 * 		mapObject {type} - description 
 				 * 		
 				*/
 				beforePrint: function(printDeferred, $printArea, mapObject) {

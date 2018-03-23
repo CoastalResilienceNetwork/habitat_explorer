@@ -341,20 +341,21 @@
 			"geometryType": "polyline",
 			"dataset": "sde.ny_climad_v2v1fcn_streams_allscores_nonull",
 			"reqFields": ["objectid", "shape"],
-			"defaultSymbol": {   	"type": "esriSLS",
-						"style": "esriSLSSolid",
-						"color": [150,150,150,0],
-						"width": 2
-							},
+			"defaultSymbol": {
+				"type": "esriSLS",
+				"style": "esriSLSSolid",
+				"color": [150,150,150,0],
+				"width": 2
+			},
 			"colorRamp": [[255, 255, 129, 255], [131, 238, 13, 255], [76, 190, 110, 255], [39, 115, 163, 255], [13, 31, 133, 255]],
 			"combined": {
-			"name": "Recommendations",
-			"hoverText": "Recommended conservation mgmt objectives & relative climate risk, based on condition, threat, sensitivity and exposure scores from the other tabs",
-			"text" : "<p>This map shows the place-specific recommended objective (main color) and the likelihood of success in light of climate change (shading-darker shades indicate lower climate risk and more reliable outcomes) for your selected habitat type, based on its current condition, future threat, and climate change sensitivity and exposure. If you have adjusted the sliders on the other tabs, this map will reflect those changes. </p>  <p>Use the <a target='_blank' href='http://www.naturalresourcenavigator.org/wp-content/uploads/2016/01/Guidebook.pdf#page=10'>Conservation Objectives Course Adjustment Worksheets</a> in our Guidebook that match the recommended objectives in your project area to develop strategies, and consider the climate risk information when doing so.  Then use the climate risk information to further hone your strategies with the <a target='_blank' href='http://www.naturalresourcenavigator.org/wp-content/uploads/2016/01/Guidebook.pdf#page=19'>Preparing for Climate Change Course Adjustment Worksheet.</a></p>  <div style='color:green'><a style='color:green; text-decoration: underline;' target='_blank' href='http://www.naturalresourcenavigator.org/wp-content/uploads/2016/01/Guidebook.pdf#page=13'>Maintain</a>: Good current condition & low future non-climate threats; these places are more likely to maintain their current conditions with minimal intervention.</div>  <br><br><div style='color:#00ffff'><a style='color:#00ffff; text-decoration: underline;' target='_blank' href='http://www.naturalresourcenavigator.org/wp-content/uploads/2016/01/Guidebook.pdf#page=14'>Reduce Threats</a>: Good current condition but some future non-climate threats; these places may require intervention to prevent declines.</div>  <br><br>  <div style='color:orange'><a style='color:orange; text-decoration: underline;' target='_blank' href='http://www.naturalresourcenavigator.org/wp-content/uploads/2016/01/Guidebook.pdf#page=16'>Restore</a>: Poor current condition but relatively low future threat; these may be good places to invest in restoration or ecological management.</div>  <br><br><div style='color:red'><a style='color:red; text-decoration: underline;' target='_blank' href='http://www.naturalresourcenavigator.org/wp-content/uploads/2016/01/Guidebook.pdf#page=18'>Reduce Threats & Restore</a>: Poor current condition and further threatened in the future; these places are likely to require greater ongoing investment and have more uncertain outcomes. </div>  </p>",
-			"selected": true
-		  },
-		  "tabs": [
-			{
+				"name": "Recommendations",
+				"hoverText": "Recommended conservation mgmt objectives & relative climate risk, based on condition, threat, sensitivity and exposure scores from the other tabs",
+				"text" : "<p>This map shows the place-specific recommended objective (main color) and the likelihood of success in light of climate change (shading-darker shades indicate lower climate risk and more reliable outcomes) for your selected habitat type, based on its current condition, future threat, and climate change sensitivity and exposure. If you have adjusted the sliders on the other tabs, this map will reflect those changes. </p>  <p>Use the <a target='_blank' href='http://www.naturalresourcenavigator.org/wp-content/uploads/2016/01/Guidebook.pdf#page=10'>Conservation Objectives Course Adjustment Worksheets</a> in our Guidebook that match the recommended objectives in your project area to develop strategies, and consider the climate risk information when doing so.  Then use the climate risk information to further hone your strategies with the <a target='_blank' href='http://www.naturalresourcenavigator.org/wp-content/uploads/2016/01/Guidebook.pdf#page=19'>Preparing for Climate Change Course Adjustment Worksheet.</a></p>  <div style='color:green'><a style='color:green; text-decoration: underline;' target='_blank' href='http://www.naturalresourcenavigator.org/wp-content/uploads/2016/01/Guidebook.pdf#page=13'>Maintain</a>: Good current condition & low future non-climate threats; these places are more likely to maintain their current conditions with minimal intervention.</div>  <br><br><div style='color:#00ffff'><a style='color:#00ffff; text-decoration: underline;' target='_blank' href='http://www.naturalresourcenavigator.org/wp-content/uploads/2016/01/Guidebook.pdf#page=14'>Reduce Threats</a>: Good current condition but some future non-climate threats; these places may require intervention to prevent declines.</div>  <br><br>  <div style='color:orange'><a style='color:orange; text-decoration: underline;' target='_blank' href='http://www.naturalresourcenavigator.org/wp-content/uploads/2016/01/Guidebook.pdf#page=16'>Restore</a>: Poor current condition but relatively low future threat; these may be good places to invest in restoration or ecological management.</div>  <br><br><div style='color:red'><a style='color:red; text-decoration: underline;' target='_blank' href='http://www.naturalresourcenavigator.org/wp-content/uploads/2016/01/Guidebook.pdf#page=18'>Reduce Threats & Restore</a>: Poor current condition and further threatened in the future; these places are likely to require greater ongoing investment and have more uncertain outcomes. </div>  </p>",
+				"selected": true
+		  	},
+			"tabs": [
+				{
 				"name": "Condition",
 				"hoverText": "Current health or status of the target.",
 				"sliderLabels" : ["None","Low","Med","High","V.High"],
@@ -663,7 +664,7 @@
 							}
 						]	
 			}					  
-		  ] 
+			]
         }
     ]
 }
