@@ -52,7 +52,6 @@ define([
 					"Reduce Threat & Restore – High risk",
 					"Reduce Threat & Restore – Highest risk"
 				],
-				
 		/** 
 		 * Method: combineFunction
 		 * 		For Raster data
@@ -63,6 +62,10 @@ define([
 		 * 		rfuncs {type} - desciption
 		*/
 		combineFunction: function(formulas, geo, Tformulas, rfuncs){
+			console.debug('combine.js; combineFunction()');
+			console.debug('combine.js; combineFunction(); formulas = ', formulas);
+			console.debug('combine.js; combineFunction(); Tformulas = ', Tformulas);
+
 			geo.BandFormulaText = Tformulas[0] + "<br><br>" + Tformulas[1] + "<br><br>" + Tformulas[2] + "<br><br>" + Tformulas[3] + "<br><br>";
 			
 			rasterFunction0 = rfuncs[0];
@@ -211,10 +214,8 @@ define([
 			texter = ""
 			
 			array.forEach(this.colors, lang.hitch(this,function(cColor, i){
-
-			innerSyms = innerSyms + '<rect x="0" y ="'+ (i * 30) + '" width="30" height="20" style="fill:rgb('+ cColor[1] + "," + cColor[2] + "," + cColor[3] + ');stroke-width:0;stroke:rgb(0,0,0)" />' 
-			texter = texter + ' <text x="35" y ="' + ((i * 30) + 15) + '" fill="black">' + this.labels[i] + '</text>'
-
+				innerSyms = innerSyms + '<rect x="0" y ="'+ (i * 30) + '" width="30" height="20" style="fill:rgb('+ cColor[1] + "," + cColor[2] + "," + cColor[3] + ');stroke-width:0;stroke:rgb(0,0,0)" />';
+				texter = texter + ' <text x="35" y ="' + ((i * 30) + 15) + '" fill="black">' + this.labels[i] + '</text>';
 			}));
 			
 
@@ -283,6 +284,7 @@ define([
 				+ innerSyms
 				+ texter;
 			outputData = {outquery: outq, renderRule: outrenderer, legendHTML: OUTPUTLABEL};
+			console.debug('outputData.outquery: ', outputData.outquery);
 			return outputData; //[outq, outrenderer];
 			//return majorFormula;
 			//SQLOUT = "SELECT objectid, shape, " + majorFormula + " AS score FROM sde.ny_condition_lines"

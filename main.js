@@ -1074,8 +1074,8 @@ define([
 										showButtons:false,
 										title: entry.text,
 										//intermediateChanges: true,
-										tabindex: t,
-										order: itemIndex,
+										tabindex: t, //helper prop, the parent tab's position in the group of Tab Panel tabs (as iterated over by the array.forEach() method).
+										order: itemIndex, //helper prop to determin the order that the sliders were created in.
 										discreteValues: steps,
 										index: entry.index,
 										onClick: lang.hitch(this,function(b){ 
@@ -1288,18 +1288,20 @@ define([
 				 * Method: getFormula
 				 * 		
 				 * Args:
-				 * 		selectedIndex {type} - description 
+				 * 		tabIndex {integer} - The index number of a Tab in the Tab Panel
 				 * 		
 				*/
-			   	getFormula: function(selectedIndex) {
+			   	getFormula: function(tabIndex) {
 					console.debug('habitat_explorer; main.js; getFormula()');
 					this.BandFormula = new Array();
 					this.GroupTotals = new Array();
 					this.BandFormulaNames = new Array();
 					cgroup = "";
-					array.forEach(this.sliders, lang.hitch(this,function(entry, i){
-						if (selectedIndex == entry.tabindex) {
-							if (entry.name != cgroup) {
+					array.forEach(this.sliders, lang.hitch(this,function(slide, i){
+						//slide.tabindex is the index position of the slider's parent tab in the group of tabs that are in the tab panel. Set at the time of slider creation
+						//checking the passed in tab index equality with slider.tabindex finds sliders that are in the panel of the passed in tab 
+						if (tabIndex == slide.tabindex) {
+							if (slide.name != cgroup) {
 								if (cgroup != "") {
 									this.BandFormula.push(cbf)
 									this.BandFormulaNames.push(cbfnames)
@@ -1308,28 +1310,28 @@ define([
 								cbf = new Array();
 								cbfnames = new Array();
 								hottytot = 0;
-								cgroup = entry.name;
+								cgroup = slide.name;
 							}
-							if (entry.checked != undefined) {
-								if (entry.checked == true) {
-									entry.value = 1;
+							if (slide.checked != undefined) {
+								if (slide.checked == true) {
+									slide.value = 1;
 								} else {
-									entry.value = 0;
+									slide.value = 0;
 								}
 							}
-							//console.log("###### RR", entry)
-							this.geography.tabs[selectedIndex].items[entry.order].default = entry.value;
-							//console.log("%%%%",this.geography, entry, entry.value, entry.order)
-							if (entry.value > 0) {
-								cbf.push("(" + entry.value + " * " + entry.index + ")");
-								cbfnames.push("(" + entry.value + " * " + entry.title + ")");
-								//hottytot.push(entry.value)
-								hottytot = hottytot + entry.value;
+							//console.log("###### RR", slide)
+							this.geography.tabs[tabIndex].items[slide.order].default = slide.value;
+							//console.log("%%%%",this.geography, slide, slide.value, slide.order)
+							if (slide.value > 0) {
+								cbf.push("(" + slide.value + " * " + slide.index + ")");
+								cbfnames.push("(" + slide.value + " * " + slide.title + ")");
+								//hottytot.push(slide.value)
+								hottytot = hottytot + slide.value;
 							}
-							array.forEach(this.geography.tabs[selectedIndex].items, lang.hitch(this,function(gitem, j){
+							array.forEach(this.geography.tabs[tabIndex].items, lang.hitch(this,function(gitem, j){
 								if (gitem.type == "layer") {
-									if (gitem.index == entry.index) {
-										gitem.default = entry.value;
+									if (gitem.index == slide.index) {
+										gitem.default = slide.value;
 									}
 								}
 							}));
@@ -1359,25 +1361,26 @@ define([
 							outformName.push("(" + bgroup.join(" + ") + ")");
 						}
 					}));
-					if (this.geography.tabs[selectedIndex].name != undefined) {
-						outforme = this.geography.tabs[selectedIndex].name;
+					if (this.geography.tabs[tabIndex].name != undefined) {
+						outforme = this.geography.tabs[tabIndex].name;
 					} else {
 						outforme = "Data Layer"
 					}
 					this.geography.BandFormulaText = outforme + " = " + outformName.join(" " + this.explorerObject.betweenGroups + " ");
 					cformula = outform.join(" " + this.explorerObject.betweenGroups + " ");
 					if (true) {
-						if (this.geography.tabs[selectedIndex].inputRanges == undefined) {
+						if (this.geography.tabs[tabIndex].inputRanges == undefined) {
 							linputRanges = this.geography.inputRanges;
 						} else {
-							linputRanges = this.geography.tabs[selectedIndex].inputRanges;
+							linputRanges = this.geography.tabs[tabIndex].inputRanges;
 						}
-						if (this.geography.tabs[selectedIndex].outputValues == undefined) {
+						if (this.geography.tabs[tabIndex].outputValues == undefined) {
 							loutputValues = this.geography.outputValues;
 						} else {
-							loutputValues = this.geography.tabs[selectedIndex].outputValues;
+							loutputValues = this.geography.tabs[tabIndex].outputValues;
 						}
-						if (cformula == "") {cformula = "(B1 * 0)"; this.BandFormula[0] = "(B1 * 0)"};
+						if (cformula == "") {cformula = "(B1 * 0)"; 
+						this.BandFormula[0] = "(B1 * 0)"};
 						rasterFunction = new RasterFunction();
 						//console.log("DDDDDDDDDD###")
 						//console.log(this.BandFormula);
@@ -1431,38 +1434,37 @@ define([
 				*/
 			   	doCombined: function() {
 					console.debug('habitat_explorer; main.js; doCombined()');
-					//this.currentLayer.show();
 					this.currentLayer.setVisibility(true);
 					this.legendContainer.innerHTML  = "";
-					formulas = new Array();
-					Tformulas = new Array();
+					this.formulas = new Array();
+					this.Tformulas = new Array();
 					rfuncs = new Array();
-					array.forEach(this.geography.tabs, lang.hitch(this,function(tab, t){
+					array.forEach(this.geography.tabs, lang.hitch(this, function(tab, t){
 						formula = this.getFormula(t);
-						formulas.push(formula);
-						Tformulas.push(this.geography.BandFormulaText);
+						this.formulas.push(formula);
+						this.Tformulas.push(this.geography.BandFormulaText);
 						rfuncs.push(lang.clone(this.crasta));
 					}));
-					//console.log(Tformulas);
 					if (this.isVector == true)  {
-						rfout = this.combiner.vectorCombineFunction(formulas, this.geography, Tformulas);
-						//console.log("SELECT " + oFields + ", " + rfout + " AS score FROM " + this.geography.dataset);
-						var dynamicLayerInfos = [];
+						rfout = this.combiner.vectorCombineFunction(this.formulas, this.geography, this.Tformulas);
+						this.vectorIdentifyQuery = rfout.outquery;
 						var dynamicLayerInfo = new esri.layers.DynamicLayerInfo();
 						dynamicLayerInfo.id = 1;
 						dynamicLayerInfo.name = this.toolbarName + " - " + this.geography.name;
 						var dataSource = new esri.layers.QueryDataSource();
 						dataSource.workspaceId = this.geography.workspaceId;
 						dataSource.geometryType = this.geography.geometryType;
-						dataSource.query = rfout.outquery; //"SELECT " + oFields + ", " + rfout + " AS score FROM " + this.geography.dataset;
+						dataSource.query = rfout.outquery; 
 						dataSource.oidFields = ["objectid"];
-						//minquery = "SELECT " + this.formula + " AS score FROM " + this.geography.dataset
 						this.layerSource = new esri.layers.LayerDataSource();
 						this.layerSource.dataSource = dataSource;
 						dynamicLayerInfo.source = this.layerSource;
+						var dynamicLayerInfos = [];
 						dynamicLayerInfos.push(dynamicLayerInfo);
-						//console.log(rfout);
 						this.currentLayer.setDynamicLayerInfos(dynamicLayerInfos);
+
+						this.dli = dynamicLayerInfos;
+						
 						var layerDrawingOptions = [];
 						var layerDrawingOption = new esri.layers.LayerDrawingOptions();
 						layerDrawingOption.renderer = rfout.renderRule;
@@ -1470,25 +1472,9 @@ define([
 						this.currentLayer.setLayerDrawingOptions(layerDrawingOptions);
 						this.legendContainer.innerHTML = '<div id="mExplorerLegend' + "_" + this.map.id + '">' + rfout.legendHTML + "</div>";
 						this.map.resize();
-						//alert('');
-						//var queryTask = new QueryTask(this.currentLayer.url + "/dynamicLayer", { source: this.layerSource });
-						//var allFields = this.geography.reqFields.concat(indFields);
-						//allFields.push("score");
-						//alert("Vector Combined Score Not Completely Implemented Yet");	
 					} else {
 						//Not Vector...
-						//alert('');
-						rfout = this.combiner.combineFunction(formulas, this.geography, Tformulas, rfuncs);
-						//rfout = poopy.combine;
-						/*
-						colorRF = new RasterFunction();
-						colorRF.functionName = "Colormap";
-						colorRF.variableName = "riskOutput";
-						colorRF.functionArguments = {
-						  "Colormap" : lcolorRamp,
-						  "Raster" : rf  //use the output of the remap rasterFunction for the Colormap rasterFunction
-						};
-						*/
+						rfout = this.combiner.combineFunction(this.formulas, this.geography, this.Tformulas, rfuncs);
 						this.legendContainer.innerHTML = '<div id="mExplorerLegend' + "_" + this.map.id + '">' + rfout.legendHTML + "</div>"
 						this.currentLayer.setRenderingRule(rfout.renderRule);
 					}
@@ -1896,80 +1882,91 @@ define([
 				*/
 			   	identify: function(point, screenPoint, processResults) {
 					console.debug('habitat_explorer; main.js; identify()');
-					console.debug('habitat_explorer; main.js; identify(); arg point = ', point);
-					console.debug('habitat_explorer; main.js; identify(); arg screenPoint = ', screenPoint);
-					console.debug('habitat_explorer; main.js; identify(); arg processResults = ', processResults);
-					//require([
-					//  "esri/tasks/ImageServiceIdentifyTask", ... 
-					//], function(ImageServiceIdentifyTask, ... ) {
-					//  var imageTask = new ImageServiceIdentifyTask("http://sampleserver6.arcgisonline.com/arcgis/rest/services/CharlotteLAS/ImageServer");
-					//  ...
-					//});
+					//console.debug('habitat_explorer; main.js; identify(); arg point = ', point);
+					//console.debug('habitat_explorer; main.js; identify(); arg screenPoint = ', screenPoint);
+					//console.debug('habitat_explorer; main.js; identify(); arg processResults = ', processResults);
+					if(this.tabpan.selectedChildWidget.titleText == "Instructions"){
+						processResults("Note: Identify will not work while in the Instructions tab. Please move to another tab to use the Identify feature.");
+						return;
+					}
 					if (this.currentLayer && this.currentLayer.url.includes("ImageServer") == true) {
-						console.debug('identify(); currentLayer is from imageServer');
+						//FOREST processing
 						idTask = new esri.tasks.ImageServiceIdentifyTask(this.geography.url);
 						identifyParams = new ImageServiceIdentifyParameters();
 						identifyParams.returnGeometry = false;
 						identifyParams.geometry = point;
 						//identifyParams.renderingRule = this.renderingRule;					
 						idTask.execute(identifyParams, lang.hitch(this,function(identifyResults) {
-							console.debug("identifyResults.value = ",identifyResults.value);
+							//console.debug("identifyResults.value = ",identifyResults.value);
 							if (identifyResults.value != "NoData") {
-								idtable = '<br><table border="1"><tr><th width="50%"><center>Variable</center></th><th width="25%"><center>Value</center></th><th width="25%"><center>Weight</center></th></tr>';
-								//console.log(identifyResults.value);
-								identifyValues = dojo.eval("[" + identifyResults.value + "]")
-								replacedFormula = this.formula;
-								varFormula = this.formula;
-								array.forEach(identifyValues, lang.hitch(this,function(idval, j){
-									replacedFormula = replacedFormula.replace("B"+(j+1), idval);
-									array.forEach(this.sliders, lang.hitch(this,function(slid, i){
-										ci = j+1;
-										
-										if (slid.value == 0) {
-											outvaluetext = "Not Included";
-										} else if (slid.value == 1) {
-											if (slid.checked == true) {
-												outvaluetext = "Included";
-											} else {
+								if(this.tabpan.selectedChildWidget.titleText != "Instructions"){
+									if(this.tabpan.selectedChildWidget.titleText != "Recommendations"){
+										//If on a tab with slider options, process the specific function and slider values from this tab.
+										idtable = '<br><table border="1"><tr><th width="50%"><center>Variable</center></th><th width="25%"><center>Value</center></th><th width="25%"><center>Weight</center></th></tr>';
+										identifyValues = dojo.eval("[" + identifyResults.value + "]");
+										//this.formula example: "(((2 * B1) + (2 * B2) + (2 * B3) + (2 * B4) + (2 * B5)) / 10)"
+										replacedFormula = this.formula;
+										varFormula = this.formula;
+										array.forEach(identifyValues, lang.hitch(this,function(idval, j){
+											replacedFormula = replacedFormula.replace("B"+(j+1), idval);
+											var ci = "B" + (j+1);
+											array.forEach(registry.findWidgets(this.tabpan.selectedChildWidget.domNode), lang.hitch(this,function(slid, i){
 												outvaluetext = slid.value;
-											}
-										} else {
-											outvaluetext = slid.value;
-										}
-										if (ci == slid.index.replace("B","")) {
-											
-											if (this.formula.includes("B"+(j+1))) {
-												//alert(slid.title);
-											
-												idtable = idtable + ('<tr><td>' + slid.title + '</td><td>' + idval.toFixed(2).replace(".00","") + '</td><td>' + outvaluetext + '</td></tr>')
-												varFormula = varFormula.replace("B"+(j+1), slid.title);
-											}
-										}
-									}));
-								}));
-								//alert(dojo.eval(replacedFormula))
-								//console.log(identifyResults);
-								idtable = idtable + '</table>'
-								if(this.tabpan.selectedChildWidget.titleText == "Introduction"){
-									processResults("<br> Value at Mouse Click: <b>" + dojo.eval(replacedFormula).toFixed(3).replace(".000", '') + "</b><br>" + idtable + "Formula: <br>" + this.geography.BandFormulaText);
-								}else if (this.tabpan.selectedChildWidget.titleText == "Recommendations"){
-									processResults("<br> Value at Mouse Click: <b>" + dojo.eval(replacedFormula).toFixed(3).replace(".000", '') + "</b><br>" + idtable);
-								}else{
-									processResults("<br> Value at Mouse Click: <b>" + dojo.eval(replacedFormula).toFixed(3).replace(".000", '') + "</b><br>" + idtable + "Formula: <br>" + this.geography.BandFormulaText);	
+												if (ci == slid.index && this.formula.includes(ci)) {
+													idtable = idtable + ('<tr><td>' + slid.title + '</td><td>' + idval.toFixed(2).replace(".00","") + '</td><td>' + outvaluetext + '</td></tr>')
+													varFormula = varFormula.replace("B"+(j+1), slid.title);
+												}
+											}));
+										}));
+										idtable = idtable + '</table>';
+										processResults("<br> Value at Mouse Click: <b>" + dojo.eval(replacedFormula).toFixed(3).replace(".000", '') + "</b><br>" + idtable + "Formula: <br>" + this.geography.BandFormulaText);	
+									} else {
+										//user is on the Recommendations tab, loop over all sliders from all tabs.
+										idtable = '<br><table border="1"><tr><th width="50%"><center>Variable</center></th><th width="25%"><center>Value</center></th><th width="25%"><center>Weight</center></th></tr>';
+										identifyValues = dojo.eval("[" + identifyResults.value + "]");
+										//this.formula example: "(((2 * B1) + (2 * B2) + (2 * B3) + (2 * B4) + (2 * B5)) / 10)"
+										replacedFormula = this.formula;
+										varFormula = this.formula;
+										array.forEach(identifyValues, lang.hitch(this,function(idval, j){
+											replacedFormula = replacedFormula.replace("B"+(j+1), idval);
+											var ci = "B" + (j+1);
+											array.forEach(this.sliders, lang.hitch(this,function(slid, i){
+												outvaluetext = slid.value;
+												if(ci==slid.index){
+													idtable = idtable + ('<tr><td>' + slid.title + '</td><td>' + idval.toFixed(2).replace(".00","") + '</td><td>' + outvaluetext + '</td></tr>')
+												}
+											}));
+										}));
+										idtable = idtable + '</table>';
+										processResults("<br> Value at Mouse Click: <b>" + dojo.eval(replacedFormula).toFixed(3).replace(".000", '') + "</b><br>" + idtable);
+									}
+								} else {
+									//user is on the Instructions tab
+									if(this.tabpan.selectedChildWidget.titleText == "Instructions"){
+										processResults("Note: Identify will not work while in the Instructions tab. Please move to another tab to use the Identify feature.");
+										//processResults("<br> Value at Mouse Click: <b>" + dojo.eval(replacedFormula).toFixed(3).replace(".000", '') + "</b><br>" + idtable + "Formula: <br>" + this.geography.BandFormulaText);
+									} 
 								}
-								//processResults("<br> Value at Mouse Click: <b>" + dojo.eval(replacedFormula).toFixed(3).replace(".000", '') + "</b><br>" + idtable + "Formula: <br>" + this.geography.BandFormulaText);
-								//processResults();
-								console.debug("tab title = ", this.tabpan.selectedChildWidget.titleText);
 							} else {
 								//NoData returned
 								processResults("<br> Value at Mouse Click: No Data. <br> Tip: Zoom in for best results.");
-								console.debug("tab title = ", this.tabpan.selectedChildWidget.titleText);
 							}
+							}), lang.hitch(this,function(err){
+								//error back
+								processResults("<br> Value at Mouse Click: No Data. <br>Server Error.");
 							})); 
 					} else if (this.currentLayer){
-						console.debug('identify(); currentLayer is NOT from imageServer');
-						//console.debug(this.currentLayer.url);
+						//STREAMS processing
 						if(this.tabpan.selectedChildWidget.titleText != "Instructions"){
+							if(this.tabpan.selectedChildWidget.titleText == "Recommendations"){
+								//Special processing for Recommendations tab - update the query so that it includes all the individual field names as well as the 'score' function.
+								//This is so the individual values may be reported in the Identify window.
+								var fieldNames = "";
+								array.forEach(this.sliders, lang.hitch(this,function(slid, i){
+									fieldNames += slid.index + ",";
+								}));
+								this.dli[0].source.dataSource.query = this.dli[0].source.dataSource.query.replace("objectid,", "objectid," + fieldNames);
+							}
 							identifyer = new esri.tasks.IdentifyTask(this.currentLayer.url, { source: this.layerSource });
 							identifyParams = new IdentifyParameters();
 							identifyParams.dynamicLayerInfos = this.dli;
@@ -1982,58 +1979,49 @@ define([
 							identifyParams.mapExtent = this.map.extent;
 							identifyParams.geometry = point;
 							identifyer.execute(identifyParams, lang.hitch(this,function(identifyResults) {
-								console.debug("identify results:", identifyResults);
-								//console.debug(typeof(identifyResults));
 								if(identifyResults && identifyResults.length > 0){
-
-									//loop over tabs to find the current tab
-										//loop over all tab items
-											//loop over all dijit (sliders) found, comparing item text to slider title
-												//once match is found...
-
-									//console.debug(this.tabpan.selectedChildWidget);
-									//console.debug(dojoquery(".dijitSliderH"));
-									//var sliderWidgets = registry.findWidgets(registry.byId(this.tabpan.selectedChildWidget.id));
-									//console.debug("sliderWidgets: ", sliderWidgets);
-									// console.log(this.formula);
-
-									// idtable = '<br><table border="1"><tr><th width="50%"><center>Variable</center></th><th width="25%"><center>Value</center></th><th width="25%"><center>Weight</center></th></tr>';
-									// array.forEach(this.sliders, lang.hitch(this,function(slid, i){
-									// 	if (slid.value == 0) {
-									// 		outvaluetext = "Not Included";
-									// 	} else if (slid.value == 1) {
-									// 		if (slid.checked == true) {
-									// 			outvaluetext = "Included";
-									// 		} else {
-									// 			outvaluetext = slid.value;
-									// 		}
-									// 	} else {
-									// 		outvaluetext = slid.value;
-									// 	}
-									// 	idtable = idtable + ('<tr><td>' + slid.title + '</td><td></td><td>' + outvaluetext + '</td></tr>');
-									// 	//idtable = idtable + ('<tr><td>' + slid.title + '</td><td>' + idval.toFixed(2).replace(".00","") + '</td><td>' + outvaluetext + '</td></tr>');
-									// }));
-									// idtable = idtable + '</table>';
-
 									if (this.tabpan.selectedChildWidget.titleText == "Recommendations"){
-										//identifyResults[0] - there may be more features found, but this is using first one in the array wins.
-										processResults("<br> Computed Score at Mouse Click: " + identifyResults[0].feature.attributes.score);
-										//processResults("<br> Computed Score at Mouse Click: " + identifyResults[0].feature.attributes.score + "<br>" + idtable);
+										//Need to loop over all sliders from all tabs and gather info.
+										idtable = '<br><table border="1"><tr><th width="50%"><center>Variable</center></th><th width="25%"><center>Value</center></th><th width="25%"><center>Weight</center></th></tr>';
+										array.forEach(this.sliders, lang.hitch(this,function(slid, i){
+											idtable = idtable + ('<tr><td>' + slid.title + '</td> <td>' + identifyResults[0].feature.attributes[slid.index]+ '</td> <td>' + slid.value + '</td></tr>');
+										}));
+										idtable = idtable + '</table>';
+										//note about identifyResults[0] - there may be many features found, but this is using first one in the array wins.
+										//processResults("<br> Computed Score at Mouse Click: " + identifyResults[0].feature.attributes.score);
+										processResults("<br> Computed Score at Mouse Click: " 
+											+ identifyResults[0].feature.attributes.score 
+											+ "<br>" 
+											+ idtable);
 									} else {
-										processResults("<br> Computed Score at Mouse Click: " + identifyResults[0].feature.attributes.score);
-										//processResults("<br> Computed Score at Mouse Click: " + identifyResults[0].feature.attributes.score + "<br>" + idtable);
+										//For Slider-Selection Tabs. Loop over only this tab's sliders.
+										idtable = '<br><table border="1"><tr><th width="50%"><center>Variable</center></th><th width="25%"><center>Value</center></th><th width="25%"><center>Weight</center></th></tr>';
+										var formulaTxt = this.formula;
+										array.forEach(registry.findWidgets(this.tabpan.selectedChildWidget.domNode), lang.hitch(this,function(slid, i){
+											idtable = idtable + ('<tr><td>' + slid.title + '</td> <td>'+identifyResults[0].feature.attributes[slid.index]+'</td> <td>' + slid.value + '</td></tr>');
+											formulaTxt = formulaTxt.replace(slid.index, slid.title);
+										}));
+										idtable = idtable + '</table>';
+										//note about identifyResults[0] - there may be many features found, but this is using first one in the array wins.
+										//processResults("<br> Computed Score at Mouse Click: " + identifyResults[0].feature.attributes.score);
+										processResults("<br> Computed Score at Mouse Click: " 
+											+ identifyResults[0].feature.attributes.score 
+											+ "<br>" 
+											+ idtable 
+											+ "Formula: <br>" + formulaTxt);
 									}
 								}else{
 									processResults("<br> Computed Score at Mouse Click: No Data. <br>Tip: Try clicking closer to a feature.");
 								}
+							}), lang.hitch(this,function(err){
+								//error back
+								processResults("<br> Computed Score at Mouse Click: No Data. <br>Server Error.");
 							}));
 						} else {
 							//Instructions tab is selected
-							processResults("Streams Note: Identify will not work while in the Instructions tab. Please move to another tab to use the Identify feature.");
+							processResults("Note: Identify will not work while in the Instructions tab. Please move to another tab to use the Identify feature.");
 						}
 					}
-					//console.log(point)
-					//console.log(screenPoint)
 			   	},
 				/** 
 				 * Method: subregionActivated
