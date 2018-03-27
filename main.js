@@ -454,7 +454,7 @@ define([
 					{
 						console.debug("in handler for chosenDD.on('chosen:hiding_dropdown',...");
 						regy = ob.chosen.selected_item[0].innerText;
-						//resetObject is a copy of the explorerObject (explorer.json) at the time of plugin initialize.
+						//this.ResetObject is a copy of the explorerObject (explorer.json) at the time of plugin initialize.
 						reseter = lang.clone(this.ResetObject);
 						//find a match between selected DDL option and a region in the config.
 						array.forEach(reseter.regions, lang.hitch(this,function(reg, t){
@@ -611,8 +611,6 @@ define([
 				*/
 				changeGeography: function(geography, zoomto) {
 					console.debug('habitat_explorer; main.js; changeGeography()');
-					//console.debug('habitat_explorer; main.js; changeGeography(); geography arg = ', geography);
-					//console.debug('habitat_explorer; main.js; changeGeography(); zoomto arg = ', zoomto);
 					//ga = google analytics, set in index.cshtml view, globally available
 					ga('send', 'event', this.toolbarName, 'Change Dropdown: ' + geography.name);
 					//geography.dataset only applies to streams. Not a very good check for vector vs raster. Could just have a property isVector in config and set that to true/false.
@@ -1483,7 +1481,7 @@ define([
 				 * Method: updateService
 				 * 		
 				 * Args:
-				 * 		zoomto {boolean} - Zoom to extents of the layer?
+				 * 		zoomto {boolean} - Zoom to extents of the layer
 				 * 		
 				*/
 				updateService: function(zoomto) {
@@ -1521,7 +1519,7 @@ define([
 					} else {
 						lcolorRamp = this.geography.tabs[selectedIndex].colorRamp;
 					}
-					
+					console.debug('updateService(); lcolorRamp: ', lcolorRamp);
 					if (this.geography.tabs[selectedIndex].inputRanges == undefined) {
 						linputRanges = this.geography.inputRanges;
 					} else {
@@ -1533,6 +1531,7 @@ define([
 						loutputValues = this.geography.tabs[selectedIndex].outputValues;
 					}	  					
 					if (this.isVector == true)  {
+						//STREAMS
 						console.debug('habitat_explorer; main.js; updateService(); isVector = ', this.isVector);
 						indFields = [];
 						legIndexes = [0,1,2];
@@ -1616,6 +1615,7 @@ define([
 							}
 						}
 					} else {
+						//FORESTS
 						console.debug('habitat_explorer; main.js; updateService(); isVector = ', this.isVector);
 						//if not a vector layer...
 						legIndexes = [1,2,3];
@@ -1626,31 +1626,6 @@ define([
 								this.map.setExtent(this.currentLayer.fullExtent, true);
 							}	
 						}
-						// {
-						// "rasterFunction": "Stretch",
-						// "rasterFunctionArguments": {
-						// "StretchType": 5,
-						// "DRA": true,
-						// "Min": 0,
-						// "Max": 255,
-						// "UseGamma": false,
-						// "OutputPixelType": "U8"
-						// },
-						// "Raster": {
-						// "rasterFunction": "BandArithmetic",
-						// "rasterFunctionArguments": {
-						// "Method": 0,
-						// "BandIndexes": "(B3 * 2) + (B1 * 1) + (B2 * 4) + (B4 * 1) + (B5 * 4) + (B6 * 1)"
-						// },
-						// "outputPixelType": "F32",
-						// "variableName": "Raster"
-						// }
-						// }
-						//	}
-						//			);
-						//alert(this.formula);  
-						///cut it from here
-			
 						rf1h3 = this.crasta 
 						rf = new RasterFunction();
 						rf.functionName = "Remap";
@@ -1674,11 +1649,15 @@ define([
 						//legenddiv = domConstruct.create("img", {src:"height:400px", innerHTML: "<b>" + "Legend for Restoration"  + ":</b>"});
 						//dom.byId(this.legendContainer).appendChild(this.legenddiv);
 					}
+
+					//For both FOREST and STREAMS
+					console.debug('updateService(); lcolorRamp: ', lcolorRamp);
 					innerSyms = "";
 					array.forEach(lcolorRamp, lang.hitch(this,function(cColor, i){
 						innerSyms = innerSyms + '<rect x="0" y ="'+ (i * 30) + '" width="30" height="20" style="fill:rgb('+ cColor[legIndexes[0]] + "," + cColor[legIndexes[1]] + "," + cColor[legIndexes[2]] + ');stroke-width:0;stroke:rgb(0,0,0)" />'
 					}));
 					if ( this.geography.outputLabels == undefined) {
+						console.debug('updateService(); this.geography.outputLabels are undefined');
 						this.geography.outputLabels = [{text:"Low", "percent": "0"},{text:"Medium", "percent": "50"},{text:"High", "percent": "100"}];
 					//} else {	
 					}	 
@@ -1686,6 +1665,7 @@ define([
 					lh = ((lcolorRamp.length) * 30) + 10;
 					maxy = ((lcolorRamp.length) * 30) - 30;
 					labs = "";
+					console.debug('updateService(); this.geography.outputLabels: ', this.geography.outputLabels);
 					array.forEach(this.geography.outputLabels, lang.hitch(this,function(lab, i){
 						//console.log(lab);
 						labs = labs + '<text x="35" y="' +((maxy * (lab.percent / 100))  + 15) + '" fill="black">' + lab.text + '</text>'
@@ -1699,32 +1679,38 @@ define([
 					//+ '<text x="35" y="' + maxy + '" fill="black">High</text></svg>'
 					//noleg = dom.byId("legend-0_msg")
 					//domStyle.set(noleg, "display", "none");
+					console.debug('updateService(); orgselectedIndex: ', orgselectedIndex);
 					if (orgselectedIndex > -1) {
-						//this.currentLayer.show();
+						//For tabs other than the Instructions tab
 						this.currentLayer.setVisibility(true);
 						this.legendContainer.innerHTML = '<div style="margin-bottom:7px" id="mExplorerLegend' + "_" + this.map.id + '">' + this.toolbarName + regfixname + ctabname + '</div>'
 						+ '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="500px" height="' + lh + '">'
 						+ innerSyms + labs
 					} else {
-						//this.currentLayer.hide();
+						//For the Instructions tab
 						this.currentLayer.setVisibility(false);
-						//setTimeout(lang.hitch(this,function() {this.currentLayer.hide();}), 500);
 						this.legendContainer.innerHTML = '';
 					}
 					tabs = this.tabpan.getChildren();
 					selectedIndex = this.tabpan.selectedChildWidget.index;
+					console.debug('updateService(); selectedIndex: ', selectedIndex);
+					//Instructions tab is at index -1
+					console.log('dojoquery(tabs[0].containerNode).parent()[0]',dojoquery(tabs[0].containerNode).parent()[0]);
 					if (selectedIndex == -1) {
+						//toggle visibility of tab[0] main content
 						domClass.remove(dojoquery(tabs[0].containerNode).parent()[0], "dijitHidden");
 						domClass.add(dojoquery(tabs[0].containerNode).parent()[0], "dijitVisible");
-						//console.log(dojoquery(tabs[0].containerNode).parent()[0]);
+						//this.introLayer is undefined at this point on first load, but populated on return visit to the tab, so not sure where the return visit layer load happens.
 						if (this.introLayer == undefined) {
 							this.introLayer = new ArcGISDynamicMapServiceLayer(this.geography.intro.layer.url,{
 								useMapImage: true
 							});
+							//value of this.geography.intro.layer.show, as currently set in config, is [118]
 							this.introLayer.setVisibleLayers(this.geography.intro.layer.show)
 							this.map.addLayer(this.introLayer);	
 						}
 					} else {
+						//toggle visibility of tab[0] main content
 						domClass.remove(dojoquery(tabs[0].containerNode).parent()[0], "dijitVisible");
 						domClass.add(dojoquery(tabs[0].containerNode).parent()[0], "dijitHidden");					
 					}
@@ -1751,7 +1737,7 @@ define([
 					console.debug('habitat_explorer; main.js; zoomQextent(); EXTENT using this.map.setExtent()');
 					this.map.setExtent(newextent, true);
 				},
-				/** 
+				/** NOT IN USE
 				 * Method: updateRenderer
 				 * 		
 				 * Args:
@@ -2025,7 +2011,7 @@ define([
 			   	},
 				/** 
 				 * Method: subregionActivated
-				 * 		
+				 * 		Framework Plugin method for override, called in Pane.js
 				 * Args:
 				 * 		subregion {type} - description
 				 * 		
@@ -2050,7 +2036,7 @@ define([
 				},
 				/** 
 				 * Method: subregionDeactivated
-				 * 		
+				 * 		Framework Plugin method for override, called in Pane.js
 				 * Args:
 				 * 		subregion {type} - description
 				*/

@@ -16,22 +16,25 @@ define([
     return declare(null, {
         
 		colors : [
-				[1000, 102, 140, 77],
-				[1001, 107, 172, 77],
-				[1010, 177, 197, 137],
-				[1011, 203, 227, 188],
-				[1100, 125, 132, 172],
-				[1101, 77, 140, 237],
-				[1110, 77, 195, 237],
-				[1111, 181, 214, 255],
-				[0, 182, 138, 77],
-				[1, 223, 174, 77],
-				[10, 246, 216, 139],
-				[11, 252, 239, 198],
-				[100, 135, 0, 0],
-				[101, 204, 0, 0],
-				[110, 237, 137, 137],
-				[111, 255, 191, 248]
+				[1000, 36, 91, 0],
+				[1001, 43, 137, 0],
+				[1010, 144, 173, 86],
+				[1011, 180, 214, 157],
+
+				[1100, 69, 81, 137],
+				[1101, 0, 91, 230],
+				[1110, 0, 168, 230],
+				[1111, 151, 198, 255],
+
+				[0, 166, 96, 0],
+				[1, 209, 139, 0],
+				[10, 211, 174, 79],
+				[11, 255, 224, 127],
+
+				[100, 154, 0, 43],
+				[101, 205, 0, 0],
+				[110, 238, 137, 137],
+				[111, 255, 191, 249]
 					],
 					
 		labels : [
@@ -99,24 +102,6 @@ define([
 			};
 			rf1h.variableName = "riskOutput";
 			rf1h.outputPixelType = "U16";
-
-			//rf1l = new RasterFunction();
-			//rf1l.functionName = "Local";
-			//rf1l.functionArguments = {
-			//  "Operation" : 28,
-			//  "Rasters" : [rasterFunction1, 67]
-			//};
-			//rf1l.variableName = "riskOutput";
-			//rf1l.outputPixelType = "U16";
-
-			//rft = new RasterFunction();
-			//rft.functionName = "Local";
-			//rft.functionArguments = {
-			//  "Operation" : 76,
-			//  "Rasters" : [rfc, rf1h, rf1l]
-			//};
-			//rft.variableName = "riskOutput";
-			//rft.outputPixelType = "U16";	
 
 			rfta = new RasterFunction();
 			rfta.functionName = "Local";
@@ -189,19 +174,6 @@ define([
 			rfa.variableName = "riskOutput";
 			rfa.outputPixelType = "U16";
 			
-			
-			//rfout = new RasterFunction();
-			//rfout.functionName = "Remap";
-			//rfout.functionArguments = {
-			//  "InputRanges" : [0,250,250,500,500,1300],
-			//  "OutputValues" : [1,100,250],
-			//  "Raster" : rfa
-			//};
-			//rfout.variableName = "riskOutput";
-			//rfout.outputPixelType = "U8";
-			//console.log("HAAA")
-			//console.log(rfa)
-			
 			colorRF = new RasterFunction();
 			colorRF.functionName = "Colormap";
 			colorRF.variableName = "riskOutput";
@@ -214,11 +186,10 @@ define([
 			texter = ""
 			
 			array.forEach(this.colors, lang.hitch(this,function(cColor, i){
-				innerSyms = innerSyms + '<rect x="0" y ="'+ (i * 30) + '" width="30" height="20" style="fill:rgb('+ cColor[1] + "," + cColor[2] + "," + cColor[3] + ');stroke-width:0;stroke:rgb(0,0,0)" />';
+				innerSyms = innerSyms + '<rect x="0" y ="'+ (i * 30) + '" width="30" height="20" style="fill:rgb('+ cColor[1] + "," + cColor[2] + "," + cColor[3] + ');stroke-width:1;stroke:rgb(0,0,0)" />';
 				texter = texter + ' <text x="35" y ="' + ((i * 30) + 15) + '" fill="black">' + this.labels[i] + '</text>';
 			}));
 			
-
 			lh = ((this.colors.length) * 30) + 10
 			maxy = ((this.colors.length) * 30) - 15
 			
@@ -239,17 +210,9 @@ define([
 		 * 		Tformulas {type} - desciption
 		*/
 		vectorCombineFunction: function(formulas, geo, Tformulas) {
-			geo.BandFormulaText = Tformulas[0] + "<br><br>" + Tformulas[1] + "<br><br>" + Tformulas[2] + "<br><br>" + Tformulas[3] + "<br><br> A text desciption of how the layers are combined could appear in this location."
-			//majorFormula = ("(" + formulas[0] + " * 1000) + (" + formulas[1] + " * 100) + (" + formulas[2] + " * 10) + (" + formulas[3] + " * 1)"   )
-			//console.log(majorFormula)
-			//console.log("SELECT " + oFields + ", " + rfout + " AS score FROM " + this.geography.dataset);
-			//"SELECT " + oFields + ", case when (" + formulas[0] + " > 75) then 1 else 0 end * 1000 AS score FROM " + geo.dataset
+			geo.BandFormulaText = Tformulas[0] + "<br><br>" + Tformulas[1] + "<br><br>" + Tformulas[2] + "<br><br>" + Tformulas[3] + "<br><br> A text desciption of how the layers are combined could appear in this location.";
 			oFields = geo.reqFields.join(", ");
-			//case when (" + formulas[0] + " > 75) then 1 else 0 end * 1000
-			//" + case when (" + formulas[0] + " > 75) then case when (" + formulas[1] + " > 33) then 1 else 0 end else case when (" + formulas[1] + " > 67) then 1 else 0 end end * 100 "
-			//case when (" + formulas[3] + " > 50) then 1 else 0 end * 1
 			outq = "SELECT " + oFields + ", (case when (" + formulas[0] + " > 67) then 1 else 0 end * 1000) + (case when (" + formulas[1] + " > 33) then 1 else 0 end * 100) + (case when (" + formulas[2] + " > 50) then 1 else 0 end * 10) + (case when (" + formulas[3] + " > 50) then 1 else 0 end * 1) AS score FROM " + geo.dataset;
-			//console.log(outq);
 			defsym = new SimpleLineSymbol({
 				"type": "esriSLS",
 				"style": "esriSLSSolid",
@@ -273,7 +236,7 @@ define([
 			innerSyms = "";
 			texter = "";
 			array.forEach(this.colors, lang.hitch(this,function(cColor, i){
-				innerSyms = innerSyms + '<rect x="0" y ="'+ (i * 30) + '" width="30" height="20" style="fill:rgb('+ cColor[1] + "," + cColor[2] + "," + cColor[3] + ');stroke-width:0;stroke:rgb(0,0,0)" />' 
+				innerSyms = innerSyms + '<rect x="0" y ="'+ (i * 30) + '" width="30" height="20" style="fill:rgb('+ cColor[1] + "," + cColor[2] + "," + cColor[3] + ');stroke-width:1;stroke:rgb(0,0,0)" />' 
 				texter = texter + ' <text x="35" y ="' + ((i * 30) + 15) + '" fill="black">' + this.labels[i] + '</text>'
 			}));
 			lh = ((this.colors.length) * 30) + 10;
@@ -285,177 +248,7 @@ define([
 				+ texter;
 			outputData = {outquery: outq, renderRule: outrenderer, legendHTML: OUTPUTLABEL};
 			console.debug('outputData.outquery: ', outputData.outquery);
-			return outputData; //[outq, outrenderer];
-			//return majorFormula;
-			//SQLOUT = "SELECT objectid, shape, " + majorFormula + " AS score FROM sde.ny_condition_lines"
-			//console.log(SQLOUT);
-			//console.log("SELECT " + oFields + ", " + iFields + ", " + this.formula + " AS score FROM " + this.geography.dataset);	
+			return outputData;
 		}
     });
 });
-
-/*
-
-
-define([
-					"dojo/_base/declare",
-					"esri/request",
-					"esri/layers/ArcGISDynamicMapServiceLayer",
-					"esri/layers/ArcGISImageServiceLayer",
-					"esri/layers/ImageServiceParameters",
-					"esri/layers/RasterFunction",
-					"esri/tasks/ImageServiceIdentifyTask",
-					"esri/tasks/ImageServiceIdentifyParameters",
-					"esri/tasks/IdentifyParameters",
-					"esri/tasks/IdentifyTask",
-					"esri/tasks/QueryTask",
-					"esri/tasks/query",
-					"esri/graphicsUtils",
-					"esri/geometry/Extent",
-					"esri/SpatialReference" 
-], function(
-					declare,
-					ESRIRequest,
-					ArcGISDynamicMapServiceLayer,
-					ArcGISImageServiceLayer,
-					ImageServiceParameters,
-					RasterFunction,
-					ImageServiceIdentifyTask,
-					ImageServiceIdentifyParameters,
-					IdentifyParameters,
-					IdentifyTask,
-					QueryTask,
-					esriQuery,
-					graphicsUtils,
-					Extent,
-					SpatialReference
-){
-    return declare(null, {
-        combine: function(){
-            alert("HI");
-        }
-    });
-});
-
-
-
-
-/*
-define([
-        "dojo/_base/declare",
-		"esri/request",
-		"esri/layers/ArcGISDynamicMapServiceLayer",
-		"esri/layers/ArcGISImageServiceLayer",
-		"esri/layers/ImageServiceParameters",
-		"esri/layers/RasterFunction",
-		"esri/tasks/ImageServiceIdentifyTask",
-		"esri/tasks/ImageServiceIdentifyParameters",
-		"esri/tasks/IdentifyParameters",
-		"esri/tasks/IdentifyTask",
-		"esri/tasks/QueryTask",
-		"esri/tasks/query",
-		"esri/graphicsUtils",
-		"esri/geometry/Extent",
-		"esri/SpatialReference"
-       ],
-       function (declare,
-					ESRIRequest,
-					ArcGISDynamicMapServiceLayer,
-					ArcGISImageServiceLayer,
-					ImageServiceParameters,
-					RasterFunction,
-					ImageServiceIdentifyTask,
-					ImageServiceIdentifyParameters,
-					IdentifyParameters,
-					IdentifyTask,
-					QueryTask,
-					esriQuery,
-					graphicsUtils,
-					Extent,
-					SpatialReference
-					) {
-
-			   
-			   combine: function () {
-					alert("thing");
-			
-			   }
-				   
-		});
-		
-		
-
-/*
-combine = function(formulas) {
-	alert("Hello");
-	
-						rasterFunction1 = new RasterFunction();
-						rasterFunction1.functionName = "BandArithmetic";
-						arguments = {"Raster" : "$$"};
-						arguments.Method= 0;
-						arguments.BandIndexes = formulas[0];
-						rasterFunction1.arguments = arguments;
-						rasterFunction1.variableName = "riskOutput";
-						rasterFunction1.outputPixelType = "U8";
-
-						rf1 = new RasterFunction();
-						rf1.functionName = "Local";
-						rf1.functionArguments = {
-						  "Operation" : 28,
-						  "Rasters" : [rasterFunction1, 75]
-						};
-						rf1.variableName = "riskOutput";
-						rf1.outputPixelType = "U16";					
-
-						rfp = new RasterFunction();
-						rfp.functionName = "Local";
-						rfp.functionArguments = {
-						  "Operation" : 3,
-						  "Rasters" : [rf1, 2]
-						};
-						rfp.variableName = "riskOutput";
-						rfp.outputPixelType = "U16";							
-						
-						rasterFunction2 = new RasterFunction();
-						rasterFunction2.functionName = "BandArithmetic";
-						arguments = {"Raster" : "$$"};
-						arguments.Method= 0;
-						arguments.BandIndexes = formulas[2];
-						rasterFunction2.arguments = arguments;
-						rasterFunction2.variableName = "riskOutput";
-						rasterFunction2.outputPixelType = "U8";
-
-						rf2 = new RasterFunction();
-						rf2.functionName = "Local";
-						rf2.functionArguments = {
-						  "Operation" : 28,
-						  "Rasters" : [rasterFunction2, 50]
-						};
-						rf2.variableName = "riskOutput";
-						rf2.outputPixelType = "U16";	
-						
-						rfa = new RasterFunction();
-						rfa.functionName = "Local";
-						rfa.functionArguments = {
-						  "Operation" : 1,
-						  "Rasters" : [rfp, rf2]
-						};
-						rfa.variableName = "riskOutput";
-						rfa.outputPixelType = "F32";	
-						
-						
-						rfout = new RasterFunction();
-						rfout.functionName = "Remap";
-						rfout.functionArguments = {
-						  "InputRanges" : [0,0.5,0.5,1.5,1.5,2.5],
-						  "OutputValues" : [1,100,250],
-						  "Raster" : rfa
-						};
-						rfout.variableName = "riskOutput";
-						rfout.outputPixelType = "U8";
-						
-						
-		return rfout;
-	
-}
-*/
