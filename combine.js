@@ -212,7 +212,9 @@ define([
 		vectorCombineFunction: function(formulas, geo, Tformulas) {
 			geo.BandFormulaText = Tformulas[0] + "<br><br>" + Tformulas[1] + "<br><br>" + Tformulas[2] + "<br><br>" + Tformulas[3] + "<br><br> A text desciption of how the layers are combined could appear in this location.";
 			oFields = geo.reqFields.join(", ");
-			outq = "SELECT " + oFields + ", (case when (" + formulas[0] + " > 67) then 1 else 0 end * 1000) + (case when (" + formulas[1] + " > 33) then 1 else 0 end * 100) + (case when (" + formulas[2] + " > 50) then 1 else 0 end * 10) + (case when (" + formulas[3] + " > 50) then 1 else 0 end * 1) AS score FROM " + geo.dataset;
+			//formulas[0] = Condition; formulas[1] = Threat; formulas[2] = Sensitivity; formulas[3] = Exposure;
+			//outq = "SELECT " + oFields + ", (case when (" + formulas[0] + " > 67) then 1 else 0 end * 1000) + (case when (" + formulas[1] + " > 33) then 1 else 0 end * 100) + (case when (" + formulas[2] + " > 50) then 1 else 0 end * 10) + (case when (" + formulas[3] + " > 50) then 1 else 0 end * 1) AS score FROM " + geo.dataset;
+			outq = "SELECT " + oFields + ", (case when (" + formulas[0] + " >= 67) then 1 else 0 end * 1000) + (case when (" + formulas[1] + " >= 33) then 1 else 0 end * 100) + (case when (" + formulas[2] + " >= 50) then 1 else 0 end * 10) + (case when (" + formulas[3] + " >= 50) then 1 else 0 end * 1) AS score FROM " + geo.dataset;
 			defsym = new SimpleLineSymbol({
 				"type": "esriSLS",
 				"style": "esriSLSSolid",
@@ -226,7 +228,7 @@ define([
 					symbol: new SimpleLineSymbol({
 						"type": "esriSLS",
 						"style": "esriSLSSolid",
-						"color": [cColor[1],cColor[2],cColor[3],255],
+						"color": [cColor[1], cColor[2], cColor[3], 255],
 						"width": 2
 					}),
 					label: this.labels[i],
