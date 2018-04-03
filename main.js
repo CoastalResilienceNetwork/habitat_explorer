@@ -1242,9 +1242,9 @@ define([
 						try{
 							var tabsArr = this.tabpan.getChildren();
 							this.tabpan.selectChild(tabsArr[this.stateTabIndex + 1]); 
-						} catch(e){
+						} catch(err){
 							//most likely reason to fall in here would be an out-of-bounds index for the tabsarr index
-							console.error('Unable to set current tab.');
+							console.error('Unable to set current tab: ', err);
 						}
 					}
 					
