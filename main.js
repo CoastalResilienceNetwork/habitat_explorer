@@ -171,6 +171,7 @@ define([
 				//height: _config.pluginHeight,
 				size:'custom',
 				width: _config.pluginWidth,
+				stateTabIndex: null,
 				stateSliders: null,
 				stateRestore: false,
 				hasCustomPrint: _hasCustomPrint, 
@@ -254,9 +255,9 @@ define([
 					}
 					this.usableRegions = this.explorerObject.regions;
 
-					console.debug('activate(); this.stateRestore = ', this.stateRestore);
-					console.debug('activate(); this._hasactivated = ', this._hasactivated);
-					console.debug('activate(); _noZoom = ', _noZoom);
+					//console.debug('activate(); this.stateRestore = ', this.stateRestore);
+					//console.debug('activate(); this._hasactivated = ', this._hasactivated);
+					//console.debug('activate(); _noZoom = ', _noZoom);
 
 					if (this.stateRestore == false) {
 						if (this._hasactivated == false) {
@@ -319,6 +320,7 @@ define([
 					//alert(this.geography.name)
 					var stateObj = {};
 					stateObj.regionName = this.geography.name;
+					stateObj.tabIndex = this.tabpan.selectedChildWidget.index;
 					stateObj.sliders = [];
 					array.forEach(this.sliders, lang.hitch(this,function(slid, i){
 						//idtable = idtable + ('<tr><td>' + slid.title + '</td> <td>' + identifyResults[0].feature.attributes[slid.index]+ '</td> <td>' + slid.value + '</td></tr>');
@@ -336,13 +338,14 @@ define([
 				*/
 				setState: function (stateObj) {
 					console.debug('habitat_explorer; main.js; setState()');
-					console.debug('setState(); state = ', stateObj);
+					//console.debug('setState(); state = ', stateObj);
 					//console.debug('setState(); typeof(state) = ', typeof(stateObj));
 					array.forEach(this.explorerObject.regions, lang.hitch(this,function(region, i){
 						if (region.name == stateObj.regionName) {
 							this.geography = region;
 						}
 					}));
+					this.stateTabIndex = stateObj.tabIndex;
 					this.stateSliders = stateObj.sliders;
 					this.stateRestore = true;
 				},
@@ -1126,7 +1129,8 @@ define([
 							itemIndex = itemIndex + 1
 						}));// end- array.forEach(tab.items...
 					}));// end- array.forEach(geography.tabs...
-					//null out the stateSliders in case it was set/used in initial load from 'save and share' link (as set in method setState()).
+					//clear the 'state' vars in case they were set/used in initial load from 'save and share' link (see method setState()).
+					this.stateTabIndex = null;
 					this.stateSliders = null;
 					//set up the Recommendations tab
 					if (geography.combined != undefined) {
@@ -1150,7 +1154,7 @@ define([
 					//below is the only use of dojo/aspect in this file. Should this be dojo/on?
 					aspect.after(this.tabpan, "selectChild", lang.hitch(this,function (e, o) {
 						//called after selecting a new tab in the tab control
-						console.debug('habitat_explorer; main.js; tab panel selectChild handling.');
+						console.debug('Tab container selectChild event handling....');
 						//again with the resize()... still needed?
 						this.resize();
 						selindex = o[0].index;
@@ -1180,6 +1184,7 @@ define([
 						this.resize();
 					}));
 					this.tabpan.startup();
+
 					if (this.isVector == true)  {
 						this.currentLayer = new ArcGISDynamicMapServiceLayer(geography.url);
 					} else {
@@ -1231,6 +1236,19 @@ define([
 					}
 					//
 					this.resize();
+
+					//settting the selected tab via 'state' is near the bottom here because the 'selectChild' evetn hanlding needs to have this.currentLayer populated.
+					if(this.stateTabIndex != null){
+						try{
+							var tabsArr = this.tabpan.getChildren();
+							this.tabpan.selectChild(tabsArr[this.stateTabIndex + 1]); 
+						} catch(e){
+							//most likely reason to fall in here would be an out-of-bounds index for the tabsarr index
+							console.error('Unable to set current tab.');
+						}
+					}
+					
+
 			   	},
 				/** 
 				 * Method: syncMaps
@@ -1688,7 +1706,7 @@ define([
 						innerSyms = innerSyms + '<rect x="0" y ="'+ (i * 30) + '" width="30" height="20" style="fill:rgb('+ cColor[legIndexes[0]] + "," + cColor[legIndexes[1]] + "," + cColor[legIndexes[2]] + ');stroke-width:0;stroke:rgb(0,0,0)" />'
 					}));
 					if ( this.geography.outputLabels == undefined) {
-						console.debug('updateService(); this.geography.outputLabels are undefined');
+						//console.debug('updateService(); this.geography.outputLabels are undefined');
 						this.geography.outputLabels = [{text:"Low", "percent": "0"},{text:"Medium", "percent": "50"},{text:"High", "percent": "100"}];
 					//} else {	
 					}	 
@@ -1721,13 +1739,14 @@ define([
 						this.legendContainer.innerHTML = '';
 					}
 					tabs = this.tabpan.getChildren();
+					//console.debug('************* tabs = ', tabs);
 					selectedIndex = this.tabpan.selectedChildWidget.index;
 					//Instructions tab is at index -1
 					if (selectedIndex == -1) {
 						//toggle visibility of tab[0] main content
 						domClass.remove(dojoquery(tabs[0].containerNode).parent()[0], "dijitHidden");
 						domClass.add(dojoquery(tabs[0].containerNode).parent()[0], "dijitVisible");
-						//this.introLayer is undefined at this point on first load, but populated on return visit to the tab, so not sure where the return visit layer load happens.
+						//this.introLayer is undefined at this point on first load.
 						if (this.introLayer == undefined) {
 							this.introLayer = new ArcGISDynamicMapServiceLayer(this.geography.intro.layer.url,{
 								useMapImage: true
