@@ -66,8 +66,8 @@ define([
 		*/
 		combineFunction: function(formulas, geo, Tformulas, rfuncs){
 			console.debug('combine.js; combineFunction()');
-			console.debug('combine.js; combineFunction(); formulas = ', formulas);
-			console.debug('combine.js; combineFunction(); Tformulas = ', Tformulas);
+			//console.debug('combine.js; combineFunction(); formulas = ', formulas);
+			//console.debug('combine.js; combineFunction(); Tformulas = ', Tformulas);
 
 			geo.BandFormulaText = Tformulas[0] + "<br><br>" + Tformulas[1] + "<br><br>" + Tformulas[2] + "<br><br>" + Tformulas[3] + "<br><br>";
 			

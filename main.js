@@ -1129,9 +1129,7 @@ define([
 							itemIndex = itemIndex + 1
 						}));// end- array.forEach(tab.items...
 					}));// end- array.forEach(geography.tabs...
-					//clear the 'state' vars in case they were set/used in initial load from 'save and share' link (see method setState()).
-					this.stateTabIndex = null;
-					this.stateSliders = null;
+					
 					//set up the Recommendations tab
 					if (geography.combined != undefined) {
 						if (geography.combined.hoverText == undefined) {
@@ -1247,8 +1245,9 @@ define([
 							console.error('Unable to set current tab: ', err);
 						}
 					}
-					
-
+					//clear the 'state' vars in case they were set/used in initial load from 'save and share' link (see method setState()).
+					this.stateTabIndex = null;
+					this.stateSliders = null;
 			   	},
 				/** 
 				 * Method: syncMaps
