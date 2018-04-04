@@ -1673,7 +1673,7 @@ define([
 			   	identify: function(point, screenPoint, processResults) {
 					console.debug('habitat_explorer; main.js; identify()');
 					if(this.tabpan.selectedChildWidget.titleText == "Instructions"){
-						processResults("Note: Identify will not work while in the Instructions tab. Please move to another tab to use the Identify feature.");
+						processResults("Note: Select the Recommendations tab to click on map for further details or other tabs to explore individual components.");
 						return;
 					}
 					if (this.currentLayer && this.currentLayer.url.includes("ImageServer") == true) {
@@ -1734,7 +1734,7 @@ define([
 								} else {
 									//user is on the Instructions tab
 									if(this.tabpan.selectedChildWidget.titleText == "Instructions"){
-										processResults("Note: Please move to the Recommendations tab.");
+										processResults("Note: Select the Recommendations tab to click on map for further details or other tabs to explore individual components.");
 									} 
 								}
 							} else {
@@ -1809,7 +1809,7 @@ define([
 							}));
 						} else {
 							//Instructions tab is selected
-							processResults("Note: Please move to the Recommendations tab.");
+							processResults("Note: Select the Recommendations tab to click on map for further details or other tabs to explore individual components.");
 						}
 					}
 			   	},
