@@ -7,7 +7,7 @@
     "betweenGroups": "*",
     "averageGroups": true,
 	"pluginWidth": 550,
-	"enableCustomPrint": true,
+	"enableCustomPrint": false,
 	"infoGraphic": "RestorationExplorer_c.jpg",
 	"showInfoOnStart": false,
 	"hoverText" : "Generates summaries of stream and forest data for current condition, future threat, and climate change sensitivity and exposure. These are then used to map recommended conservation objectives. Can also be used in conjunction with our Guidebook to identify which Course Adjustment Worksheets to complete and provide information to help you do so.",
