@@ -408,8 +408,9 @@ define([
 				*/
         		rebuildOptions: function() {
 					console.debug('habitat_explorer; main.js; rebuildOptions()');
-					domConstruct.empty(this.ddNode);	
-					outerBox = $('<div class="eeheader" />').appendTo($(this.ddNode));
+					domConstruct.empty(this.ddNode);
+					$('<h3 style="margin-top: 0px;">New York Forests</h3>').appendTo($(this.ddNode));	
+					outerBox = $('<div class="eeheader" style="display: none" />').appendTo($(this.ddNode));
 					s = $('<select class="chosenDD chosen-select mainChosen" id=expGeoSelect" data-placeholder="' + _config.ddText + '" />')
 					$('<option />', {value: "", text: ""}).appendTo(s);
 					selIndex = -1;
