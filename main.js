@@ -406,10 +406,12 @@ define([
 				 * Args:
 				 * 		
 				*/
-        		rebuildOptions: function() {
+        rebuildOptions: function() {
 					console.debug('habitat_explorer; main.js; rebuildOptions()');
+					/*domConstruct.empty(this.ddNode);	
+					outerBox = $('<div class="eeheader" />').appendTo($(this.ddNode));*/
 					domConstruct.empty(this.ddNode);
-					$('<h3 style="margin-top: 0px;">New York Forests</h3>').appendTo($(this.ddNode));	
+					$('<h3 style="margin-top: 0px;">New York Streams</h3>').appendTo($(this.ddNode));	
 					outerBox = $('<div class="eeheader" style="display: none" />').appendTo($(this.ddNode));
 					s = $('<select class="chosenDD chosen-select mainChosen" id=expGeoSelect" data-placeholder="' + _config.ddText + '" />')
 					$('<option />', {value: "", text: ""}).appendTo(s);
@@ -1363,6 +1365,7 @@ define([
 					//perhaps this needs to be done sometime but it appears to work now.
 					//formget = lang.hitch(this,this.getFormula(selectedIndex))
 					this.formula = this.getFormula(selectedIndex);
+					console.log(this.formula);
 					if (this.geography.tabs[selectedIndex].colorRamp == undefined) {
 						lcolorRamp = this.geography.colorRamp;
 					} else {
@@ -1392,20 +1395,31 @@ define([
 						if (this.formula == "") {
 							this.formula = "0::integer";
 						}
+
+						/* 
+							Here he is setting a couple of fields plus a formula based on configuration in each tab. 
+							Creating a new datasource based on this derived "score" value. And setting that to 
+							be the datasource of our dynamic map layer
+						*/
 						var dynamicLayerInfos = [];
 						var dynamicLayerInfo = new esri.layers.DynamicLayerInfo();
 						dynamicLayerInfo.id = 1;
 						dynamicLayerInfo.name = this.toolbarName + " - " + this.geography.name;
 						var dataSource = new esri.layers.QueryDataSource();
-						dataSource.workspaceId = this.geography.workspaceId;
+		        dataSource.workspaceId = this.geography.workspaceId;
 						dataSource.geometryType = this.geography.geometryType;
 						dataSource.query = "SELECT " + oFields + ", " + iFields + ", " + this.formula + " AS score FROM " + this.geography.dataset;
+						dataSource.spatialReference = new esri.SpatialReference(4326);
+						console.log(dataSource.query);
 						dataSource.oidFields = ["objectid"]
 						minquery = "SELECT " + this.formula + " AS score FROM " + this.geography.dataset
 						this.layerSource = new esri.layers.LayerDataSource();
 						this.layerSource.dataSource = dataSource;
 						dynamicLayerInfo.source = this.layerSource;
 						dynamicLayerInfos.push(dynamicLayerInfo);
+						console.log(JSON.stringify(dynamicLayerInfos[0].toJson()));
+						
+
 						this.currentLayer.setDynamicLayerInfos(dynamicLayerInfos);
 						var queryTask = new QueryTask(this.currentLayer.url + "/dynamicLayer", { source: this.layerSource });
 						var allFields = this.geography.reqFields.concat(indFields);
@@ -1452,7 +1466,7 @@ define([
 					} else {
 						//FORESTS
 						//if not a vector layer...
-						legIndexes = [1,2,3];
+						/*legIndexes = [1,2,3];
 					    if (zoomto == true) {
 							if (this.app.regionConfig.hasOwnProperty('initialExtent') && this.app.regionConfig.initialExtent.length == 4){
 								this.zoomToAppExtent();
@@ -1477,7 +1491,7 @@ define([
 							"Colormap" : lcolorRamp,
 							"Raster" : rf  //use the output of the remap rasterFunction for the Colormap rasterFunction
 						};
-						this.currentLayer.setRenderingRule(colorRF);
+						this.currentLayer.setRenderingRule(colorRF);*/
 					}
 					//For both FOREST and STREAMS
 					innerSyms = "";
